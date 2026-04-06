@@ -1,3 +1,5 @@
+![CI](https://github.com/zzagg777/tonefit/actions/workflows/ci.yml/badge.svg)
+
 # ToneFit
 사무직 사회초년생을 위한, 수신자 & 목적 기반 한국어 비즈니스 커뮤니케이션 교정 서비스
 
@@ -20,7 +22,7 @@ CI / CD : GitHub Action / Vercel
 HTTP 클라이언트 : Axios
 
 
-## 폴더 구조 :
+## 폴더 구조
 src/
 ├── App.tsx
 ├── main.tsx
@@ -39,11 +41,30 @@ src/
 ├── types/          # TypeScript 타입 정의
 └── utils/          # 유틸 함수
 
-## 실행 방법 :
+
+## 실행 방법
 npm install # 의존성 설치
 npm run dev # 개발 서버
 npm run build # 프로덕션 빌드
 npm run test # 테스트 실행
+
+
+## 브랜치 전략
+- `main` : 배포용
+- `develop` : 개발 통합
+- `feature/CFHO-00-작업내용` : 기능 개발
+
+
+## 커밋 컨벤션
+feat: 새로운 기능 추가 
+fix: 버그 수정 
+chore: 설정, 패키지 등 기타 작업 
+refactor: 코드 구조 개선 
+style: 코드 포맷 변경 
+docs: 문서 수정 
+test: 테스트 코드 
+remove: 파일 또는 코드 삭제 
+
 
 ## 환경 변수 :
 VITE_API_URL=http://123.123.123.123:8080
