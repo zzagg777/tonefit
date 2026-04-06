@@ -1,73 +1,49 @@
-# React + TypeScript + Vite
+# ToneFit
+사무직 사회초년생을 위한, 수신자 & 목적 기반 한국어 비즈니스 커뮤니케이션 교정 서비스
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## 배포 URL
+https://tonefit-six.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
+## 기술 스택
+언어     : TypeScript
+프레임워크 : React 19
+번들러    : Vite 8
+스타일    : Tailwind CSS v4
+상태관리   : Zustand v5
+서버상태  : React Query v5 (TanStack Query)
+라우팅    : React Router v6
+Form : React Hook Form, Zod
+코드 품질 : ESLint + Prettier + Husky
+CI / CD : GitHub Action / Vercel 
+HTTP 클라이언트 : Axios
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## 폴더 구조 :
+src/
+├── App.tsx
+├── main.tsx
+├── index.css
+├── api/            # API 호출 함수 모음
+├── assets/         # 이미지, 폰트 등 정적 파일
+├── components/     # 공통 컴포넌트 (Button, Modal, Input...)
+├── constants/      # 상수값 (API URL, 라우팅 경로, 에러 메시지 등)
+├── hooks/          # 커스텀 훅
+├── pages/          # 페이지 단위 컴포넌트
+├── queries/        # React Query 훅 모음
+├── schemas/        # Zod 스키마 정의
+├── stores/         # Zustand 전역 상태
+├── styles/         # 전역 스타일
+├── test/           # 테스트 파일
+├── types/          # TypeScript 타입 정의
+└── utils/          # 유틸 함수
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 실행 방법 :
+npm install # 의존성 설치
+npm run dev # 개발 서버
+npm run build # 프로덕션 빌드
+npm run test # 테스트 실행
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 환경 변수 :
+VITE_API_URL=http://123.123.123.123:8080
