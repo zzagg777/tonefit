@@ -1,0 +1,107 @@
+{
+  "id": "VariableCollectionId:174:2",
+  "name": "Radius",
+  "modes": { "174:0": "Mode 1" },
+  "variableIds": [
+    "VariableID:174:4",
+    "VariableID:174:5",
+    "VariableID:174:6",
+    "VariableID:174:7",
+    "VariableID:174:8",
+    "VariableID:174:9",
+    "VariableID:174:10"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:174:4",
+      "name": "radius/none",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "174:0": 0 },
+      "resolvedValuesByMode": {
+        "174:0": { "resolvedValue": 0, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:174:5",
+      "name": "radius/sm",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "174:0": 4 },
+      "resolvedValuesByMode": {
+        "174:0": { "resolvedValue": 4, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:174:6",
+      "name": "radius/md",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "174:0": 8 },
+      "resolvedValuesByMode": {
+        "174:0": { "resolvedValue": 8, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:174:7",
+      "name": "radius/lg",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "174:0": 12 },
+      "resolvedValuesByMode": {
+        "174:0": { "resolvedValue": 12, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:174:8",
+      "name": "radius/xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "174:0": 16 },
+      "resolvedValuesByMode": {
+        "174:0": { "resolvedValue": 16, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:174:9",
+      "name": "radius/2xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "174:0": 20 },
+      "resolvedValuesByMode": {
+        "174:0": { "resolvedValue": 20, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:174:10",
+      "name": "radius/full",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "174:0": 9999 },
+      "resolvedValuesByMode": {
+        "174:0": { "resolvedValue": 9999, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    }
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "id": "VariableCollectionId:149:4485",
+  "name": "Type",
+  "modes": { "149:1": "Mode 1" },
+  "variableIds": [
+    "VariableID:167:11",
+    "VariableID:152:4488",
+    "VariableID:167:5",
+    "VariableID:167:6",
+    "VariableID:167:7",
+    "VariableID:167:8",
+    "VariableID:308:2141",
+    "VariableID:167:9",
+    "VariableID:170:12",
+    "VariableID:167:10",
+    "VariableID:170:13",
+    "VariableID:308:2142",
+    "VariableID:165:2",
+    "VariableID:170:14",
+    "VariableID:170:15",
+    "VariableID:170:16",
+    "VariableID:170:17",
+    "VariableID:170:18",
+    "VariableID:170:19",
+    "VariableID:170:20",
+    "VariableID:170:21",
+    "VariableID:170:22",
+    "VariableID:170:23",
+    "VariableID:170:24",
+    "VariableID:165:4",
+    "VariableID:172:25",
+    "VariableID:172:27"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:152:4488",
+      "name": "font/size/xs",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 12 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 12, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:165:2",
+      "name": "font/line-height/xs",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 14 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 14, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:165:4",
+      "name": "font/letter-spacing/tight",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": -2 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": -2, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:167:5",
+      "name": "font/size/sm",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 14 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 14, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:167:6",
+      "name": "font/size/md",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 16 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 16, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:167:7",
+      "name": "font/size/lg",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 18 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 18, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:167:8",
+      "name": "font/size/xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 20 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 20, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:167:9",
+      "name": "font/size/3xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 24 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 24, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:167:10",
+      "name": "font/size/5xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 32 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 32, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:167:11",
+      "name": "font/size/2xs",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 10 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 10, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:12",
+      "name": "font/size/4xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 28 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 28, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:13",
+      "name": "font/size/6xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 36 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 36, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:14",
+      "name": "font/line-height/sm",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 16 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 16, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:15",
+      "name": "font/line-height/md",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 18 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 18, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:16",
+      "name": "font/line-height/lg",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 20 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 20, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:17",
+      "name": "font/line-height/xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 22 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 22, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:18",
+      "name": "font/line-height/2xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 24 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 24, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:19",
+      "name": "font/line-height/3xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 26 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 26, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:20",
+      "name": "font/line-height/4xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 28 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 28, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:21",
+      "name": "font/line-height/5xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 32 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 32, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:22",
+      "name": "font/line-height/6xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 36 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 36, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:23",
+      "name": "font/line-height/7xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 40 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 40, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:170:24",
+      "name": "font/line-height/8xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 44 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 44, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:172:25",
+      "name": "font/letter-spacing/normal",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 0 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 0, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:172:27",
+      "name": "font/letter-spacing/wide",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 2 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 2, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:308:2141",
+      "name": "font/size/2xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 22 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 22, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:308:2142",
+      "name": "font/size/7xl",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": { "149:1": 40 },
+      "resolvedValuesByMode": {
+        "149:1": { "resolvedValue": 40, "alias": null }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    }
+  ]
+}

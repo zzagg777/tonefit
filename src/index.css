@@ -1,13 +1,113 @@
-@import "tailwindcss";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+@import 'tailwindcss';
+@import './styles/tokens.css';
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-brand: #FF6B35;
-
+  /* 폰트 패밀리 등록 */
   --font-sans: "Pretendard", sans-serif;
+  /* Color Roles → Tailwind 클래스로 연결 */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-disabled: var(--color-text-disabled);
+  --color-text-placeholder: var(--color-text-placeholder);
+  --color-text-inverse: var(--color-text-inverse);
+  --color-text-brand: var(--color-text-brand);
+  --color-text-brand-strong: var(--color-text-brand-strong);
+  --color-text-success: var(--color-text-success);
+  --color-text-warning: var(--color-text-warning);
+  --color-text-danger: var(--color-text-danger);
+  --color-text-info: var(--color-text-info);
 
-  /* --spacing-18: 4.5rem;
-  --spacing-128: 32rem; */
+  --color-background-page: var(--color-background-page);
+  --color-background-surface: var(--color-background-surface);
+  --color-background-subtle: var(--color-background-subtle);
+  --color-background-muted: var(--color-background-muted);
+  --color-background-disabled: var(--color-background-disabled);
+  --color-background-overlay: var(--color-background-overlay);
+  --color-background-inverse: var(--color-background-inverse);
+  --color-background-brand: var(--color-background-brand);
+  --color-background-brand-subtle: var(--color-background-brand-subtle);
+  --color-background-hover: var(--color-background-hover);
+  --color-background-pressed: var(--color-background-pressed);
+  --color-background-success-subtle: var(--color-background-success-subtle);
+  --color-background-warning-subtle: var(--color-background-warning-subtle);
+  --color-background-danger-subtle: var(--color-background-danger-subtle);
+
+  --color-border-default: var(--color-border-default);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-strong: var(--color-border-strong);
+  --color-border-disabled: var(--color-border-disabled);
+  --color-border-focus: var(--color-border-focus);
+  --color-border-brand: var(--color-border-brand);
+  --color-border-success: var(--color-border-success);
+  --color-border-warning: var(--color-border-warning);
+  --color-border-danger: var(--color-border-danger);
+
+  --color-icon-primary: var(--color-icon-primary);
+  --color-icon-secondary: var(--color-icon-secondary);
+  --color-icon-tertiary: var(--color-icon-tertiary);
+  --color-icon-disabled: var(--color-icon-disabled);
+  --color-icon-brand: var(--color-icon-brand);
+  --color-icon-success: var(--color-icon-success);
+  --color-icon-warning: var(--color-icon-warning);
+  --color-icon-danger: var(--color-icon-danger);
+
+  /* Radius */
+  --radius-none: var(--radius-none);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  /* Spacing */
+  --spacing-space-xxs: var(--space-xxs);
+  --spacing-space-xs: var(--space-xs);
+  --spacing-space-sm: var(--space-sm);
+  --spacing-space-md: var(--space-md);
+  --spacing-space-lg: var(--space-lg);
+  --spacing-space-xl: var(--space-xl);
+  --spacing-space-2xl: var(--space-2xl);
+  --spacing-space-3xl: var(--space-3xl);
+  --spacing-space-4xl: var(--space-4xl);
+  --spacing-space-5xl: var(--space-5xl);
+  --spacing-space-6xl: var(--space-6xl);
+  --spacing-space-7xl: var(--space-7xl);
+
+  /* Font Size → text-size-* 클래스 생성 */
+  --text-fs-2xs: var(--font-size-2xs);
+  --text-fs-xs: var(--font-size-xs);
+  --text-fs-sm: var(--font-size-sm);
+  --text-fs-md: var(--font-size-md);
+  --text-fs-lg: var(--font-size-lg);
+  --text-fs-xl: var(--font-size-xl);
+  --text-fs-2xl: var(--font-size-2xl);
+  --text-fs-3xl: var(--font-size-3xl);
+  --text-fs-4xl: var(--font-size-4xl);
+  --text-fs-5xl: var(--font-size-5xl);
+  --text-fs-6xl: var(--font-size-6xl);
+  --text-fs-7xl: var(--font-size-7xl);
+
+  /* Line Height → leading-height-* 클래스 생성 */
+  --leading-height-xs: var(--font-line-height-xs);
+  --leading-height-sm: var(--font-line-height-sm);
+  --leading-height-md: var(--font-line-height-md);
+  --leading-height-lg: var(--font-line-height-lg);
+  --leading-height-xl: var(--font-line-height-xl);
+  --leading-height-2xl: var(--font-line-height-2xl);
+  --leading-height-3xl: var(--font-line-height-3xl);
+  --leading-height-4xl: var(--font-line-height-4xl);
+  --leading-height-5xl: var(--font-line-height-5xl);
+  --leading-height-6xl: var(--font-line-height-6xl);
+  --leading-height-7xl: var(--font-line-height-7xl);
+  --leading-height-8xl: var(--font-line-height-8xl);
+  --leading-height-9xl: var(--font-line-height-9xl);
+
+  /* Letter Spacing */
+  --tracking-tight: var(--font-letter-spacing-tight);
+  --tracking-normal: var(--font-letter-spacing-normal);
+  --tracking-wide: var(--font-letter-spacing-wide);
 }
