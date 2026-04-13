@@ -76,6 +76,9 @@
   --spacing-space-5xl: var(--space-5xl);
   --spacing-space-6xl: var(--space-6xl);
   --spacing-space-7xl: var(--space-7xl);
+  --spacing-space-8xl: var(--space-8xl);
+  --spacing-space-9xl: var(--space-9xl);
+  --spacing-space-10xl: var(--space-10xl);
 
   /* Font Size → text-size-* 클래스 생성 */
   --text-fs-2xs: var(--font-size-2xs);
@@ -110,4 +113,11 @@
   --tracking-tight: var(--font-letter-spacing-tight);
   --tracking-normal: var(--font-letter-spacing-normal);
   --tracking-wide: var(--font-letter-spacing-wide);
+
+  /* Button 인터랙션 색상
+     color-mix()로 palette 변수를 재사용 — HEX 하드코딩 없음
+     hover  → gray-900 80% = rgba(17,24,39,0.8)
+     pressed → gray-900 60% = rgba(17,24,39,0.6) */
+  --color-background-inverse-hover: color-mix(in srgb, var(--color-palette-gray-900) 80%, transparent);
+  --color-background-inverse-pressed: color-mix(in srgb, var(--color-palette-gray-900) 60%, transparent);
 }
