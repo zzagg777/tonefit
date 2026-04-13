@@ -48,6 +48,8 @@
     "VariableID:308:2130",
     "VariableID:308:2131",
     "VariableID:308:2132",
+    "VariableID:541:9687",
+    "VariableID:541:9688",
     "VariableID:308:2133",
     "VariableID:308:2134",
     "VariableID:308:2135",
@@ -1264,6 +1266,62 @@
           },
           "alias": "VariableID:157:19",
           "aliasName": "color/palette/brand/blue/700"
+        }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:541:9687",
+      "name": "Foreground/color/icon/hover",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "157:0": {
+          "r": 0.06666667014360428,
+          "g": 0.0941176488995552,
+          "b": 0.15294118225574493,
+          "a": 0.800000011920929
+        }
+      },
+      "resolvedValuesByMode": {
+        "157:0": {
+          "resolvedValue": {
+            "r": 0.06666667014360428,
+            "g": 0.0941176488995552,
+            "b": 0.15294118225574493,
+            "a": 0.800000011920929
+          },
+          "alias": null
+        }
+      },
+      "scopes": ["ALL_SCOPES"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:541:9688",
+      "name": "Foreground/color/icon/pressed",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "157:0": {
+          "r": 0.06666667014360428,
+          "g": 0.0941176488995552,
+          "b": 0.15294118225574493,
+          "a": 0.6000000238418579
+        }
+      },
+      "resolvedValuesByMode": {
+        "157:0": {
+          "resolvedValue": {
+            "r": 0.06666667014360428,
+            "g": 0.0941176488995552,
+            "b": 0.15294118225574493,
+            "a": 0.6000000238418579
+          },
+          "alias": null
         }
       },
       "scopes": ["ALL_SCOPES"],

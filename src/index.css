@@ -53,6 +53,8 @@
   --color-icon-success: var(--color-icon-success);
   --color-icon-warning: var(--color-icon-warning);
   --color-icon-danger: var(--color-icon-danger);
+  --color-icon-hover: var(--color-icon-hover);
+  --color-icon-pressed: var(--color-icon-pressed);
 
   /* Radius */
   --radius-none: var(--radius-none);
