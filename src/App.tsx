@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Layout from '@/components/layout/Layout';
+// import Layout from '@/components/layout/Layout';
 import AuthLayout from '@/components/layout/AuthLayout';
 import LoginPage from '@/pages/auth/LoginPage';
 import JoinAcceptPage from '@/pages/auth/JoinAcceptPage';
@@ -48,7 +48,9 @@ import ComponentPage from '@/pages/dev/ComponentPage';
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}></Route>
+      {/* <Route path="/" element={<Layout />}></Route> */}
+      <Route path="/" element={<Navigate to={ROUTES.LOGIN} replace />} />
+
       {/* ── 인증 라우트 (AuthLayout 적용: 카드 레이아웃) ── */}
       <Route element={<AuthLayout variant="center" />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
