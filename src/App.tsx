@@ -1,9 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-
+import Layout from '@/components/layout/Layout';
 import AuthLayout from '@/components/layout/AuthLayout';
 import LoginPage from '@/pages/auth/LoginPage';
 import JoinAcceptPage from '@/pages/auth/JoinAcceptPage';
 import JoinInfoPage from '@/pages/auth/JoinInfoPage';
+import JoinCompletePage from '@/pages/auth/JoinCompletePage';
 import DashboardPage from '@/pages/home/DashboardPage';
 import EditorPage from '@/pages/home/EditorPage';
 import EditorProcessingPage from '@/pages/home/EditorProcessingPage';
@@ -12,6 +13,11 @@ import HistoryPage from '@/pages/home/HistoryPage';
 import SettingsPage from '@/pages/home/SettingsPage';
 import PricingPage from '@/pages/home/PricingPage';
 import { ROUTES } from '@/constants';
+
+// ── [DEV ONLY] 컴포넌트 확인 페이지 ─────────────────────────────
+// ⚠️  프로덕션 배포 전 아래 import를 주석 처리하세요.
+import ComponentPage from '@/pages/dev/ComponentPage';
+// ─────────────────────────────────────────────────────────────────
 
 /**
  * App
@@ -42,11 +48,16 @@ import { ROUTES } from '@/constants';
 const App = () => {
   return (
     <Routes>
-      {/* ── 인증 라우트 (AuthLayout 적용) ────────────────── */}
-      <Route element={<AuthLayout />}>
+      <Route path="/" element={<Layout />}></Route>
+      {/* ── 인증 라우트 (AuthLayout 적용: 카드 레이아웃) ── */}
+      <Route element={<AuthLayout variant="center" />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+      </Route>
+
+      <Route element={<AuthLayout variant="top" />}>
         <Route path={ROUTES.JOIN_ACCEPT} element={<JoinAcceptPage />} />
         <Route path={ROUTES.JOIN_INFO} element={<JoinInfoPage />} />
+        <Route path={ROUTES.JOIN_COMPLETE} element={<JoinCompletePage />} />
       </Route>
 
       {/* ── 홈 라우트 ────────────────────────────────────── */}
@@ -67,6 +78,13 @@ const App = () => {
         path={ROUTES.HOME}
         element={<Navigate to={ROUTES.LOGIN} replace />}
       />
+
+      {/* ── [DEV ONLY] 컴포넌트 확인 페이지 ───────────────────
+          ⚠️  프로덕션 배포 전 아래 Route를 주석 처리하세요.
+          (위의 import ComponentPage도 함께 주석 처리)
+          빌드 사이즈 최소화를 위해 두 줄 모두 비활성화합니다. */}
+      <Route path="/dev/components" element={<ComponentPage />} />
+      {/* ────────────────────────────────────────────────────── */}
     </Routes>
   );
 };
