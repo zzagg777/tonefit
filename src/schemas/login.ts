@@ -14,10 +14,10 @@ export const loginSchema = z.object({
     .string()
     .min(1, '이메일을 입력해 주세요.')
     .email(VALIDATION_MESSAGES.EMAIL_INVALID),
-  // password: z
-  //   .string()
-  //   .min(1, '비밀번호를 입력해 주세요.')
-  //   .min(8, VALIDATION_MESSAGES.PASSWORD_TOO_SHORT),
+  password: z
+    .string()
+    .min(1, '비밀번호를 입력해 주세요.')
+    .min(8, VALIDATION_MESSAGES.PASSWORD_TOO_SHORT),
   autoLogin: z.boolean(),
 });
 
