@@ -14,11 +14,7 @@ import { ROUTES } from '@/constants';
 
 /**
  * LoginPage
- *
  * 로그인 폼 페이지입니다.
- *
- * 레이아웃(배경·카드 감싸기)은 AuthLayout이 담당하고,
- * 이 컴포넌트는 카드 안쪽 콘텐츠만 렌더링합니다.
  *
  * 구성:
  * - TitleText (heading="로그인", variant="lg")
@@ -29,6 +25,7 @@ import { ROUTES } from '@/constants';
  * - 로그인 버튼
  * - 회원가입 링크
  */
+
 const LoginPage = () => {
   /** 비밀번호 표시 여부 */
   const [showPassword, setShowPassword] = useState(false);
@@ -148,12 +145,7 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/*
-         * 로그인 버튼
-         * - 폼이 유효하지 않으면 비활성화
-         * - isSubmitting 중이면 loading variant로 표시
-         * - Button 기본 스펙이 이미 높이 66px, rounded-2xl, 전체 너비를 포함
-         */}
+        {/* 로그인 버튼 */}
         <div className="px-2 pt-5">
           <Button
             type="submit"
@@ -166,7 +158,7 @@ const LoginPage = () => {
         </div>
       </form>
 
-      {/* ── 회원가입 유도 링크 ───────────────────────────── */}
+      {/* 회원가입 유도 링크 */}
       <div className="flex items-center justify-center gap-2">
         <span className="text-base text-text-tertiary tracking-tight">
           ToneFit이 처음이신가요?
