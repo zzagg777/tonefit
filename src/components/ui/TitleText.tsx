@@ -19,11 +19,13 @@ interface TitleTextProps extends HTMLAttributes<HTMLDivElement> {
   heading: ReactNode;
   subtitle?: string;
   variant?: TitleTextVariant;
+  align?: string;
 }
 
 const TitleText = ({
   heading,
   subtitle,
+  align = 'center',
   variant = 'lg',
   className = '',
   ...props
@@ -33,7 +35,8 @@ const TitleText = ({
   return (
     <div
       className={`
-        flex flex-col gap-2.5 items-center text-center leading-3.5
+        flex flex-col gap-2.5 items-center leading-3.5
+        text-${align}
         ${className}
       `}
       {...props}
@@ -41,7 +44,7 @@ const TitleText = ({
       {/* 타이틀 */}
       <h2
         className={`
-          font-bold text-text-primary tracking-tight
+          font-bold text-text-primary tracking-tight w-full
           ${isLarge ? 'text-4xl leading-11' : 'text-4xl leading-9'}
         `}
       >
