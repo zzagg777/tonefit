@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 // import Layout from '@/components/layout/Layout';
 import AuthLayout from '@/components/layout/AuthLayout';
+import Layout from '@/components/layout/Layout';
 import LoginPage from '@/pages/auth/LoginPage';
 import JoinAcceptPage from '@/pages/auth/JoinAcceptPage';
 import JoinInfoPage from '@/pages/auth/JoinInfoPage';
@@ -48,8 +49,11 @@ import ComponentPage from '@/pages/dev/ComponentPage';
 const App = () => {
   return (
     <Routes>
-      {/* <Route path="/" element={<Layout />}></Route> */}
-      <Route path="/" element={<Navigate to={ROUTES.LOGIN} replace />} />
+      {/* 루트 경로: 로그인으로 임시 리다이렉트 */}
+      <Route
+        path={ROUTES.HOME}
+        element={<Navigate to={ROUTES.EDITOR} replace />}
+      />
 
       {/* ── 인증 라우트 (AuthLayout 적용: 카드 레이아웃) ── */}
       <Route element={<AuthLayout variant="center" />}>
@@ -64,22 +68,18 @@ const App = () => {
 
       {/* ── 홈 라우트 ────────────────────────────────────── */}
       {/* TODO: HomeLayout(헤더·사이드바)으로 감싸기 */}
-      <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
-      <Route path={ROUTES.EDITOR} element={<EditorPage />} />
-      <Route
-        path={ROUTES.EDITOR_PROCESSING}
-        element={<EditorProcessingPage />}
-      />
-      <Route path={ROUTES.EDITOR_RESULT} element={<EditorResultPage />} />
-      <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
-      <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
-      <Route path={ROUTES.PRICING} element={<PricingPage />} />
-
-      {/* 루트 경로: 로그인으로 임시 리다이렉트 */}
-      <Route
-        path={ROUTES.HOME}
-        element={<Navigate to={ROUTES.LOGIN} replace />}
-      />
+      <Route element={<Layout />}>
+        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        <Route path={ROUTES.EDITOR} element={<EditorPage />} />
+        <Route
+          path={ROUTES.EDITOR_PROCESSING}
+          element={<EditorProcessingPage />}
+        />
+        <Route path={ROUTES.EDITOR_RESULT} element={<EditorResultPage />} />
+        <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
+        <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
+        <Route path={ROUTES.PRICING} element={<PricingPage />} />
+      </Route>
 
       {/* ── [DEV ONLY] 컴포넌트 확인 페이지 ───────────────────
           ⚠️  프로덕션 배포 전 아래 Route를 주석 처리하세요.
