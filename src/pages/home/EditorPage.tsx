@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TitleText from '@/components/ui/TitleText';
-import SidebarNav from '@/components/layout/SidebarNav';
 import { Icon } from '@/components/ui';
 import {
   ROUTES,
@@ -11,6 +10,25 @@ import {
   VALIDATION_MESSAGES,
 } from '@/constants';
 import type { ReceiverType, PurposeType } from '@/types';
+import { saveStorage, getStorageItem, deleteAllStorage } from '@/api/storage';
+
+const DRAFT_KEY = 'tonefit_editor_draft';
+
+interface EditorDraft {
+  receiver: ReceiverType | null;
+  purpose: PurposeType | null;
+  emailText: string;
+}
+
+function loadDraft(): EditorDraft | null {
+  const draft = getStorageItem<EditorDraft>(DRAFT_KEY);
+  if (!draft) return null;
+  if (!draft.receiver && !draft.purpose && !draft.emailText) return null;
+  return draft;
+}
+
+const saveDraft = (draft: EditorDraft) => saveStorage(DRAFT_KEY, draft);
+const clearDraft = () => deleteAllStorage(DRAFT_KEY);
 
 const RECEIVER_OPTIONS: ReceiverType[] = [
   'DIRECT_SUPERVISOR',
@@ -36,7 +54,7 @@ interface StepLabelProps {
 
 const StepLabel = ({ step, title }: StepLabelProps) => (
   <div className="flex gap-0.5 items-center">
-    <div className="w-[30px] h-[30px] rounded-full bg-background-inverse flex items-center justify-center shrink-0">
+    <div className="w-7.5 h-7.5 rounded-full bg-background-inverse flex items-center justify-center shrink-0">
       <span className="text-xl font-semibold leading-7 tracking-tight text-text-inverse text-center">
         {step}
       </span>
@@ -51,6 +69,7 @@ const StepLabel = ({ step, title }: StepLabelProps) => (
 
 const EditorPage = () => {
   const navigate = useNavigate();
+  const [initialDraft] = useState<EditorDraft | null>(() => loadDraft());
 
   const [receiver, setReceiver] = useState<ReceiverType | null>(null);
   const [purpose, setPurpose] = useState<PurposeType | null>(null);
@@ -60,7 +79,9 @@ const EditorPage = () => {
     purpose?: string;
     email?: string;
   }>({});
+  const [showDraftNoti, setShowDraftNoti] = useState(Boolean(initialDraft));
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const draftResolvedRef = useRef(!initialDraft);
 
   const charCount = emailText.length;
   const isOverLimit = charCount > INPUT_LIMITS.EMAIL_MAX_LENGTH;
@@ -70,12 +91,33 @@ const EditorPage = () => {
     charCount >= INPUT_LIMITS.EMAIL_MIN_LENGTH &&
     !isOverLimit;
 
+  // 실시간 자동 저장 (알림 처리 전까지 중단)
   useEffect(() => {
+    if (!draftResolvedRef.current) return;
     const timer = setTimeout(() => {
-      // draft 자동 저장 (API 연동 후 구현)
+      if (receiver || purpose || emailText) {
+        saveDraft({ receiver, purpose, emailText });
+      }
     }, 1000);
     return () => clearTimeout(timer);
   }, [receiver, purpose, emailText]);
+
+  const handleClose = () => {
+    clearDraft();
+    draftResolvedRef.current = true;
+    setShowDraftNoti(false);
+  };
+
+  const handleResume = () => {
+    const draft = loadDraft();
+    if (draft) {
+      setReceiver(draft.receiver);
+      setPurpose(draft.purpose);
+      setEmailText(draft.emailText);
+    }
+    draftResolvedRef.current = true;
+    setShowDraftNoti(false);
+  };
 
   const handleSubmit = () => {
     const newErrors: typeof errors = {};
@@ -92,6 +134,7 @@ const EditorPage = () => {
       return;
     }
 
+    clearDraft();
     navigate(ROUTES.EDITOR_PROCESSING, {
       state: {
         receiverType: receiver,
@@ -102,141 +145,173 @@ const EditorPage = () => {
   };
 
   const chipBase =
-    'h-[46px] flex items-center justify-center px-6 rounded-2xl text-lg font-semibold leading-[26px] tracking-tight transition-colors cursor-pointer';
+    'flex items-center justify-center py-2.5 px-2.5 rounded-2xl text-lg font-semibold leading-6.5 tracking-tight transition-colors cursor-pointer break-keep';
   const chipSelected = 'bg-background-inverse text-text-inverse';
   const chipDefault =
     'bg-background-subtle text-text-placeholder hover:bg-background-hover-2 hover:text-text-inverse';
 
   return (
-    <div className="flex h-screen bg-background-muted overflow-hidden">
-      <SidebarNav />
-
-      <div className="flex-1 bg-background-page flex flex-col items-center py-20 overflow-y-auto">
-        {/* 콘텐츠 영역 */}
-        <div className="flex flex-col gap-11 items-start w-full px-10 flex-1">
-          {/* 타이틀 */}
-          <TitleText
-            heading="이메일 교정"
-            subtitle="작성하신 이메일을 대상과 상황에 맞춰 완벽하게 다듬어 드립니다."
-            align="left"
-          />
-
-          {/* 메인 레이아웃: 좌측(수신자/목적) + 우측(이메일 입력) */}
-          <div className="flex gap-20 items-start w-full flex-1 min-h-0">
-            {/* 좌측: 수신자 + 목적 선택 */}
-            <div className="flex-1 flex flex-col gap-[14px] min-w-0">
-              {/* 수신자 유형 */}
-              <div className="flex flex-col gap-4 w-full">
-                <StepLabel step={1} title="수신자 유형 선택" />
-                <div className="flex flex-col gap-2 w-full">
-                  <div className="grid grid-cols-4 gap-3 w-full">
-                    {RECEIVER_OPTIONS.map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => {
-                          setReceiver(type);
-                          setErrors((e) => ({ ...e, receiver: undefined }));
-                        }}
-                        className={`${chipBase} ${receiver === type ? chipSelected : chipDefault}`}
-                      >
-                        {RECEIVER_TYPE_LABELS[type]}
-                      </button>
-                    ))}
-                  </div>
-                  {errors.receiver && (
-                    <p className="text-sm text-text-danger leading-[22px] tracking-tight px-2.5">
-                      {errors.receiver}
-                    </p>
-                  )}
-                </div>
+    <main
+      id="editor"
+      className="flex-1 bg-background-page flex flex-col overflow-y-auto px-10"
+    >
+      {/* draft 알림 배너 */}
+      {showDraftNoti && (
+        <div className="w-full bg-background-surface rounded-b-2xl shadow-[0px_4px_16px_rgba(0,0,0,0.1)] pt-6 pb-4 px-4 shrink-0">
+          <div className="flex gap-6 items-center">
+            <div className="flex items-center gap-4 px-2.5 shrink-0">
+              <div className="flex items-center gap-2.5">
+                <Icon name="info" size={24} className="text-text-secondary" />
+                <span className="text-xl font-semibold leading-7 tracking-tight text-text-secondary whitespace-nowrap">
+                  이전에 작성하던 이메일이 있어요
+                </span>
               </div>
+            </div>
+            <div className="flex flex-1 items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={handleClose}
+                className="flex-1 max-w-35 flex items-center justify-center bg-background-muted text-text-tertiary rounded-md py-2 px-5 text-base font-medium leading-6 tracking-tight hover:bg-background-hover cursor-pointer transition-colors"
+              >
+                닫기
+              </button>
+              <button
+                type="button"
+                onClick={handleResume}
+                className="flex-1 max-w-35 flex items-center justify-center bg-background-inverse text-text-inverse rounded-md py-2 px-5 text-base font-medium leading-6 tracking-tight hover:opacity-90 cursor-pointer transition-opacity"
+              >
+                이어서 작성
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-              {/* 목적 선택 */}
-              <div className="flex flex-col gap-4 w-full">
-                <StepLabel step={2} title="목적 선택" />
-                <div className="flex flex-col gap-2 w-full">
-                  <div className="grid grid-cols-4 gap-3.5 w-full">
-                    {PURPOSE_OPTIONS.map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => {
-                          setPurpose(type);
-                          setErrors((e) => ({ ...e, purpose: undefined }));
-                        }}
-                        className={`${chipBase} ${purpose === type ? chipSelected : chipDefault}`}
-                      >
-                        {PURPOSE_LABELS[type]}
-                      </button>
-                    ))}
-                  </div>
-                  {errors.purpose && (
-                    <p className="text-sm text-text-danger leading-[22px] tracking-tight px-2.5">
-                      {errors.purpose}
-                    </p>
-                  )}
+      {/* 콘텐츠 영역 */}
+      <div className="flex flex-col gap-11 items-start w-full  flex-1 pt-20">
+        {/* 타이틀 */}
+        <TitleText
+          heading="이메일 교정"
+          subtitle="작성하신 이메일을 대상과 상황에 맞춰 완벽하게 다듬어 드립니다."
+          align="left"
+        />
+
+        {/* 메인 레이아웃: 좌측(수신자/목적) + 우측(이메일 입력) */}
+        <div className="flex gap-20 items-start w-full flex-1 min-h-0 max-xl:gap-3.5 max-xl:flex-col">
+          {/* 좌측: 수신자 + 목적 선택 */}
+          <div className="max-xl:flex-auto flex-1 flex flex-col gap-3.5 min-w-0 max-xl:w-full">
+            {/* 수신자 유형 */}
+            <div className="flex flex-col gap-4 w-full">
+              <StepLabel step={1} title="수신자 유형 선택" />
+              <div className="flex flex-col gap-2 w-full">
+                <div className="grid grid-cols-4 gap-3 w-full">
+                  {RECEIVER_OPTIONS.map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => {
+                        setReceiver(type);
+                        setErrors((e) => ({ ...e, receiver: undefined }));
+                      }}
+                      className={`${chipBase} ${receiver === type ? chipSelected : chipDefault}`}
+                    >
+                      {RECEIVER_TYPE_LABELS[type]}
+                    </button>
+                  ))}
                 </div>
+                {errors.receiver && (
+                  <p className="text-sm text-text-danger leading-5.5 tracking-tight px-2.5">
+                    {errors.receiver}
+                  </p>
+                )}
               </div>
             </div>
 
-            {/* 우측: 이메일 원문 입력 */}
-            <div className="flex-1 flex flex-col gap-4 h-full min-w-0">
-              <StepLabel step={3} title="이메일 원문 입력" />
-
-              <div className="flex-1 flex flex-col gap-2.5 min-h-0">
-                {/* 텍스트 영역 */}
-                <div className="flex-1 flex flex-col min-h-0">
-                  <div className="flex-1 bg-background-subtle rounded-lg px-6 py-5 relative min-h-[400px]">
-                    <textarea
-                      ref={textareaRef}
-                      value={emailText}
-                      onChange={(e) => {
-                        setEmailText(e.target.value);
-                        setErrors((err) => ({ ...err, email: undefined }));
+            {/* 목적 선택 */}
+            <div className="flex flex-col gap-4 w-full">
+              <StepLabel step={2} title="목적 선택" />
+              <div className="flex flex-col gap-2 w-full">
+                <div className="grid grid-cols-4 gap-3.5 w-full">
+                  {PURPOSE_OPTIONS.map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => {
+                        setPurpose(type);
+                        setErrors((e) => ({ ...e, purpose: undefined }));
                       }}
-                      placeholder="교정할 이메일 원문을 붙여넣어 주세요."
-                      className="w-full h-full resize-none bg-transparent text-lg font-semibold leading-[26px] tracking-tight text-text-secondary placeholder:text-text-placeholder outline-none"
-                    />
-                  </div>
-                </div>
-
-                {/* 에러 + 글자 수 */}
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    {errors.email && (
-                      <p className="text-sm text-text-danger leading-[22px] tracking-tight px-2.5">
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex gap-1 items-center">
-                    <span
-                      className={`text-sm leading-[22px] tracking-tight ${isOverLimit ? 'text-text-danger' : 'text-text-primary'}`}
+                      className={`${chipBase} ${purpose === type ? chipSelected : chipDefault}`}
                     >
-                      {charCount.toLocaleString()}
-                    </span>
-                    <span className="text-sm leading-[22px] tracking-tight text-text-disabled">
-                      /
-                    </span>
-                    <span className="text-sm leading-[22px] tracking-tight text-text-tertiary">
-                      {INPUT_LIMITS.EMAIL_MAX_LENGTH.toLocaleString()}
-                    </span>
-                  </div>
+                      {PURPOSE_LABELS[type]}
+                    </button>
+                  ))}
+                </div>
+                {errors.purpose && (
+                  <p className="text-sm text-text-danger leading-5.5 tracking-tight px-2.5">
+                    {errors.purpose}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* 우측: 이메일 원문 입력 */}
+          <div className="max-xl:flex-auto flex-1 flex flex-col gap-4 h-full min-w-0 max-xl:w-full">
+            <StepLabel step={3} title="이메일 원문 입력" />
+
+            <div className="flex-1 flex flex-col gap-2.5 min-h-0">
+              {/* 텍스트 영역 */}
+              <div className="flex-1 flex flex-col min-h-0">
+                <div className="flex-1 bg-background-subtle rounded-lg px-6 py-5 relative max-md:min-h-48 min-h-100">
+                  <textarea
+                    ref={textareaRef}
+                    value={emailText}
+                    onChange={(e) => {
+                      setEmailText(e.target.value);
+                      setErrors((err) => ({ ...err, email: undefined }));
+                    }}
+                    placeholder="교정할 이메일 원문을 붙여넣어 주세요."
+                    className="w-full h-full resize-none bg-transparent text-lg font-semibold leading-6.5 tracking-tight text-text-secondary placeholder:text-text-placeholder outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* 에러 + 글자 수 */}
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  {errors.email && (
+                    <p className="text-sm text-text-danger leading-5.5 tracking-tight px-2.5">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div className="flex gap-1 items-center">
+                  <span
+                    className={`text-sm leading-5.5 tracking-tight ${isOverLimit ? 'text-text-danger' : 'text-text-primary'}`}
+                  >
+                    {charCount.toLocaleString()}
+                  </span>
+                  <span className="text-sm leading-5.5 tracking-tight text-text-disabled">
+                    /
+                  </span>
+                  <span className="text-sm leading-5.5 tracking-tight text-text-tertiary">
+                    {INPUT_LIMITS.EMAIL_MAX_LENGTH.toLocaleString()}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* 교정하기 버튼 */}
-        <div className="w-full px-10 flex justify-center mt-9">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            className={`
-              w-full max-w-[720px] h-[66px] flex items-center justify-center gap-2.5
+      {/* 교정하기 버튼 */}
+      <div className="w-full flex justify-center mt-9 pb-20">
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          className={`
+              w-full max-w-180 h-16.5 flex items-center justify-center gap-2.5
               rounded-2xl text-2xl font-bold leading-8 tracking-tight
               transition-colors
               ${
@@ -245,13 +320,12 @@ const EditorPage = () => {
                   : 'bg-background-disabled border border-border-disabled text-text-disabled cursor-not-allowed'
               }
             `}
-          >
-            <Icon name="pencil-ai" size={24} color="currentColor" />
-            교정하기
-          </button>
-        </div>
+        >
+          <Icon name="pencil-ai" size={24} color="currentColor" />
+          교정하기
+        </button>
       </div>
-    </div>
+    </main>
   );
 };
 
