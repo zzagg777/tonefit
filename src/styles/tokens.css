@@ -18,96 +18,97 @@
 
 :root {
 
-   /* ====================================================
+  /* ====================================================
      📦 COLOR PALETTE
      기본 색상 원본값 - 직접 사용보다 Color Roles 권장
      ==================================================== */
-   /* gray */
-   --color-palette-gray-0: #FFFFFF;
-   --color-palette-gray-50: #F9FAFB;
-   --color-palette-gray-100: #F3F4F6;
-   --color-palette-gray-200: #E5E7EB;
-   --color-palette-gray-300: #D1D5DB;
-   --color-palette-gray-400: #9CA3AF;
-   --color-palette-gray-500: #6B7280;
-   --color-palette-gray-600: #4B5563;
-   --color-palette-gray-700: #374151;
-   --color-palette-gray-800: #1F2937;
-   --color-palette-gray-900: #111827;
-   --color-palette-gray-1000: #030712;
-   /* brand-blue */
-   --color-palette-brand-blue-50: #EEF4FF;
-   --color-palette-brand-blue-100: #DCE8FF;
-   --color-palette-brand-blue-200: #B9D1FF;
-   --color-palette-brand-blue-300: #8DB4FF;
-   --color-palette-brand-blue-400: #5E91FF;
-   --color-palette-brand-blue-500: #3366FF;
-   --color-palette-brand-blue-600: #2954D6;
-   --color-palette-brand-blue-700: #1F42AD;
-   --color-palette-brand-blue-800: #18348A;
+  /* gray */
+  --color-palette-gray-0: #FFFFFF;
+  --color-palette-gray-50: #F9FAFB;
+  --color-palette-gray-100: #F3F4F6;
+  --color-palette-gray-200: #E5E7EB;
+  --color-palette-gray-300: #D1D5DB;
+  --color-palette-gray-400: #9CA3AF;
+  --color-palette-gray-500: #6B7280;
+  --color-palette-gray-600: #4B5563;
+  --color-palette-gray-700: #374151;
+  --color-palette-gray-800: #1F2937;
+  --color-palette-gray-900: #111827;
+  --color-palette-gray-1000: #030712;
+  /* brand-blue */
+  --color-palette-brand-blue-50: #EEF4FF;
+  --color-palette-brand-blue-100: #DCE8FF;
+  --color-palette-brand-blue-200: #B9D1FF;
+  --color-palette-brand-blue-300: #8DB4FF;
+  --color-palette-brand-blue-400: #5E91FF;
+  --color-palette-brand-blue-500: #3366FF;
+  --color-palette-brand-blue-600: #2954D6;
+  --color-palette-brand-blue-700: #1F42AD;
+  --color-palette-brand-blue-800: #18348A;
 
-   /* brand-green */
-   --color-palette-brand-green-50: #EEF9F1;
-   --color-palette-brand-green-100: #D9F2E1;
-   --color-palette-brand-green-200: #B4E5C4;
-   --color-palette-brand-green-300: #7FD39D;
-   --color-palette-brand-green-400: #49BC72;
-   --color-palette-brand-green-500: #22A559;
-   --color-palette-brand-green-600: #1B8A4A;
-   --color-palette-brand-green-700: #166F3C;
-   --color-palette-brand-green-800: #125A31;
+  /* brand-green */
+  --color-palette-brand-green-50: #EEF9F1;
+  --color-palette-brand-green-100: #D9F2E1;
+  --color-palette-brand-green-200: #B4E5C4;
+  --color-palette-brand-green-300: #7FD39D;
+  --color-palette-brand-green-400: #49BC72;
+  --color-palette-brand-green-500: #22A559;
+  --color-palette-brand-green-600: #1B8A4A;
+  --color-palette-brand-green-700: #166F3C;
+  --color-palette-brand-green-800: #125A31;
 
-   /* brand-purple */
-   --color-palette-brand-purple-50: #F5F1FF;
-   --color-palette-brand-purple-100: #E9DFFF;
-   --color-palette-brand-purple-200: #D3BEFF;
-   --color-palette-brand-purple-300: #B896FF;
-   --color-palette-brand-purple-400: #9A6CFF;
-   --color-palette-brand-purple-500: #7C4DFF;
-   --color-palette-brand-purple-600: #673FDB;
-   --color-palette-brand-purple-700: #5433B5;
-   --color-palette-brand-purple-800: #452A94;
+  /* brand-purple */
+  --color-palette-brand-purple-50: #F5F1FF;
+  --color-palette-brand-purple-100: #E9DFFF;
+  --color-palette-brand-purple-200: #D3BEFF;
+  --color-palette-brand-purple-300: #B896FF;
+  --color-palette-brand-purple-400: #9A6CFF;
+  --color-palette-brand-purple-500: #7C4DFF;
+  --color-palette-brand-purple-600: #673FDB;
+  --color-palette-brand-purple-700: #5433B5;
+  --color-palette-brand-purple-800: #452A94;
 
-   /* state */
-   --color-palette-success-50: #F4FBF6;
-   --color-palette-success-100: #EAF8EF;
-   --color-palette-success-200: #C9EDD7;
-   --color-palette-success-500: #1F9D55;
-   --color-palette-success-700: #15703D;
+  /* state */
+  --color-palette-success-50: #F4FBF6;
+  --color-palette-success-100: #EAF8EF;
+  --color-palette-success-200: #C9EDD7;
+  --color-palette-success-400: var(--color-palette-brand-green-400);
+  --color-palette-success-500: #1F9D55;
+  --color-palette-success-700: #15703D;
 
-   --color-palette-warning-50: #FFF9ED;
-   --color-palette-warning-100: #FFF6E5;
-   --color-palette-warning-200: #F7D9A0;
-   --color-palette-warning-500: #D98E04;
-   --color-palette-warning-700: #9B6500;
+  --color-palette-warning-50: #FFF9ED;
+  --color-palette-warning-100: #FFF6E5;
+  --color-palette-warning-200: #F7D9A0;
+  --color-palette-warning-500: #D98E04;
+  --color-palette-warning-700: #9B6500;
 
-   --color-palette-danger-100: #FDECEC;
-   --color-palette-danger-500: #D92D20;
-   --color-palette-danger-50: #FEF3F2;
-   --color-palette-danger-200: #F7C5C1;
-   --color-palette-danger-700: #9F1F16;
+  --color-palette-danger-100: #FDECEC;
+  --color-palette-danger-500: #D92D20;
+  --color-palette-danger-50: #FEF3F2;
+  --color-palette-danger-200: #F7C5C1;
+  --color-palette-danger-700: #9F1F16;
 
-   /* black-alpha */
-   --color-palette-black-alpha-4: rgba(0, 0, 0, 0.04);
-   --color-palette-black-alpha-8: rgba(0, 0, 0, 0.08);
-   --color-palette-black-alpha-12: rgba(0, 0, 0, 0.12);
-   --color-palette-black-alpha-16: rgba(0, 0, 0, 0.16);
-   --color-palette-black-alpha-24: rgba(0, 0, 0, 0.24);
-   --color-palette-black-alpha-32: rgba(0, 0, 0, 0.32);
-   --color-palette-black-alpha-48: rgba(0, 0, 0, 0.48);
-   --color-palette-black-alpha-64: rgba(0, 0, 0, 0.64);
+  /* black-alpha */
+  --color-palette-black-alpha-4: rgba(0, 0, 0, 0.04);
+  --color-palette-black-alpha-8: rgba(0, 0, 0, 0.08);
+  --color-palette-black-alpha-12: rgba(0, 0, 0, 0.12);
+  --color-palette-black-alpha-16: rgba(0, 0, 0, 0.16);
+  --color-palette-black-alpha-24: rgba(0, 0, 0, 0.24);
+  --color-palette-black-alpha-32: rgba(0, 0, 0, 0.32);
+  --color-palette-black-alpha-48: rgba(0, 0, 0, 0.48);
+  --color-palette-black-alpha-64: rgba(0, 0, 0, 0.64);
 
-   /* white-alpha */
-   --color-palette-white-alpha-4: rgba(255, 255, 255, 0.04);
-   --color-palette-white-alpha-8: rgba(255, 255, 255, 0.08);
-   --color-palette-white-alpha-12: rgba(255, 255, 255, 0.12);
-   --color-palette-white-alpha-16: rgba(255, 255, 255, 0.16);
-   --color-palette-white-alpha-24: rgba(255, 255, 255, 0.24);
-   --color-palette-white-alpha-32: rgba(255, 255, 255, 0.32);
-   --color-palette-white-alpha-48: rgba(255, 255, 255, 0.48);
-   --color-palette-white-alpha-64: rgba(255, 255, 255, 0.64);
+  /* white-alpha */
+  --color-palette-white-alpha-4: rgba(255, 255, 255, 0.04);
+  --color-palette-white-alpha-8: rgba(255, 255, 255, 0.08);
+  --color-palette-white-alpha-12: rgba(255, 255, 255, 0.12);
+  --color-palette-white-alpha-16: rgba(255, 255, 255, 0.16);
+  --color-palette-white-alpha-24: rgba(255, 255, 255, 0.24);
+  --color-palette-white-alpha-32: rgba(255, 255, 255, 0.32);
+  --color-palette-white-alpha-48: rgba(255, 255, 255, 0.48);
+  --color-palette-white-alpha-64: rgba(255, 255, 255, 0.64);
 
-   /* ====================================================
+  /* ====================================================
      🎭 COLOR ROLES
      컴포넌트에서 실제로 사용하는 의미론적 색상 변수
      Palette 변수를 var()로 참조하므로,
@@ -119,70 +120,72 @@
      border      → 테두리 색상
      ==================================================== */
 
-   /* Background */
-   --color-background-page: var(--color-palette-gray-0);
-   --color-background-surface: var(--color-palette-gray-0);
-   --color-background-surface-raised: var(--color-palette-gray-0);
-   --color-background-subtle: var(--color-palette-gray-50);
-   --color-background-muted: var(--color-palette-gray-100);
-   --color-background-disabled: var(--color-palette-gray-100);
-   --color-background-overlay: var(--color-palette-black-alpha-48);
-   --color-background-inverse: var(--color-palette-gray-900);
-   --color-background-hover: var(--color-palette-gray-50);
-   --color-background-pressed: var(--color-palette-gray-100);
-   --color-background-hover-2: rgba(17, 24, 39, 0.8);
-   --color-background-pressed-2: rgba(17, 24, 39, 0.6);
-   --color-background-brand: var(--color-palette-brand-purple-500);
-   --color-background-brand-subtle: var(--color-palette-brand-purple-50);
-   --color-background-selected: var(--color-palette-brand-blue-50);
-   --color-background-success-subtle: var(--color-palette-success-50);
-   --color-background-warning-subtle: var(--color-palette-warning-50);
-   --color-background-danger-subtle: var(--color-palette-danger-50);
-   --color-background-info-subtle: var(--color-palette-brand-blue-50);
+  /* Background */
+  --color-background-page: var(--color-palette-gray-0);
+  --color-background-surface: var(--color-palette-gray-0);
+  --color-background-surface-raised: var(--color-palette-gray-0);
+  --color-background-subtle: var(--color-palette-gray-50);
+  --color-background-muted: var(--color-palette-gray-100);
+  --color-background-disabled: var(--color-palette-gray-100);
+  --color-background-overlay: var(--color-palette-black-alpha-48);
+  --color-background-inverse: var(--color-palette-gray-900);
+  --color-background-hover: var(--color-palette-gray-50);
+  --color-background-pressed: var(--color-palette-gray-100);
+  --color-background-hover-2: rgba(17, 24, 39, 0.8);
+  --color-background-pressed-2: rgba(17, 24, 39, 0.6);
+  --color-background-brand: var(--color-palette-brand-purple-500);
+  --color-background-brand-subtle: var(--color-palette-brand-purple-50);
+  --color-background-selected: var(--color-palette-brand-blue-50);
+  --color-background-success-subtle: var(--color-palette-success-50);
+  --color-background-warning-subtle: var(--color-palette-warning-50);
+  --color-background-danger-subtle: var(--color-palette-danger-50);
+  --color-background-info-subtle: var(--color-palette-brand-blue-50);
+  --color-background-load: var(--color-palette-brand-blue-400);
 
-   /* Text */
-   --color-text-primary: var(--color-palette-gray-900);
-   --color-text-secondary: var(--color-palette-gray-700);
-   --color-text-tertiary: var(--color-palette-gray-500);
-   --color-text-disabled: var(--color-palette-gray-400);
-   --color-text-placeholder: var(--color-palette-gray-400);
-   --color-text-inverse: var(--color-palette-gray-0);
-   --color-text-brand: var(--color-palette-brand-purple-600);
-   --color-text-brand-strong: var(--color-palette-brand-purple-700);
-   --color-text-success: var(--color-palette-success-500);
-   --color-text-warning: var(--color-palette-warning-700);
-   --color-text-danger: var(--color-palette-danger-500);
-   --color-text-info: var(--color-palette-brand-blue-700);
+  /* Text */
+  --color-text-primary: var(--color-palette-gray-900);
+  --color-text-secondary: var(--color-palette-gray-700);
+  --color-text-tertiary: var(--color-palette-gray-500);
+  --color-text-disabled: var(--color-palette-gray-400);
+  --color-text-placeholder: var(--color-palette-gray-400);
+  --color-text-inverse: var(--color-palette-gray-0);
+  --color-text-brand: var(--color-palette-brand-purple-600);
+  --color-text-brand-strong: var(--color-palette-brand-purple-700);
+  --color-text-success: var(--color-palette-success-400);
+  --color-text-warning: var(--color-palette-warning-700);
+  --color-text-danger: var(--color-palette-danger-500);
+  --color-text-info: var(--color-palette-brand-blue-500);
 
-   /* Icon */
-   --color-icon-primary: var(--color-palette-gray-900);
-   --color-icon-secondary: var(--color-palette-gray-700);
-   --color-icon-tertiary: var(--color-palette-gray-500);
-   --color-icon-disabled: var(--color-palette-gray-400);
-   --color-icon-placeholder: var(--color-palette-gray-400);
-   --color-icon-inverse: var(--color-palette-gray-0);
-   --color-icon-brand: var(--color-palette-brand-purple-600);
-   --color-icon-brand-strong: var(--color-palette-brand-purple-700);
-   --color-icon-success: var(--color-palette-success-500);
-   --color-icon-warning: var(--color-palette-warning-700);
-   --color-icon-danger: var(--color-palette-danger-500);
-   --color-icon-info: var(--color-palette-brand-blue-700);
+  /* Icon */
+  --color-icon-primary: var(--color-palette-gray-900);
+  --color-icon-secondary: var(--color-palette-gray-700);
+  --color-icon-tertiary: var(--color-palette-gray-500);
+  --color-icon-disabled: var(--color-palette-gray-400);
+  --color-icon-placeholder: var(--color-palette-gray-400);
+  --color-icon-inverse: var(--color-palette-gray-0);
+  --color-icon-brand: var(--color-palette-brand-purple-600);
+  --color-icon-brand-strong: var(--color-palette-brand-purple-700);
+  --color-icon-success: var(--color-palette-success-400);
+  --color-icon-warning: var(--color-palette-warning-700);
+  --color-icon-danger: var(--color-palette-danger-500);
+  --color-icon-info: var(--color-palette-brand-blue-500);
+  --color-icon-load: var(--color-palette-brand-blue-400);
 
-   /* Border */
-   --color-border-default: var(--color-palette-gray-200);
-   --color-border-subtle: var(--color-palette-gray-100);
-   --color-border-strong: var(--color-palette-gray-300);
-   --color-border-disabled: var(--color-palette-gray-200);
-   --color-border-inverse: var(--color-palette-black-alpha-16);
-   --color-border-focus: var(--color-palette-brand-blue-400);
-   --color-border-brand: var(--color-palette-brand-purple-500);
-   --color-border-success: var(--color-palette-success-200);
-   --color-border-warning: var(--color-palette-warning-200);
-   --color-border-danger: var(--color-palette-danger-200);
-   --color-border-info: var(--color-palette-brand-blue-200);
+  /* Border */
+  --color-border-default: var(--color-palette-gray-200);
+  --color-border-subtle: var(--color-palette-gray-100);
+  --color-border-strong: var(--color-palette-gray-300);
+  --color-border-disabled: var(--color-palette-gray-200);
+  --color-border-inverse: var(--color-palette-black-alpha-16);
+  --color-border-focus: var(--color-palette-brand-blue-400);
+  --color-border-brand: var(--color-palette-brand-purple-500);
+  --color-border-success: var(--color-palette-success-200);
+  --color-border-warning: var(--color-palette-warning-200);
+  --color-border-danger: var(--color-palette-danger-200);
+  --color-border-info: var(--color-palette-brand-blue-200);
 
 
-   /* ====================================================
+  /* ====================================================
      🔤 FONT SIZE (Tailwind에 없는 것만)
      Tailwind 기본 사용:
      text-xs(12) text-sm(14) text-base(16) text-lg(18)
@@ -190,16 +193,16 @@
      text-5xl(48) text-6xl(60) text-7xl(72) text-8xl(96) text-9xl(128)
      ==================================================== */
 
-   --text-2xs: 10px;
-   --text-xl-plus: 22px;
-   --text-2xl-plus: 28px;
-   --text-3xl-plus: 32px;
-   --text-4xl-plus: 40px;
+  --text-2xs: 10px;
+  --text-xl-plus: 22px;
+  --text-2xl-plus: 28px;
+  --text-3xl-plus: 32px;
+  --text-4xl-plus: 40px;
 
-   /* ✍️ LETTER SPACING */
-   --font-letter-spacing-tight: -0.02em;
-   --font-letter-spacing-normal: 0;
-   --font-letter-spacing-wide: 0.02em;
+  /* ✍️ LETTER SPACING */
+  --font-letter-spacing-tight: -0.02em;
+  --font-letter-spacing-normal: 0;
+  --font-letter-spacing-wide: 0.02em;
 
 
 
