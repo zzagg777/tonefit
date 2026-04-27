@@ -39,6 +39,7 @@ export default function Header() {
             px-5 py-2
             rounded-md
             text-base leading-5 font-medium tracking-tight
+            bg-background-muted
             text-text-secondary
             hover:text-text-primary
             transition-colors

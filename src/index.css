@@ -8,6 +8,7 @@
   --font-sans: "Pretendard", sans-serif;
   /* Color Roles → Tailwind 클래스 생성 */
   /* text */
+  /* text-text-primary */
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-text-tertiary: var(--color-text-tertiary);
@@ -22,6 +23,7 @@
   --color-text-info: var(--color-text-info);
 
   /* icon - text와 동일 */
+  /* text-icon-primary */
   --color-icon-primary: var(--color-icon-primary);
   --color-icon-secondary: var(--color-icon-secondary);
   --color-icon-tertiary: var(--color-icon-tertiary);
@@ -34,8 +36,10 @@
   --color-icon-warning: var(--color-icon-warning);
   --color-icon-danger: var(--color-icon-danger);
   --color-icon-info: var(--color-icon-info);
+  --color-icon-load: var(--color-icon-load);
 
   /* background */
+  /* bg-background-page */
   --color-background-page: var(--color-background-page);
   --color-background-surface: var(--color-background-surface);
   --color-background-subtle: var(--color-background-subtle);
@@ -54,8 +58,10 @@
   --color-background-warning-subtle: var(--color-background-warning-subtle);
   --color-background-danger-subtle: var(--color-background-danger-subtle);
   --color-background-info-subtle: var(--color-background-info-subtle);
+  --color-background-load: var(--color-background-load);
 
   /* border */
+  /* border-border-default */
   --color-border-default: var(--color-border-default);
   --color-border-subtle: var(--color-border-subtle);
   --color-border-strong: var(--color-border-strong);
@@ -81,4 +87,26 @@
   --tracking-normal: var(--font-letter-spacing-normal);
   --tracking-wide: var(--font-letter-spacing-wide);
 
+}
+
+/* 교정 하이라이트 클래스 */
+.required {
+  /* background: rgba(255, 18, 0, 0.2); */
+  background: #FFE7E5;
+  border-color: var(--color-border-danger);
+  color: var(--color-text-danger);
+}
+
+.recommend {
+  /* background: rgba(217, 142, 4, 0.2); */
+  background: #FCF6EB;
+  border-color: var(--color-border-warning);
+  color: var(--color-text-warning);
+}
+
+.reference {
+  /* background: rgba(73, 188, 114, 0.2); */
+  background: #F1FAF4;
+  border-color: var(--color-border-success);
+  color: var(--color-text-success);
 }

@@ -9,6 +9,10 @@
  */
 
 // ── 기본 요소 ────────────────────────────────────────────────
+
+export { default as Logo } from './Logo';
+export type { LogoProps } from './Logo';
+
 export { default as Icon } from './Icon';
 export type { IconProps, IconName } from './Icon';
 
