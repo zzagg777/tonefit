@@ -12,9 +12,10 @@ type ProcessingStep = 'pending' | 'active' | 'done';
 interface StepItemProps {
   status: ProcessingStep;
   label: string;
+  dot?: string;
 }
 
-const StepItem = ({ status, label }: StepItemProps) => {
+const StepItem = ({ status, label, dot = '...' }: StepItemProps) => {
   const iconEl = () => {
     if (status === 'done') {
       return (
@@ -72,6 +73,7 @@ const StepItem = ({ status, label }: StepItemProps) => {
           }`}
         >
           {label}
+          {status === 'active' && dot}
         </span>
       </div>
     </div>
@@ -239,7 +241,7 @@ const EditorProcessingPage = () => {
 
       {/* 진행 단계 */}
       <div className="flex flex-col gap-6">
-        <StepItem status={step1} label="원문 내용을 확인했어요." />
+        <StepItem status={step1} label="원문 내용을 확인했어요" />
         <StepItem
           status={step2}
           label="높임법과 맞춤법 검토를 진행하고 있어요"
