@@ -12,10 +12,9 @@ type ProcessingStep = 'pending' | 'active' | 'done';
 interface StepItemProps {
   status: ProcessingStep;
   label: string;
-  dot?: string;
 }
 
-const StepItem = ({ status, label, dot = '...' }: StepItemProps) => {
+const StepItem = ({ status, label }: StepItemProps) => {
   const iconEl = () => {
     if (status === 'done') {
       return (
@@ -72,8 +71,9 @@ const StepItem = ({ status, label, dot = '...' }: StepItemProps) => {
                 : 'text-text-tertiary'
           }`}
         >
-          {label}
-          {status === 'active' && dot}
+          {status === 'pending' && label + ' 준비하고 있어요'}
+          {status === 'active' && label + ' 진행하고 있어요...'}
+          {status === 'done' && label + ' 완료했어요'}
         </span>
       </div>
     </div>
@@ -241,15 +241,9 @@ const EditorProcessingPage = () => {
 
       {/* 진행 단계 */}
       <div className="flex flex-col gap-6">
-        <StepItem status={step1} label="원문 내용을 확인했어요" />
-        <StepItem
-          status={step2}
-          label="높임법과 맞춤법 검토를 진행하고 있어요"
-        />
-        <StepItem
-          status={step3}
-          label="교정 결과 정리를 위해 준비하고 있어요"
-        />
+        <StepItem status={step1} label="원문 내용 확인을" />
+        <StepItem status={step2} label="높임법과 맞춤법 검토를" />
+        <StepItem status={step3} label="교정 결과 정리를 위해" />
       </div>
 
       {/* 취소 버튼 */}
