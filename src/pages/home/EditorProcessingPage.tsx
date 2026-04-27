@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MOCK_ORIGINAL } from '@/mocks/handlers';
 import { Icon } from '@/components/ui';
@@ -102,7 +102,8 @@ const EditorProcessingPage = () => {
   const [step2, setStep2] = useState<ProcessingStep>('pending');
   const [step3, setStep3] = useState<ProcessingStep>('pending');
 
-  const { mutate: requestCorrection, isPending } = useRequestCorrection();
+  const { mutate: requestCorrection } = useRequestCorrection();
+  const cancelledRef = useRef(false);
 
   useEffect(() => {
     // Step 1: 원문 확인 (즉시)
@@ -125,11 +126,14 @@ const EditorProcessingPage = () => {
       },
       {
         onSuccess: (data) => {
+          if (cancelledRef.current) return;
           setStep2('done');
           setStep3('active');
           setTimeout(() => {
+            if (cancelledRef.current) return;
             setStep3('done');
             setTimeout(() => {
+              if (cancelledRef.current) return;
               navigate(ROUTES.EDITOR_RESULT, {
                 state: {
                   correctionData: data,
@@ -142,8 +146,12 @@ const EditorProcessingPage = () => {
           }, 800);
         },
         onError: () => {
+          if (cancelledRef.current) return;
           navigate(ROUTES.EDITOR, {
             state: {
+              receiver: state.receiverType,
+              purpose: state.purposeType,
+              emailText: state.originalEmail,
               error: '교정 중 오류가 발생했습니다. 다시 시도해 주세요.',
             },
             replace: true,
@@ -159,7 +167,15 @@ const EditorProcessingPage = () => {
   }, []);
 
   const handleCancel = () => {
-    navigate(ROUTES.EDITOR);
+    cancelledRef.current = true;
+    navigate(ROUTES.EDITOR, {
+      state: {
+        receiver: state.receiverType,
+        purpose: state.purposeType,
+        emailText: state.originalEmail,
+      },
+      replace: true,
+    });
   };
 
   return (
@@ -237,8 +253,7 @@ const EditorProcessingPage = () => {
       {/* 취소 버튼 */}
       <button
         onClick={handleCancel}
-        disabled={isPending}
-        className="border-b border-text-tertiary pb-1 text-lg font-semibold leading-[26px] tracking-tight text-text-tertiary hover:text-text-secondary transition-colors disabled:opacity-50"
+        className="border-b border-text-tertiary pb-1 text-lg font-semibold leading-[26px] tracking-tight text-text-tertiary hover:text-text-secondary transition-colors"
       >
         취소
       </button>
