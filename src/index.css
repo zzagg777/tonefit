@@ -87,33 +87,48 @@
   --tracking-normal: var(--font-letter-spacing-normal);
   --tracking-wide: var(--font-letter-spacing-wide);
 
+
 }
 
 /* 교정 하이라이트 클래스 */
 .required {
   /* background: rgba(255, 18, 0, 0.2); */
-  background: #FFE7E5;
+  --bg-alpha: 0.2;
+  background: rgba(255, 164, 157, var(--bg-alpha));
   border-color: var(--color-border-danger);
   color: var(--color-text-danger);
 }
 
 .recommend {
   /* background: rgba(217, 142, 4, 0.2); */
-  background: #FCF6EB;
+  --bg-alpha: 0.2;
+  background: rgba(255, 218, 150, var(--bg-alpha));
   border-color: var(--color-border-warning);
   color: var(--color-text-warning);
 }
 
 .reference {
   /* background: rgba(73, 188, 114, 0.2); */
-  background: #F1FAF4;
+  --bg-alpha: 0.2;
+  background: rgba(185, 243, 206, var(--bg-alpha));
   border-color: var(--color-border-success);
   color: var(--color-text-success);
 }
 
+.word-label.focus {
+  --bg-alpha: 1;
+}
+
 @keyframes slide-down {
-  from { transform: translateY(-100%); opacity: 0; }
-  to   { transform: translateY(0);     opacity: 1; }
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .animate-slide-down {
@@ -121,13 +136,69 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%       { transform: translateX(-6px); }
-  40%       { transform: translateX(6px); }
-  60%       { transform: translateX(-4px); }
-  80%       { transform: translateX(4px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
 }
 
 .animate-shake {
   animation: shake 0.4s ease-in-out;
 }
+
+/* 반응형 비율 조정 */
+html {
+  font-size: 100%;
+}
+
+/* 2xl: ~1536px */
+@media (max-width: 1536px) {
+  html {
+    font-size: 95%;
+  }
+}
+
+/* xl: ~1280px */
+@media (max-width: 1280px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+/* lg: ~1024px */
+@media (max-width: 1024px) {
+  html {
+    font-size: 85%;
+  }
+}
+
+/* md: ~768px */
+/* @media (max-width: 768px) {
+  html {
+    font-size: 100%;
+  }
+} */
+
+/* sm: ~640px */
+/* @media (max-width: 640px) {
+  html {
+    font-size: 75%;
+  }
+} */

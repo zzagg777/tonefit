@@ -33,7 +33,7 @@ const SidebarNav = () => {
     'text-base font-semibold leading-6 tracking-tight max-lg:hidden';
 
   return (
-    <aside className="max-lg:w-26.5 min-w-50 max-w-79 w-1/6 shrink-0 h-screen flex flex-col justify-between p-5 bg-background-page shadow-[0px_1px_4px_rgba(0,0,0,0.07)] z-10">
+    <aside className="max-lg:w-26.5 lg:min-w-50 max-w-79 w-1/6 shrink-0 h-screen flex flex-col justify-between p-5 bg-background-page shadow-[0px_1px_4px_rgba(0,0,0,0.07)] z-10">
       {/* 상단: 로고 + 네비게이션 */}
       <div className="flex flex-col gap-5">
         <div className="flex items-center p-2.5 max-lg:justify-center">

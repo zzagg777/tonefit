@@ -35,7 +35,8 @@ const MOCK_STATE: LocationState = {
 // true: 피그마 디자인 기준 고정값(plain text), false: 실제 원문 + 하이라이트
 const USE_FIXED_ORIGINAL = true;
 
-const labelCls = 'rounded-full px-1 py-0.5 border !text-text-secondary';
+const labelCls =
+  'word-label rounded-full px-1 py-0.5 border !text-text-secondary';
 const LABEL_CLASS: Record<CorrectionLabelType, string> = {
   AUTO: 'required',
   SUGGEST: 'recommend',
@@ -293,9 +294,9 @@ const EditorResultPage = () => {
       </div>
 
       {/* ── 원문 / 교정본 비교 영역 ── */}
-      <div className="flex-1 flex gap-4 min-h-0 max-h-137.5 py-6 border-b border-border-default">
+      <div className="flex-1 flex gap-4 py-6 border-b border-border-default max-lg:flex-col max-lg:py-0">
         {/* 원문 패널 */}
-        <div className="flex-1 bg-background-surface flex flex-col gap-3.5 p-6 rounded-md min-w-0 overflow-hidden">
+        <div className="flex-1 bg-background-surface flex flex-col gap-3.5 p-6 rounded-md min-w-0 overflow-hidden max-lg:border-b border-border-default">
           <div className="bg-background-page border border-border-default flex items-center justify-center px-5 py-0.5 rounded self-start text-text-secondary text-base font-semibold leading-6 tracking-tight">
             원문
           </div>
@@ -402,7 +403,28 @@ const EditorResultPage = () => {
               {/* 교정 이유 */}
               <div className="p-2.5">
                 <p className="text-base text-text-secondary leading-6 tracking-tight">
-                  {currentChange.reason}
+                  {/* {currentChange.reason} */}
+                  {currentChange.reason
+                    .split(currentChange.corrected)
+                    .map((part, i, arr) => (
+                      <>
+                        {/* original도 강조 처리 */}
+                        {part
+                          .split(currentChange.original)
+                          .map((subPart, j, subArr) => (
+                            <>
+                              {subPart}
+                              {j < subArr.length - 1 && (
+                                <strong>'{currentChange.original}'</strong>
+                              )}
+                            </>
+                          ))}
+                        {/* corrected 강조 처리 */}
+                        {i < arr.length - 1 && (
+                          <strong>'{currentChange.corrected}'</strong>
+                        )}
+                      </>
+                    ))}
                 </p>
               </div>
             </div>
