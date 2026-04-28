@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useKeyDown } from '@/hooks/useKeyDown';
 import { MOCK_ORIGINAL } from '@/mocks/handlers';
 import { Icon } from '@/components/ui';
 import { ROUTES } from '@/constants';
 import { useRequestCorrection } from '@/queries';
 import type { ReceiverType, PurposeType } from '@/types';
 import TitleText from '@/components/ui/TitleText';
+
+// true: 디자인 확인용 — API 호출 및 페이지 이동 없이 로딩 화면 유지
+const FREEZE_FOR_DESIGN = false;
 
 type ProcessingStep = 'pending' | 'active' | 'done';
 
@@ -92,9 +96,6 @@ const MOCK_STATE: LocationState = {
   originalEmail: MOCK_ORIGINAL,
 };
 
-// true: 디자인 확인용 — API 호출 및 페이지 이동 없이 로딩 화면 유지
-const FREEZE_FOR_DESIGN = false;
-
 const EditorProcessingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -179,6 +180,7 @@ const EditorProcessingPage = () => {
       replace: true,
     });
   };
+  useKeyDown('Escape', handleCancel);
 
   return (
     <main
