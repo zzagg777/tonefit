@@ -178,11 +178,11 @@ const EditorPage = () => {
   return (
     <main
       id="editor"
-      className="flex-1 bg-background-page flex flex-col overflow-y-auto px-10"
+      className="flex-1 bg-background-page flex flex-col overflow-y-auto px-10 relative"
     >
       {/* draft 알림 배너 */}
       {showDraftNoti && (
-        <div className="animate-slide-down overflow-hidden w-full bg-background-surface rounded-b-2xl shadow-[0px_4px_8px_rgba(0,0,0,0.1)] pt-6 pb-4 px-4 shrink-0">
+        <div className="animate-slide-down overflow-hidden max-w-full bg-background-surface rounded-b-2xl shadow-[0px_4px_8px_rgba(0,0,0,0.1)] pt-6 pb-4 px-4 shrink-0 absolute left-10 right-10">
           <div className="flex gap-6 items-center">
             {/* 좌측: 아이콘 + 시간 + 미리보기 */}
             <div className="flex items-center gap-4 px-2.5 min-w-0 shrink">
@@ -223,7 +223,7 @@ const EditorPage = () => {
       )}
 
       {/* 콘텐츠 영역 */}
-      <div className="flex flex-col gap-11 items-start w-full  flex-1 pt-20">
+      <div className="flex flex-col gap-11 items-start w-full  flex-1 pt-25">
         {/* 타이틀 */}
         <TitleText
           heading="이메일 교정"
