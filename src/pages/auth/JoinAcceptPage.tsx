@@ -205,7 +205,7 @@ const JoinAcceptPage = () => {
       {/* ── 진행 단계 표시 ─────────────────────────────────── */}
       {/*
        * step=1: 약관 동의 진행 중
-       * Stepper 자체 너비: w-full (부모 max-w-[540px] 기준)
+       * Stepper 자체 너비: w-full (부모 max-w-135 기준)
        */}
       <Stepper step={1} />
 

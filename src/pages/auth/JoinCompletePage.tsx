@@ -40,7 +40,7 @@ const JoinCompletePage = () => {
         alt="가입 완료 축하 이미지"
         width={300}
         height={300}
-        className="size-[300px] object-contain"
+        className="size-75 object-contain"
       />
 
       {/* ── 타이틀 + 안내 문구 ─────────────────────────────────── */}
@@ -62,7 +62,7 @@ const JoinCompletePage = () => {
 
       {/* ── 로그인 버튼 ──────────────────────────────────────────── */}
       {/*
-       * Button 기본 스펙: h-[66px] / rounded-2xl / 전체 너비
+       * Button 기본 스펙: h-16.5 / rounded-2xl / 전체 너비
        * variant="default" → bg-background-inverse + text-text-inverse
        */}
       <Button

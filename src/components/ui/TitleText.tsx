@@ -44,7 +44,7 @@ const TitleText = ({
       {/* 타이틀 */}
       <h2
         className={`
-          font-bold text-text-primary tracking-tight w-full
+          font-bold text-text-primary tracking-tight w-full break-keep
           ${isLarge ? 'text-4xl leading-11' : 'text-4xl leading-9'}
         `}
       >

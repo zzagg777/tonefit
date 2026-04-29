@@ -132,7 +132,7 @@ interface StepCircleProps {
  *
  * 시각 스펙:
  * - 원: 40×40px, rounded-full
- * - 레이블: absolute top-[46px], 가로 중앙 정렬
+ * - 레이블: absolute top-11.5, 가로 중앙 정렬
  * - 타이포그래피 (원 숫자): Title/L (20px / SemiBold / 28px line-height / -0.02em tracking)
  * - 타이포그래피 (레이블): Body/S (12px / Regular / 18px line-height / -0.02em tracking)
  */
@@ -185,7 +185,7 @@ const StepCircle = ({ index, label, current }: StepCircleProps) => {
 
       {/*
        * 레이블
-       * - absolute: 원 아래 6px 간격으로 배치 (top-[46px] = circle 40px + gap 6px)
+       * - absolute: 원 아래 6px 간격으로 배치 (top-11.5 = circle 40px + gap 6px)
        * - left-1/2 -translate-x-1/2: 원 기준 가로 중앙 정렬
        * - whitespace-nowrap: 텍스트가 한 줄로 유지되도록
        */}
@@ -235,7 +235,7 @@ const Stepper = ({
   return (
     /*
      * 최상위 컨테이너
-     * - pb-6: 절대 위치된 레이블(top-[46px])이 잘리지 않도록 하단 여백 확보
+     * - pb-6: 절대 위치된 레이블(top-11.5)이 잘리지 않도록 하단 여백 확보
      *   총 높이: 원 40px + 여백 6px + 레이블 18px = 64px
      * - relative: 내부 레이블 absolute 포지셔닝 기준
      */
