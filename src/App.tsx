@@ -92,6 +92,18 @@ const App = () => {
         {/* <Route path={ROUTES.HISTORY} element={<HistoryPage />} /> */}
         {/* <Route path={ROUTES.SETTINGS} element={<SettingsPage />} /> */}
         {/* <Route path={ROUTES.PRICING} element={<PricingPage />} /> */}
+        <Route
+          path={ROUTES.HISTORY}
+          element={<Navigate to={ROUTES.EDITOR} replace />}
+        />
+        <Route
+          path={ROUTES.SETTINGS}
+          element={<Navigate to={ROUTES.EDITOR} replace />}
+        />
+        <Route
+          path={ROUTES.PRICING}
+          element={<Navigate to={ROUTES.EDITOR} replace />}
+        />
       </Route>
 
       {/* ── [DEV ONLY] 컴포넌트 확인 페이지 ───────────────────
