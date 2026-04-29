@@ -38,6 +38,8 @@ export const ROUTES = {
   EDITOR: '/home/editor', // 이메일 교정 입력
   EDITOR_PROCESSING: '/home/editor/processing', // 교정 로딩
   EDITOR_RESULT: '/home/editor/result', // 교정 결과 비교
+  EDITOR_CONFIRM_LOADING: '/home/editor/confirming', // 교정 확정 로딩
+  EDITOR_DONE: '/home/editor/done', // 교정 완료
 
   // 서브 화면
   HISTORY: '/home/history', // 교정 히스토리
