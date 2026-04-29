@@ -7,7 +7,7 @@ import {
   RECEIVER_TYPE_LABELS,
   PURPOSE_LABELS,
 } from '@/constants';
-import { useRecorrect, useConfirmCorrection } from '@/queries';
+import { useRecorrect } from '@/queries';
 import { MOCK_ORIGINAL, MOCK_CORRECTION_RESPONSE } from '@/mocks/handlers';
 import type {
   CorrectionResponse,
@@ -135,8 +135,7 @@ const EditorResultPage = () => {
   const [copied, setCopied] = useState(false);
 
   const { mutate: recorrect, isPending: isRecorrecting } = useRecorrect();
-  const { mutate: confirmCorrection, isPending: isConfirming } =
-    useConfirmCorrection();
+  const isConfirming = false; // 확정은 별도 로딩 페이지에서 처리
 
   const { correctionData, originalEmail, receiverType, purposeType } = state;
   const totalChanges = changes.length;
@@ -186,9 +185,16 @@ const EditorResultPage = () => {
   };
 
   const handleConfirm = () => {
-    confirmCorrection({
-      sessionId: correctionData.session_id,
-      data: { final_email: correctedEmail },
+    navigate(ROUTES.EDITOR_CONFIRM_LOADING, {
+      state: {
+        sessionId: correctionData.session_id,
+        finalEmail: correctedEmail,
+        receiverType,
+        purposeType,
+        changes,
+        originalEmail,
+        correctionData,
+      },
     });
   };
 
