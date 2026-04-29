@@ -80,6 +80,20 @@ export const handlers = [
     await delay(2000);
     return HttpResponse.json(MOCK_CORRECTION_RESPONSE, { status: 201 });
   }),
+
+  http.post(
+    `${BASE_URL}/corrections/:sessionId/confirm`,
+    async ({ params }) => {
+      await delay(600);
+      return HttpResponse.json(
+        {
+          session_id: Number(params.sessionId),
+          copied_at: new Date().toISOString(),
+        },
+        { status: 200 }
+      );
+    }
+  ),
 ];
 
 export { MOCK_ORIGINAL };
