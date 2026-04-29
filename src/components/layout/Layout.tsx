@@ -9,7 +9,7 @@ import SidebarNav from '@/components/layout/SidebarNav';
  */
 export default function Layout() {
   return (
-    <div className="flex h-screen bg-background-muted overflow-hidden">
+    <div className="flex bg-background-muted h-full lg:h-screen lg:overflow-hidden max-lg:min-h-screen">
       <SidebarNav />
       <Outlet />
     </div>
