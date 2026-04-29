@@ -109,6 +109,9 @@ const EditorProcessingPage = () => {
   const cancelledRef = useRef(false);
 
   useEffect(() => {
+    // StrictMode 대응: effect 재실행 시 ref 리셋
+    cancelledRef.current = false;
+
     // Step 1: 원문 확인 (즉시)
     const t1 = setTimeout(() => setStep1('done'), 600);
     // Step 2: 높임법/맞춤법 검토 (활성화)
