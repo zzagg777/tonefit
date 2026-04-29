@@ -34,7 +34,7 @@ export const MOCK_CORRECTION_RESPONSE: CorrectionResponse = {
       original: '확인되어졌으며',
       corrected: '확인되었으며',
       reason:
-        "'되어졌다'는 피동 표현이 이중으로 겹친 비문입니다. '되었다'로 단순화하는 것이 올바른 표현입니다. (국립국어원 온라인 가나다)",
+        "확인되어졌으며는 피동 표현이 이중으로 겹친 비문입니다. '확인되었으며'로 단순화하는 것이 올바른 표현입니다. (국립국어원 온라인 가나다)",
       label: 'AUTO',
       action: null,
     },
@@ -56,7 +56,7 @@ export const MOCK_CORRECTION_RESPONSE: CorrectionResponse = {
       original: '전달드리도록 하겠습니다',
       corrected: '전달드리겠습니다',
       reason:
-        "'전달드리도록 하겠습니다'보다 '전달드리겠습니다'가 더 간결하고 명확한 표현입니다.",
+        '전달드리도록 하겠습니다 보다 전달드리겠습니다가 더 간결하고 명확한 표현입니다.',
       label: 'STYLE',
       action: null,
     },
@@ -67,7 +67,7 @@ export const MOCK_CORRECTION_RESPONSE: CorrectionResponse = {
       original: '부탁드리실게요',
       corrected: '부탁드리겠습니다',
       reason:
-        "'드리실게요'는 표준어가 아닌 구어체 표현입니다. 비즈니스 이메일에서는 '부탁드리겠습니다'와 같은 하십시오체를 사용해야 합니다. (국립국어원 표준 언어 예절)",
+        '부탁드리실게요는 표준어가 아닌 구어체 표현입니다. 비즈니스 이메일에서는 부탁드리겠습니다와 같은 하십시오체를 사용해야 합니다. (국립국어원 표준 언어 예절)',
       label: 'AUTO',
       action: null,
     },
