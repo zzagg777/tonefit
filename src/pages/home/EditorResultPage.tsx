@@ -994,10 +994,11 @@ const EditorResultPage = () => {
               미검토된 교정 건은 확정 시 자동으로 수용됩니다
             </p>
           )}
+          {/* 임시 삭제 */}
           <button
             onClick={handleRecorrect}
             disabled={isRecorrecting || rejectedCount === 0}
-            className="bg-background-muted flex-1 max-w-[140px] flex items-center justify-center px-5 py-2 rounded-md text-base font-medium text-text-tertiary leading-6 tracking-tight whitespace-nowrap disabled:opacity-40 hover:bg-background-hover transition-colors"
+            className="bg-background-muted flex-1 max-w-[140px] flex items-center justify-center px-5 py-2 rounded-md text-base font-medium text-text-tertiary leading-6 tracking-tight whitespace-nowrap disabled:opacity-40 hover:bg-background-hover transition-colors hidden"
           >
             재교정
           </button>
