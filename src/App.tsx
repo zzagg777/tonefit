@@ -10,6 +10,8 @@ import Layout from '@/components/layout/Layout';
 import EditorPage from '@/pages/home/EditorPage';
 import EditorProcessingPage from '@/pages/home/EditorProcessingPage';
 import EditorResultPage from '@/pages/home/EditorResultPage';
+import EditorConfirmLoadingPage from '@/pages/home/EditorConfirmLoadingPage';
+import EditorDonePage from '@/pages/home/EditorDonePage';
 // import HistoryPage from '@/pages/home/HistoryPage';
 // import SettingsPage from '@/pages/home/SettingsPage';
 // import PricingPage from '@/pages/home/PricingPage';
@@ -81,6 +83,11 @@ const App = () => {
           element={<EditorProcessingPage />}
         />
         <Route path={ROUTES.EDITOR_RESULT} element={<EditorResultPage />} />
+        <Route
+          path={ROUTES.EDITOR_CONFIRM_LOADING}
+          element={<EditorConfirmLoadingPage />}
+        />
+        <Route path={ROUTES.EDITOR_DONE} element={<EditorDonePage />} />
         {/* MVP를 위한 임시삭제 */}
         {/* <Route path={ROUTES.HISTORY} element={<HistoryPage />} /> */}
         {/* <Route path={ROUTES.SETTINGS} element={<SettingsPage />} /> */}
