@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Icon } from '@/components/ui';
+import { Icon, TitleText } from '@/components/ui';
 import { ROUTES } from '@/constants';
 import { useConfirmCorrection } from '@/queries';
 import type {
@@ -10,6 +10,9 @@ import type {
   FeedbackActionType,
   CorrectionResponse,
 } from '@/types';
+
+// true: 디자인 확인용 — API 호출 및 페이지 이동 없이 로딩 화면 유지
+const FREEZE_FOR_DESIGN = false;
 
 interface LocationState {
   sessionId: number;
@@ -38,44 +41,44 @@ const EditorConfirmLoadingPage = () => {
       navigate(ROUTES.EDITOR, { replace: true });
       return;
     }
-
-    confirmCorrection(
-      {
-        sessionId: state.sessionId,
-        data: { final_email: state.finalEmail },
-      },
-      {
-        onSuccess: () => {
-          if (cancelledRef.current) return;
-          setTimeout(() => {
+    if (!FREEZE_FOR_DESIGN)
+      confirmCorrection(
+        {
+          sessionId: state.sessionId,
+          data: { final_email: state.finalEmail },
+        },
+        {
+          onSuccess: () => {
             if (cancelledRef.current) return;
-            navigate(ROUTES.EDITOR_DONE, {
+            setTimeout(() => {
+              if (cancelledRef.current) return;
+              navigate(ROUTES.EDITOR_DONE, {
+                state: {
+                  sessionId: state.sessionId,
+                  finalEmail: state.finalEmail,
+                  receiverType: state.receiverType,
+                  purposeType: state.purposeType,
+                  changes: state.changes,
+                },
+                replace: true,
+              });
+            }, 400);
+          },
+          onError: () => {
+            if (cancelledRef.current) return;
+            // 확정 실패 시 교정 결과 화면으로 복귀
+            navigate(ROUTES.EDITOR_RESULT, {
               state: {
-                sessionId: state.sessionId,
-                finalEmail: state.finalEmail,
+                correctionData: state.correctionData,
+                originalEmail: state.originalEmail,
                 receiverType: state.receiverType,
                 purposeType: state.purposeType,
-                changes: state.changes,
               },
               replace: true,
             });
-          }, 400);
-        },
-        onError: () => {
-          if (cancelledRef.current) return;
-          // 확정 실패 시 교정 결과 화면으로 복귀
-          navigate(ROUTES.EDITOR_RESULT, {
-            state: {
-              correctionData: state.correctionData,
-              originalEmail: state.originalEmail,
-              receiverType: state.receiverType,
-              purposeType: state.purposeType,
-            },
-            replace: true,
-          });
-        },
-      }
-    );
+          },
+        }
+      );
 
     return () => {
       cancelledRef.current = true;
@@ -88,7 +91,7 @@ const EditorConfirmLoadingPage = () => {
       className="flex-1 bg-background-page flex flex-col items-center justify-center gap-18 px-10 py-10"
     >
       {/* 로딩 원형 애니메이션 */}
-      <div className="relative size-40 flex items-center justify-center">
+      <div className="relative size-40 flex items-center justify-center w-[160px] h-[160px]">
         {/* 배경 원 */}
         <svg
           className="absolute inset-0"
@@ -119,25 +122,27 @@ const EditorConfirmLoadingPage = () => {
             strokeDashoffset="113"
           />
         </svg>
-        {/* 가운데 체크 아이콘 */}
-        <div className="z-10">
-          <Icon
-            name="check-circle-bg"
-            size={48}
-            color="var(--color-icon-success)"
-          />
+        {/* 가운데 연필 아이콘 */}
+        <div className="flex flex-col items-center gap-2 z-10">
+          <Icon name="pencil-ai" size={48} color="var(--color-icon-load)" />
+          <div className="flex gap-3">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="size-2 rounded-full bg-background-load animate-pulse"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
       {/* 타이틀 텍스트 */}
-      <div className="flex flex-col items-center gap-2">
-        <h2 className="text-2xl-plus font-bold leading-9 tracking-tight text-text-primary text-center">
-          교정안을 최종 확정하고 있어요
-        </h2>
-        <p className="text-xl font-medium leading-7 tracking-tight text-text-tertiary text-center">
-          잠시만요, 곧 완성됩니다.
-        </p>
-      </div>
+      <TitleText
+        heading="교정안을 최종 확정하고 있어요"
+        subtitle="잠시만요, 곧 완성됩니다."
+        align="center"
+      />
     </main>
   );
 };
