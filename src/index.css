@@ -75,6 +75,40 @@
   --color-border-danger: var(--color-border-danger);
 
 
+  /* gray */
+  --color-gray-0: var(--color-palette-gray-0);
+  --color-gray-50: var(--color-palette-gray-50);
+  --color-gray-100: var(--color-palette-gray-100);
+  --color-gray-200: var(--color-palette-gray-200);
+  --color-gray-300: var(--color-palette-gray-300);
+  --color-gray-400: var(--color-palette-gray-400);
+  --color-gray-500: var(--color-palette-gray-500);
+  --color-gray-600: var(--color-palette-gray-600);
+  --color-gray-700: var(--color-palette-gray-700);
+  --color-gray-800: var(--color-palette-gray-800);
+  --color-gray-900: var(--color-palette-gray-900);
+  --color-gray-1000: var(--color-palette-gray-1000);
+
+  /* aplph */
+  --color-white-alpha-4: var(--color-palette-white-alpha-4);
+  --color-white-alpha-8: var(--color-palette-white-alpha-8);
+  --color-white-alpha-12: var(--color-palette-white-alpha-12);
+  --color-white-alpha-16: var(--color-palette-white-alpha-16);
+  --color-white-alpha-24: var(--color-palette-white-alpha-24);
+  --color-white-alpha-32: var(--color-palette-white-alpha-32);
+  --color-white-alpha-48: var(--color-palette-white-alpha-48);
+  --color-white-alpha-64: var(--color-palette-white-alpha-64);
+
+  --color-black-alpha-4: var(--color-palette-black-alpha-4);
+  --color-black-alpha-8: var(--color-palette-black-alpha-8);
+  --color-black-alpha-12: var(--color-palette-black-alpha-12);
+  --color-black-alpha-16: var(--color-palette-black-alpha-16);
+  --color-black-alpha-24: var(--color-palette-black-alpha-24);
+  --color-black-alpha-32: var(--color-palette-black-alpha-32);
+  --color-black-alpha-48: var(--color-palette-black-alpha-48);
+  --color-black-alpha-64: var(--color-palette-black-alpha-64);
+
+
   /* Font Size (Tailwind에 없는 것만) */
   --text-2xs: 10px;
   --text-xl-plus: 22px;
@@ -167,21 +201,21 @@ html {
 }
 
 /* 2xl: ~1536px */
-@media (max-width: 1536px) {
+@media (max-width: 1535px) {
   html {
     font-size: 95%;
   }
 }
 
 /* xl: ~1280px */
-@media (max-width: 1280px) {
+@media (max-width: 1279px) {
   html {
     font-size: 90%;
   }
 }
 
 /* lg: ~1024px */
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   html {
     font-size: 85%;
   }
