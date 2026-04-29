@@ -27,6 +27,13 @@ export type { TextFieldProps } from './TextField';
 export { default as Button } from './Button';
 export type { ButtonProps, ButtonVariant, ButtonIconPosition } from './Button';
 
+export { default as ButtonAction } from './ButtonAction';
+export type {
+  ButtonActionProps,
+  ButtonActionVariant,
+  ButtonActionSize,
+} from './ButtonAction';
+
 export { default as ButtonGroup } from './ButtonGroup';
 export type { ButtonGroupProps, ButtonGroupOption } from './ButtonGroup';
 

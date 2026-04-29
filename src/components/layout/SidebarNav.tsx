@@ -8,12 +8,12 @@ const SidebarNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [logoVariant, setLogoVariant] = useState<'default' | 'symbol'>(
-    window.innerWidth < 768 ? 'symbol' : 'default'
+    window.innerWidth < 1024 ? 'symbol' : 'default'
   );
 
   useEffect(() => {
     const handleResize = () => {
-      setLogoVariant(window.innerWidth < 768 ? 'symbol' : 'default');
+      setLogoVariant(window.innerWidth < 1024 ? 'symbol' : 'default');
     };
 
     window.addEventListener('resize', handleResize);
@@ -33,7 +33,7 @@ const SidebarNav = () => {
     'text-base font-semibold leading-6 tracking-tight max-lg:hidden';
 
   return (
-    <aside className="max-lg:w-26.5 w-79 shrink-0 h-screen flex flex-col justify-between p-5 bg-background-page shadow-[0px_1px_4px_rgba(0,0,0,0.07)] z-10">
+    <aside className="max-lg:sticky top-0 lg:min-w-50 max-w-79 w-1/6 shrink-0 h-screen flex flex-col justify-between p-5 bg-background-page shadow-[0px_1px_4px_rgba(0,0,0,0.07)] z-10 max-lg:w-26.5">
       {/* 상단: 로고 + 네비게이션 */}
       <div className="flex flex-col gap-5">
         <div className="flex items-center p-2.5 max-lg:justify-center">
@@ -108,7 +108,7 @@ const SidebarNav = () => {
       {/* 하단: 프로필 + 로그아웃 */}
       {/* <div className="flex flex-col gap-2.5">
         <div className="flex gap-4 items-center px-5">
-          <div className="w-[60px] h-[60px] shrink-0 rounded-2xl shadow-[0px_1px_4px_rgba(0,0,0,0.07)] bg-background-subtle flex items-center justify-center">
+          <div className="w-15 h-15 shrink-0 rounded-2xl shadow-[0px_1px_4px_rgba(0,0,0,0.07)] bg-background-subtle flex items-center justify-center">
             <Icon name="profile" size={32} color="var(--color-icon-tertiary)" />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -117,7 +117,7 @@ const SidebarNav = () => {
             </span>
             <div className="flex gap-1.5 items-center">
               <div className="w-2 h-2 rounded-full bg-text-placeholder shrink-0" />
-              <span className="text-sm leading-[22px] tracking-tight text-text-primary whitespace-nowrap">
+              <span className="text-sm leading-5.5 tracking-tight text-text-primary whitespace-nowrap">
                 Free Plan
               </span>
             </div>

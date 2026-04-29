@@ -23,7 +23,7 @@ export const MOCK_CORRECTION_RESPONSE: CorrectionResponse = {
       original: '보내드리실',
       corrected: '보내줄',
       reason:
-        "상대방의 행동에 대한 과도한 높임 표현인 '드리실'은 비즈니스 문법에 어긋납니다. '보내줄' 또는 '보내주실'로 수정하는 것이 자연스럽습니다. (국립국어원 표준 언어 예절)",
+        '상대방의 행동에 대한 과도한 높임 표현인 보내드리실은 비즈니스 문법에 어긋납니다. 보내줄 또는 보내주실로 수정하는 것이 자연스럽습니다. (국립국어원 표준 언어 예절)',
       label: 'AUTO',
       action: null,
     },
@@ -34,25 +34,14 @@ export const MOCK_CORRECTION_RESPONSE: CorrectionResponse = {
       original: '확인되어졌으며',
       corrected: '확인되었으며',
       reason:
-        "'되어졌다'는 피동 표현이 이중으로 겹친 비문입니다. '되었다'로 단순화하는 것이 올바른 표현입니다. (국립국어원 온라인 가나다)",
+        "확인되어졌으며는 피동 표현이 이중으로 겹친 비문입니다. '확인되었으며'로 단순화하는 것이 올바른 표현입니다. (국립국어원 온라인 가나다)",
       label: 'AUTO',
       action: null,
     },
     {
       index: 2,
-      start: 143,
-      end: 150,
-      original: '부탁드리실게요',
-      corrected: '부탁드리겠습니다',
-      reason:
-        "'드리실게요'는 표준어가 아닌 구어체 표현입니다. 비즈니스 이메일에서는 '부탁드리겠습니다'와 같은 하십시오체를 사용해야 합니다. (국립국어원 표준 언어 예절)",
-      label: 'AUTO',
-      action: null,
-    },
-    {
-      index: 3,
-      start: 120,
-      end: 130,
+      start: 117,
+      end: 125,
       original: '빠른 시일 내에',
       corrected: '빠른 시일 내로',
       reason:
@@ -61,14 +50,25 @@ export const MOCK_CORRECTION_RESPONSE: CorrectionResponse = {
       action: null,
     },
     {
-      index: 4,
-      start: 128,
+      index: 3,
+      start: 126,
       end: 138,
       original: '전달드리도록 하겠습니다',
       corrected: '전달드리겠습니다',
       reason:
-        "'전달드리도록 하겠습니다'보다 '전달드리겠습니다'가 더 간결하고 명확한 표현입니다.",
+        '전달드리도록 하겠습니다 보다 전달드리겠습니다가 더 간결하고 명확한 표현입니다.',
       label: 'STYLE',
+      action: null,
+    },
+    {
+      index: 4,
+      start: 143,
+      end: 150,
+      original: '부탁드리실게요',
+      corrected: '부탁드리겠습니다',
+      reason:
+        '부탁드리실게요는 표준어가 아닌 구어체 표현입니다. 비즈니스 이메일에서는 부탁드리겠습니다와 같은 하십시오체를 사용해야 합니다. (국립국어원 표준 언어 예절)',
+      label: 'AUTO',
       action: null,
     },
   ],
@@ -80,6 +80,20 @@ export const handlers = [
     await delay(2000);
     return HttpResponse.json(MOCK_CORRECTION_RESPONSE, { status: 201 });
   }),
+
+  http.post(
+    `${BASE_URL}/corrections/:sessionId/confirm`,
+    async ({ params }) => {
+      await delay(600);
+      return HttpResponse.json(
+        {
+          session_id: Number(params.sessionId),
+          copied_at: new Date().toISOString(),
+        },
+        { status: 200 }
+      );
+    }
+  ),
 ];
 
 export { MOCK_ORIGINAL };

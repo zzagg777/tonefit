@@ -6,6 +6,7 @@ export type IconName =
   | 'show'
   | 'lock'
   | 'check'
+  | 'check-bg'
   | 'question'
   | 'setting'
   | 'search'
@@ -29,7 +30,11 @@ export type IconName =
   | 'chevron-right'
   | 'pending'
   | 'ai'
-  | 'play';
+  | 'play'
+  | 'plus'
+  | 'undo'
+  | 'redo'
+  | 'check-double';
 
 interface IconProps extends SVGAttributes<SVGSVGElement> {
   /** 아이콘 이름 */
@@ -132,6 +137,19 @@ const Icon = ({
 
     /* check — 채워진 원 안의 체크마크 */
     case 'check':
+      return (
+        <svg {...base} fill="none">
+          <path
+            d="M13.3332 4L5.99984 11.3333L2.6665 8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      );
+    /* check-bg — 채워진 원 안의 체크마크 */
+    case 'check-bg':
       return (
         <svg {...base} fill="currentColor">
           <path
@@ -554,6 +572,82 @@ const Icon = ({
           <path
             d="M3.3335 3.83167C3.3335 3.0405 4.20874 2.56266 4.87425 2.99049L11.3583 7.15882C11.9707 7.55246 11.9707 8.44754 11.3583 8.84118L4.87425 13.0095C4.20874 13.4373 3.3335 12.9595 3.3335 12.1683L3.3335 3.83167Z"
             fill="currentColor"
+          />
+        </svg>
+      );
+
+    /* plus — 더하기/추가 */
+    case 'plus':
+      return (
+        <svg {...base} fill="none">
+          <path
+            d="M12 5v14M5 12h14"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+
+    /* undo — 되돌리기 (rotate-ccw) */
+    case 'undo':
+      return (
+        <svg {...base} fill="none">
+          <path
+            d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M3 3v5h5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+
+    /* redo — 되돌리기 (rotate-ccw) */
+    case 'redo':
+      return (
+        <svg {...base} fill="none">
+          <path
+            d="M10 9.33464L13.3333 6.0013L10 2.66797"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M13.3337 6L6.33366 6C5.3612 6 4.42857 6.38631 3.74093 7.07394C3.0533 7.76157 2.66699 8.69421 2.66699 9.66667C2.66699 10.1482 2.76183 10.625 2.9461 11.0698C3.13037 11.5147 3.40045 11.9189 3.74093 12.2594C4.42857 12.947 5.3612 13.3333 6.33366 13.3333H8.66699"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      );
+
+    /* check-double — 수용됨 (두 개의 체크마크) */
+    case 'check-double':
+      return (
+        <svg {...base} fill="none">
+          <path
+            d="M18 6 7 17l-5-5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="m22 10-7.5 7.5L13 16"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       );

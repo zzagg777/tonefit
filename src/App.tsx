@@ -1,18 +1,20 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 // import Layout from '@/components/layout/Layout';
-import AuthLayout from '@/components/layout/AuthLayout';
+// import AuthLayout from '@/components/layout/AuthLayout';
 import Layout from '@/components/layout/Layout';
-import LoginPage from '@/pages/auth/LoginPage';
-import JoinAcceptPage from '@/pages/auth/JoinAcceptPage';
-import JoinInfoPage from '@/pages/auth/JoinInfoPage';
-import JoinCompletePage from '@/pages/auth/JoinCompletePage';
-import DashboardPage from '@/pages/home/DashboardPage';
+// import LoginPage from '@/pages/auth/LoginPage';
+// import JoinAcceptPage from '@/pages/auth/JoinAcceptPage';
+// import JoinInfoPage from '@/pages/auth/JoinInfoPage';
+// import JoinCompletePage from '@/pages/auth/JoinCompletePage';
+// import DashboardPage from '@/pages/home/DashboardPage';
 import EditorPage from '@/pages/home/EditorPage';
 import EditorProcessingPage from '@/pages/home/EditorProcessingPage';
 import EditorResultPage from '@/pages/home/EditorResultPage';
-import HistoryPage from '@/pages/home/HistoryPage';
-import SettingsPage from '@/pages/home/SettingsPage';
-import PricingPage from '@/pages/home/PricingPage';
+import EditorConfirmLoadingPage from '@/pages/home/EditorConfirmLoadingPage';
+import EditorDonePage from '@/pages/home/EditorDonePage';
+// import HistoryPage from '@/pages/home/HistoryPage';
+// import SettingsPage from '@/pages/home/SettingsPage';
+// import PricingPage from '@/pages/home/PricingPage';
 import { ROUTES } from '@/constants';
 
 // ── [DEV ONLY] 컴포넌트 확인 페이지 ─────────────────────────────
@@ -44,19 +46,19 @@ import ComponentPage from '@/pages/dev/ComponentPage';
  *   /home/pricing           → PricingPage
  *
  * TODO: 로그인 여부에 따른 ProtectedRoute / GuestRoute 구현
- * TODO: 홈 영역 공통 레이아웃(헤더·사이드바) 추가
  */
 const App = () => {
   return (
     <Routes>
-      {/* 루트 경로: 로그인으로 임시 리다이렉트 */}
+      {/* 루트 경로: 교정하기로 임시 리다이렉트 */}
       <Route
         path={ROUTES.HOME}
         element={<Navigate to={ROUTES.EDITOR} replace />}
       />
 
+      {/* MVP를 위한 임시삭제 */}
       {/* ── 인증 라우트 (AuthLayout 적용: 카드 레이아웃) ── */}
-      <Route element={<AuthLayout variant="center" />}>
+      {/* <Route element={<AuthLayout variant="center" />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       </Route>
 
@@ -64,21 +66,44 @@ const App = () => {
         <Route path={ROUTES.JOIN_ACCEPT} element={<JoinAcceptPage />} />
         <Route path={ROUTES.JOIN_INFO} element={<JoinInfoPage />} />
         <Route path={ROUTES.JOIN_COMPLETE} element={<JoinCompletePage />} />
-      </Route>
+      </Route> */}
 
       {/* ── 홈 라우트 ────────────────────────────────────── */}
-      {/* TODO: HomeLayout(헤더·사이드바)으로 감싸기 */}
+
       <Route element={<Layout />}>
-        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        {/* 홈 경로: 교정하기로 임시 리다이렉트 */}
+        {/* <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} /> */}
+        <Route
+          path={ROUTES.DASHBOARD}
+          element={<Navigate to={ROUTES.EDITOR} replace />}
+        />
         <Route path={ROUTES.EDITOR} element={<EditorPage />} />
         <Route
           path={ROUTES.EDITOR_PROCESSING}
           element={<EditorProcessingPage />}
         />
         <Route path={ROUTES.EDITOR_RESULT} element={<EditorResultPage />} />
-        <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
-        <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
-        <Route path={ROUTES.PRICING} element={<PricingPage />} />
+        <Route
+          path={ROUTES.EDITOR_CONFIRM_LOADING}
+          element={<EditorConfirmLoadingPage />}
+        />
+        <Route path={ROUTES.EDITOR_DONE} element={<EditorDonePage />} />
+        {/* MVP를 위한 임시삭제 */}
+        {/* <Route path={ROUTES.HISTORY} element={<HistoryPage />} /> */}
+        {/* <Route path={ROUTES.SETTINGS} element={<SettingsPage />} /> */}
+        {/* <Route path={ROUTES.PRICING} element={<PricingPage />} /> */}
+        <Route
+          path={ROUTES.HISTORY}
+          element={<Navigate to={ROUTES.EDITOR} replace />}
+        />
+        <Route
+          path={ROUTES.SETTINGS}
+          element={<Navigate to={ROUTES.EDITOR} replace />}
+        />
+        <Route
+          path={ROUTES.PRICING}
+          element={<Navigate to={ROUTES.EDITOR} replace />}
+        />
       </Route>
 
       {/* ── [DEV ONLY] 컴포넌트 확인 페이지 ───────────────────

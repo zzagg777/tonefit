@@ -38,6 +38,8 @@ export const ROUTES = {
   EDITOR: '/home/editor', // 이메일 교정 입력
   EDITOR_PROCESSING: '/home/editor/processing', // 교정 로딩
   EDITOR_RESULT: '/home/editor/result', // 교정 결과 비교
+  EDITOR_CONFIRM_LOADING: '/home/editor/confirming', // 교정 확정 로딩
+  EDITOR_DONE: '/home/editor/done', // 교정 완료
 
   // 서브 화면
   HISTORY: '/home/history', // 교정 히스토리
@@ -67,7 +69,7 @@ export const QUERY_KEYS = {
 
 export const INPUT_LIMITS = {
   EMAIL_MIN_LENGTH: 10, // 원문 최소 글자 수
-  EMAIL_MAX_LENGTH: 1500, // 원문 최대 글자 수
+  EMAIL_MAX_LENGTH: 2000, // 원문 최대 글자 수
   PASSWORD_MIN_LENGTH: 8, // 비밀번호 최소 글자 수
 } as const;
 
@@ -90,7 +92,7 @@ export const RECEIVER_TYPE_LABELS: Record<ReceiverType, string> = {
   DIRECT_SUPERVISOR: '상사',
   OTHER_DEPT_COLLEAGUE: '동료',
   EXTERNAL_PARTNER: '협력사',
-  CLIENT: '고객 & 거래처',
+  CLIENT: '고객사',
 };
 
 /** 목적 한국어 라벨 */
@@ -192,9 +194,8 @@ export const VALIDATION_MESSAGES = {
   RECEIVER_REQUIRED: '수신자 유형을 선택해 주세요.',
   PURPOSE_REQUIRED: '이메일 목적을 선택해 주세요.',
   EMAIL_REQUIRED: '교정할 이메일 원문을 붙여넣어 주세요.',
-  EMAIL_TOO_SHORT: `교정할 내용이 너무 짧습니다. (최소 ${INPUT_LIMITS.EMAIL_MIN_LENGTH}자)`,
-  EMAIL_TOO_LONG: (current: number) =>
-    `이메일 원문은 ${INPUT_LIMITS.EMAIL_MAX_LENGTH}자 이내로 입력해 주세요. (현재 ${current}자)`,
+  EMAIL_TOO_SHORT: '교정할 메일이 너무 짧습니다.',
+  EMAIL_TOO_LONG: `이메일 원문은 ${INPUT_LIMITS.EMAIL_MAX_LENGTH}자 이내로 입력해 주세요.`,
   PASSWORD_TOO_SHORT: `비밀번호는 ${INPUT_LIMITS.PASSWORD_MIN_LENGTH}자 이상이어야 합니다.`,
   EMAIL_INVALID: '올바른 이메일 주소를 입력해 주세요.',
 } as const;

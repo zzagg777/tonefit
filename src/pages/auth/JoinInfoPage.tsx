@@ -360,7 +360,7 @@ const JoinInfoPage = () => {
               {/*
                * native <select> 대신 커스텀 드롭다운 구현
                * - 트리거: 선택된 도메인 텍스트 + 화살표 아이콘
-               * - 드롭다운 목록: border/rounded-lg, max-h-[264px] 스크롤
+               * - 드롭다운 목록: border/rounded-lg, max-h-66 스크롤
                * - '직접 입력' 선택 시 isCustomDomain=true → 텍스트 인풋으로 전환
                */}
               <div className="relative shrink-0 w-51" ref={dropdownRef}>
@@ -440,7 +440,7 @@ const JoinInfoPage = () => {
                     className="
                       absolute top-[calc(100%+4px)] left-0 right-0 z-50
                       border border-border-default rounded-lg
-                      max-h-[264px] overflow-y-auto
+                      max-h-66 overflow-y-auto
                       bg-background-page
                       [scrollbar-width:thin]
                       [&::-webkit-scrollbar]:w-1
@@ -463,7 +463,7 @@ const JoinInfoPage = () => {
                           onClick={() => handleDomainSelect(domain)}
                           className="
                             flex items-center w-full
-                            px-5 h-[66px]
+                            px-5 h-16.5
                             bg-background-page
                             text-lg leading-6.5 font-semibold tracking-tight text-text-secondary
                             hover:bg-background-hover

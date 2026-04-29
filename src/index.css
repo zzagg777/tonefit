@@ -75,6 +75,40 @@
   --color-border-danger: var(--color-border-danger);
 
 
+  /* gray */
+  --color-gray-0: var(--color-palette-gray-0);
+  --color-gray-50: var(--color-palette-gray-50);
+  --color-gray-100: var(--color-palette-gray-100);
+  --color-gray-200: var(--color-palette-gray-200);
+  --color-gray-300: var(--color-palette-gray-300);
+  --color-gray-400: var(--color-palette-gray-400);
+  --color-gray-500: var(--color-palette-gray-500);
+  --color-gray-600: var(--color-palette-gray-600);
+  --color-gray-700: var(--color-palette-gray-700);
+  --color-gray-800: var(--color-palette-gray-800);
+  --color-gray-900: var(--color-palette-gray-900);
+  --color-gray-1000: var(--color-palette-gray-1000);
+
+  /* aplph */
+  --color-white-alpha-4: var(--color-palette-white-alpha-4);
+  --color-white-alpha-8: var(--color-palette-white-alpha-8);
+  --color-white-alpha-12: var(--color-palette-white-alpha-12);
+  --color-white-alpha-16: var(--color-palette-white-alpha-16);
+  --color-white-alpha-24: var(--color-palette-white-alpha-24);
+  --color-white-alpha-32: var(--color-palette-white-alpha-32);
+  --color-white-alpha-48: var(--color-palette-white-alpha-48);
+  --color-white-alpha-64: var(--color-palette-white-alpha-64);
+
+  --color-black-alpha-4: var(--color-palette-black-alpha-4);
+  --color-black-alpha-8: var(--color-palette-black-alpha-8);
+  --color-black-alpha-12: var(--color-palette-black-alpha-12);
+  --color-black-alpha-16: var(--color-palette-black-alpha-16);
+  --color-black-alpha-24: var(--color-palette-black-alpha-24);
+  --color-black-alpha-32: var(--color-palette-black-alpha-32);
+  --color-black-alpha-48: var(--color-palette-black-alpha-48);
+  --color-black-alpha-64: var(--color-palette-black-alpha-64);
+
+
   /* Font Size (Tailwind에 없는 것만) */
   --text-2xs: 10px;
   --text-xl-plus: 22px;
@@ -87,26 +121,116 @@
   --tracking-normal: var(--font-letter-spacing-normal);
   --tracking-wide: var(--font-letter-spacing-wide);
 
+
 }
 
 /* 교정 하이라이트 클래스 */
 .required {
-  /* background: rgba(255, 18, 0, 0.2); */
-  background: #FFE7E5;
+  --bg-alpha: 0.2;
+  background: rgba(255, 164, 157, var(--bg-alpha));
   border-color: var(--color-border-danger);
   color: var(--color-text-danger);
 }
 
 .recommend {
-  /* background: rgba(217, 142, 4, 0.2); */
-  background: #FCF6EB;
+  --bg-alpha: 0.2;
+  background: rgba(255, 218, 150, var(--bg-alpha));
   border-color: var(--color-border-warning);
   color: var(--color-text-warning);
 }
 
 .reference {
-  /* background: rgba(73, 188, 114, 0.2); */
-  background: #F1FAF4;
+  --bg-alpha: 0.2;
+  background: rgba(185, 243, 206, var(--bg-alpha));
   border-color: var(--color-border-success);
   color: var(--color-text-success);
 }
+
+/* mark 선택 포커스 */
+.mark-focus {
+  --bg-alpha: 1;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* 반응형 비율 조정 */
+html {
+  font-size: 100%;
+}
+
+/* 2xl: ~1536px */
+@media (max-width: 1535px) {
+  html {
+    font-size: 95%;
+  }
+}
+
+/* xl: ~1280px */
+@media (max-width: 1279px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+/* lg: ~1024px */
+@media (max-width: 1023px) {
+  html {
+    font-size: 85%;
+  }
+}
+
+/* md: ~768px */
+/* @media (max-width: 768px) {
+  html {
+    font-size: 100%;
+  }
+} */
+
+/* sm: ~640px */
+/* @media (max-width: 640px) {
+  html {
+    font-size: 75%;
+  }
+} */
