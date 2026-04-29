@@ -29,7 +29,8 @@ export type IconName =
   | 'chevron-right'
   | 'pending'
   | 'ai'
-  | 'play';
+  | 'play'
+  | 'plus';
 
 interface IconProps extends SVGAttributes<SVGSVGElement> {
   /** 아이콘 이름 */
@@ -554,6 +555,19 @@ const Icon = ({
           <path
             d="M3.3335 3.83167C3.3335 3.0405 4.20874 2.56266 4.87425 2.99049L11.3583 7.15882C11.9707 7.55246 11.9707 8.44754 11.3583 8.84118L4.87425 13.0095C4.20874 13.4373 3.3335 12.9595 3.3335 12.1683L3.3335 3.83167Z"
             fill="currentColor"
+          />
+        </svg>
+      );
+
+    /* plus — 더하기/추가 */
+    case 'plus':
+      return (
+        <svg {...base} fill="none">
+          <path
+            d="M12 5v14M5 12h14"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
           />
         </svg>
       );
