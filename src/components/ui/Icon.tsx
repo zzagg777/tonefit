@@ -31,7 +31,7 @@ export type IconName =
   | 'pending'
   | 'ai'
   | 'play'
-  | 'plus';
+  | 'plus'
   | 'undo'
   | 'redo'
   | 'check-double';
@@ -585,6 +585,10 @@ const Icon = ({
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
+          />
+        </svg>
+      );
+
     /* undo — 되돌리기 (rotate-ccw) */
     case 'undo':
       return (
