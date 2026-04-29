@@ -7,7 +7,7 @@ import {
   type ReactElement,
 } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Icon } from '@/components/ui';
+import { Icon, ButtonAction, Chip } from '@/components/ui';
 import {
   ROUTES,
   CORRECTION_LABEL_INFO,
@@ -246,12 +246,6 @@ const CorrectionCard = ({
     return () => clearTimeout(timer);
   }, [showBanner, countdown, onAdvance]);
 
-  const chipBase =
-    'flex items-center justify-center px-6 py-1 rounded-full text-base font-semibold leading-5.5 tracking-tight cursor-pointer transition-colors whitespace-nowrap';
-  const chipDefault =
-    'bg-background-subtle text-text-placeholder hover:bg-background-hover-2 hover:text-text-inverse';
-  const chipSelected = 'bg-background-inverse text-text-inverse';
-
   const btnBase =
     'flex items-center justify-center gap-1 px-4 py-1 rounded-md text-sm font-medium leading-5 tracking-tight whitespace-nowrap transition-colors';
 
@@ -287,7 +281,9 @@ const CorrectionCard = ({
         </div>
         {/* 거절/수용 버튼 */}
         <div className="flex items-end justify-end gap-2">
-          <button
+          <ButtonAction
+            variant="muted"
+            leftIcon="x"
             onClick={() => {
               if (isColleague) {
                 // 동료: 즉시 거절 후 배너 표시
@@ -299,27 +295,20 @@ const CorrectionCard = ({
                 setStep('rejecting');
               }
             }}
-            className={`${btnBase} bg-background-muted text-text-tertiary hover:bg-background-hover`}
           >
-            <Icon name="x" size={16} color="currentColor" />
             거절
-          </button>
-          <button
+          </ButtonAction>
+          <ButtonAction
+            leftIcon="check"
+            iconViewBox="0 0 16 16"
             onClick={() => {
               onAccept();
               setStep('accepted');
               setTimeout(() => onAdvance(), 800);
             }}
-            className={`${btnBase} bg-background-inverse text-text-inverse hover:bg-background-hover-2`}
           >
-            <Icon
-              name="check"
-              size={16}
-              viewBox="0 0 16 16"
-              color="currentColor"
-            />
             수용
-          </button>
+          </ButtonAction>
         </div>
       </div>
     );
@@ -355,21 +344,18 @@ const CorrectionCard = ({
           </div>
         </div>
         <div className="flex items-end justify-end gap-2">
-          <button
+          <ButtonAction
+            variant="muted"
+            leftIcon="redo"
+            iconViewBox="0 0 16 16"
+            className="bg-background-success-subtle text-text-success! hover:opacity-80"
             onClick={() => {
               onUndo();
               setStep('pending');
             }}
-            className={`${btnBase} bg-background-success-subtle text-text-success hover:opacity-80`}
           >
-            <Icon
-              name="redo"
-              viewBox="0 0 16 16"
-              size={16}
-              color="currentColor"
-            />
             되돌리기
-          </button>
+          </ButtonAction>
           <button
             disabled
             className={`${btnBase} bg-background-success-subtle text-text-success cursor-default`}
@@ -440,18 +426,18 @@ const CorrectionCard = ({
           {/* 1단계 칩 */}
           <div className="flex flex-wrap gap-1">
             {REJECT_REASONS_1.map((r) => (
-              <button
+              <Chip
                 key={r}
-                type="button"
+                selected={reason1 === r}
+                size="sm"
                 onClick={() => {
                   setReason1(r);
                   setReason2(null);
                   setCustomReason('');
                 }}
-                className={`${chipBase} ${reason1 === r ? chipSelected : chipDefault}`}
               >
                 {r}
-              </button>
+              </Chip>
             ))}
           </div>
           {/* 2단계: 두 번째 칩 선택 시 서브칩 바로 노출 */}
@@ -462,14 +448,14 @@ const CorrectionCard = ({
               </p>
               <div className="flex flex-wrap gap-1">
                 {subReasons!.map((r) => (
-                  <button
+                  <Chip
                     key={r}
-                    type="button"
+                    selected={reason2 === r}
+                    size="sm"
                     onClick={() => setReason2(r)}
-                    className={`${chipBase} ${reason2 === r ? chipSelected : chipDefault}`}
                   >
                     {r}
-                  </button>
+                  </Chip>
                 ))}
               </div>
             </div>
@@ -493,18 +479,20 @@ const CorrectionCard = ({
         </div>
         {/* 뒤로/저장하기 */}
         <div className="flex items-end justify-end gap-2">
-          <button
+          <ButtonAction
+            variant="muted"
             onClick={() => {
               setReason1(null);
               setReason2(null);
               setCustomReason('');
               setStep('pending');
             }}
-            className={`${btnBase} bg-background-muted text-text-tertiary hover:bg-background-hover`}
           >
             뒤로
-          </button>
-          <button
+          </ButtonAction>
+          <ButtonAction
+            leftIcon="check"
+            iconViewBox="0 0 16 16"
             onClick={() => {
               if (!canSave) return;
               onReject(finalReason || undefined);
@@ -512,20 +500,9 @@ const CorrectionCard = ({
               setTimeout(() => onAdvance(), 800);
             }}
             disabled={!canSave}
-            className={`${btnBase} ${
-              canSave
-                ? 'bg-background-inverse text-text-inverse hover:bg-background-hover-2'
-                : 'bg-background-disabled text-text-disabled cursor-not-allowed'
-            }`}
           >
-            <Icon
-              name="check"
-              size={16}
-              viewBox="0 0 16 16"
-              color="currentColor"
-            />
             저장하기
-          </button>
+          </ButtonAction>
         </div>
       </div>
     );
@@ -596,7 +573,7 @@ const CorrectionCard = ({
 
       {/* 동료 타입 배너 */}
       {showBanner && (
-        <div className="bg-background-surface border border-border-default flex items-center gap-4 px-6 py-4 rounded-2xl">
+        <div className="bg-background-surface border border-border-default flex items-center gap-4 px-3 py-2 rounded-2xl">
           <Icon
             name="question"
             size={20}
@@ -604,24 +581,23 @@ const CorrectionCard = ({
             className="shrink-0"
           />
           <div className="flex-1 flex flex-col">
-            <p className="text-base font-semibold leading-6 tracking-tight text-text-secondary">
-              왜 거절하셨는지 알려주실 수 있을까요?
+            <p className="text-sm font-semibold leading-6 tracking-tight text-text-secondary">
+              왜 거절하셨는지 알려주실 수 있어요? 다음 교정에 더 잘 반영할게요.
             </p>
-            <p className="text-sm text-text-tertiary leading-5.5 tracking-tight">
+            {/* <p className="text-sm text-text-tertiary leading-5.5 tracking-tight">
               {countdown > 0
                 ? `${countdown}초 뒤 다음 검토로 넘어갑니다.`
                 : '다음 검토로 넘어갑니다.'}
-            </p>
+            </p> */}
           </div>
-          <button
+          <ButtonAction
             onClick={() => {
               setShowBanner(false);
               setStep('rejecting');
             }}
-            className="shrink-0 text-sm font-semibold text-text-brand hover:text-text-brand-strong transition-colors whitespace-nowrap"
           >
-            네, 알려드릴게요.
-          </button>
+            이유 알려주기
+          </ButtonAction>
         </div>
       )}
     </div>
@@ -1008,13 +984,14 @@ const EditorResultPage = () => {
           >
             재교정
           </button>
-          <button
+          <ButtonAction
+            size="lg"
             onClick={handleConfirm}
             disabled={isConfirming}
-            className="bg-background-inverse flex-1 max-w-[140px] flex items-center justify-center px-5 py-2 rounded-md text-base font-medium text-text-inverse leading-6 tracking-tight whitespace-nowrap disabled:opacity-40 hover:bg-background-hover-2 transition-colors"
+            className="w-full max-w-35"
           >
             교정안 확정
-          </button>
+          </ButtonAction>
         </div>
       </div>
     </main>

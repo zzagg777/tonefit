@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import TitleText from '@/components/ui/TitleText';
-import { Icon } from '@/components/ui';
+import { Icon, Button } from '@/components/ui';
 import {
   ROUTES,
   RECEIVER_TYPE_LABELS,
@@ -355,24 +355,14 @@ const EditorPage = () => {
 
       {/* 교정하기 버튼 */}
       <div className="w-full flex justify-center mt-9 pb-20">
-        <button
-          type="button"
+        <Button
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className={`
-              w-full max-w-180 h-16.5 flex items-center justify-center gap-2.5
-              rounded-2xl text-2xl font-bold leading-8 tracking-tight
-              transition-colors
-              ${
-                canSubmit
-                  ? 'bg-background-inverse text-text-inverse hover:bg-background-hover-2 active:bg-background-pressed-2'
-                  : 'bg-background-disabled border border-border-disabled text-text-disabled cursor-not-allowed'
-              }
-            `}
+          className={`max-w-180`}
         >
           <Icon name="pencil-ai" size={24} color="currentColor" />
           교정하기
-        </button>
+        </Button>
       </div>
     </main>
   );
