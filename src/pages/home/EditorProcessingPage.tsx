@@ -191,7 +191,7 @@ const EditorProcessingPage = () => {
       className="flex-1 bg-background-page flex flex-col items-center justify-center gap-18 px-10 py-10"
     >
       {/* 로딩 원형 애니메이션 */}
-      <div className="relative size-40 flex items-center justify-center">
+      <div className="relative size-40 flex items-center justify-center w-[160px] h-[160px]">
         {/* 배경 원 */}
         <svg
           className="absolute inset-0"
@@ -254,7 +254,7 @@ const EditorProcessingPage = () => {
       {/* 취소 버튼 */}
       <button
         onClick={handleCancel}
-        className="border-b border-text-tertiary pb-1 text-lg font-semibold leading-[26px] tracking-tight text-text-tertiary hover:text-text-secondary transition-colors"
+        className="border-b border-text-tertiary pb-1 text-lg font-semibold leading-6.5 tracking-tight text-text-tertiary hover:text-text-secondary transition-colors"
       >
         취소
       </button>

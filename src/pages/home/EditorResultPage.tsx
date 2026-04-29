@@ -184,7 +184,9 @@ const ReasonText = ({
   change: CorrectionChange;
   className?: string;
 }) => (
-  <p className={`text-base leading-6 tracking-tight ${className}`}>
+  <p
+    className={`text-base leading-6 tracking-tight break-keep max-lg:max-h-[3em] max-lg:overflow-auto ${className}`}
+  >
     {change.reason.split(change.corrected).map((part, i, arr) => (
       <Fragment key={i}>
         {part.split(change.original).map((subPart, j, subArr) => (
@@ -269,7 +271,7 @@ const CorrectionCard = ({
                 {change.original}
               </span>
               <PlayArrow />
-              <span className="flex-1 text-xl-plus font-semibold leading-[30px] tracking-tight text-text-primary whitespace-nowrap">
+              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary whitespace-nowrap">
                 {change.corrected}
               </span>
             </div>
@@ -334,7 +336,7 @@ const CorrectionCard = ({
                 {change.original}
               </span>
               <PlayArrow color="var(--color-icon-success)" />
-              <span className="flex-1 text-xl-plus font-semibold leading-[30px] tracking-tight text-text-success whitespace-nowrap">
+              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-success whitespace-nowrap">
                 {change.corrected}
               </span>
             </div>
@@ -407,7 +409,7 @@ const CorrectionCard = ({
                 {change.original}
               </span>
               <PlayArrow />
-              <span className="flex-1 text-xl-plus font-semibold leading-[30px] tracking-tight text-text-primary whitespace-nowrap">
+              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary whitespace-nowrap">
                 {change.corrected}
               </span>
             </div>
@@ -527,7 +529,7 @@ const CorrectionCard = ({
                 {change.original}
               </span>
               <PlayArrow color="var(--color-icon-disabled)" />
-              <span className="text-xl-plus font-semibold leading-[30px] tracking-tight text-text-disabled whitespace-nowrap">
+              <span className="text-xl-plus font-semibold leading-7.5 tracking-tight text-text-disabled whitespace-nowrap">
                 {change.corrected}
               </span>
               {savedReason && (
@@ -832,7 +834,7 @@ const EditorResultPage = () => {
       </div>
 
       {/* ── 원문 / 교정본 비교 영역 ── */}
-      <div className="flex-1 flex gap-4 py-6 border-b border-border-default max-lg:flex-col max-lg:py-0">
+      <div className="flex-1 min-h-0 flex gap-4 py-6 border-b border-border-default max-lg:flex-col max-lg:py-0">
         {/* 원문 패널 */}
         <div className="flex-1 bg-background-surface flex flex-col gap-3.5 p-6 rounded-md min-w-0 overflow-hidden max-lg:border-b border-border-default">
           <div className="bg-background-page border border-border-default flex items-center justify-center px-5 py-0.5 rounded self-start text-text-secondary text-base font-semibold leading-6 tracking-tight">
@@ -841,7 +843,7 @@ const EditorResultPage = () => {
           <div
             ref={originalScrollRef}
             onScroll={handleOriginalScroll}
-            className="flex-1 overflow-y-auto px-2.5"
+            className="flex-1 overflow-y-auto px-2.5 min-h-[1.5em]"
           >
             <p className="text-lg font-semibold leading-9 tracking-tight text-text-secondary whitespace-pre-wrap">
               {renderWithHighlights(
@@ -854,16 +856,16 @@ const EditorResultPage = () => {
             </p>
           </div>
           <div className="flex gap-1 items-center justify-end">
-            <span className="text-sm leading-[22px] tracking-tight text-text-primary">
+            <span className="text-sm leading-5.5 tracking-tight text-text-primary">
               {(USE_FIXED_ORIGINAL
                 ? MOCK_ORIGINAL
                 : originalEmail
               ).length.toLocaleString()}
             </span>
-            <span className="text-sm leading-[22px] tracking-tight text-text-disabled">
+            <span className="text-sm leading-5.5 tracking-tight text-text-disabled">
               /
             </span>
-            <span className="text-sm leading-[22px] tracking-tight text-text-tertiary">
+            <span className="text-sm leading-5.5 tracking-tight text-text-tertiary">
               2,000
             </span>
           </div>
@@ -880,7 +882,7 @@ const EditorResultPage = () => {
           <div
             ref={correctedScrollRef}
             onScroll={handleCorrectedScroll}
-            className="flex-1 overflow-y-auto px-2.5"
+            className="flex-1 overflow-y-auto px-2.5 min-h-[1.5em]"
           >
             <p className="text-lg font-semibold leading-9 tracking-tight text-text-secondary whitespace-pre-wrap">
               {renderWithHighlights(
@@ -893,13 +895,13 @@ const EditorResultPage = () => {
             </p>
           </div>
           <div className="flex gap-1 items-center justify-end">
-            <span className="text-sm leading-[22px] tracking-tight text-text-primary">
+            <span className="text-sm leading-5.5 tracking-tight text-text-primary">
               {correctedEmail.length.toLocaleString()}
             </span>
-            <span className="text-sm leading-[22px] tracking-tight text-text-disabled">
+            <span className="text-sm leading-5.5 tracking-tight text-text-disabled">
               /
             </span>
-            <span className="text-sm leading-[22px] tracking-tight text-text-tertiary">
+            <span className="text-sm leading-5.5 tracking-tight text-text-tertiary">
               2,000
             </span>
           </div>
@@ -908,15 +910,17 @@ const EditorResultPage = () => {
 
       {/* ── 교정 카드 ── */}
       {currentChange && (
-        <CorrectionCard
-          key={currentChange.index}
-          change={currentChange}
-          receiverType={receiverType}
-          onAccept={handleAccept}
-          onReject={handleReject}
-          onUndo={handleUndo}
-          onAdvance={handleAdvance}
-        />
+        <div className="shrink-0">
+          <CorrectionCard
+            key={currentChange.index}
+            change={currentChange}
+            receiverType={receiverType}
+            onAccept={handleAccept}
+            onReject={handleReject}
+            onUndo={handleUndo}
+            onAdvance={handleAdvance}
+          />
+        </div>
       )}
 
       {/* ── 하단 네비게이션 바 ── */}
@@ -972,7 +976,7 @@ const EditorResultPage = () => {
         {/* 우측: 안내 + 재교정 + 확정 */}
         <div className="flex-1 flex gap-2.5 items-center justify-end">
           {pendingCount > 0 && (
-            <p className="text-base text-text-secondary leading-6 tracking-tight whitespace-nowrap">
+            <p className="text-base text-text-secondary leading-6 tracking-tight whitespace-nowrap max-lg:hidden">
               미검토된 교정 건은 확정 시 자동으로 수용됩니다
             </p>
           )}
@@ -980,7 +984,7 @@ const EditorResultPage = () => {
           <button
             onClick={handleRecorrect}
             disabled={isRecorrecting || rejectedCount === 0}
-            className="bg-background-muted flex-1 max-w-[140px] flex items-center justify-center px-5 py-2 rounded-md text-base font-medium text-text-tertiary leading-6 tracking-tight whitespace-nowrap disabled:opacity-40 hover:bg-background-hover transition-colors hidden"
+            className="bg-background-muted flex-1 max-w-35 flex items-center justify-center px-5 py-2 rounded-md text-base font-medium text-text-tertiary leading-6 tracking-tight whitespace-nowrap disabled:opacity-40 hover:bg-background-hover transition-colors hidden!"
           >
             재교정
           </button>

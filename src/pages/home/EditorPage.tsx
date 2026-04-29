@@ -232,9 +232,9 @@ const EditorPage = () => {
         />
 
         {/* 메인 레이아웃: 좌측(수신자/목적) + 우측(이메일 입력) */}
-        <div className="flex gap-20 items-start w-full flex-1 min-h-0 max-xl:gap-3.5 max-xl:flex-col">
+        <div className="flex gap-20 items-start w-full flex-1 min-h-0 max-lg:gap-3.5 max-lg:flex-col">
           {/* 좌측: 수신자 + 목적 선택 */}
-          <div className="max-xl:flex-auto flex-1 flex flex-col gap-3.5 min-w-0 max-xl:w-full">
+          <div className="max-lg:flex-auto flex-1 flex flex-col gap-3.5 min-w-0 max-lg:w-full">
             {/* 수신자 유형 */}
             <div className="flex flex-col gap-4 w-full">
               <StepLabel step={1} title="수신자 유형 선택" />
@@ -291,7 +291,7 @@ const EditorPage = () => {
           </div>
 
           {/* 우측: 이메일 원문 입력 */}
-          <div className="max-xl:flex-auto flex-1 flex flex-col gap-4 h-full min-w-0 max-xl:w-full">
+          <div className="max-lg:flex-auto flex-1 flex flex-col gap-4 h-full min-w-0 max-lg:w-full">
             <StepLabel step={3} title="이메일 원문 입력" />
 
             <div className="flex-1 flex flex-col gap-2.5 min-h-0">
