@@ -9,7 +9,7 @@ import type { ReceiverType, PurposeType } from '@/types';
 import TitleText from '@/components/ui/TitleText';
 
 // true: 디자인 확인용 — API 호출 및 페이지 이동 없이 로딩 화면 유지
-const FREEZE_FOR_DESIGN = false;
+const FREEZE_FOR_DESIGN = true;
 
 type ProcessingStep = 'pending' | 'active' | 'done';
 

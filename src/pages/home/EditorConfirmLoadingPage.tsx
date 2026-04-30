@@ -12,7 +12,7 @@ import type {
 } from '@/types';
 
 // true: 디자인 확인용 — API 호출 및 페이지 이동 없이 로딩 화면 유지
-const FREEZE_FOR_DESIGN = false;
+const FREEZE_FOR_DESIGN = true;
 
 interface LocationState {
   sessionId: number;
