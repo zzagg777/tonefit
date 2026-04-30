@@ -46,7 +46,7 @@ const MOCK_STATE: DoneLocationState = {
 };
 
 // true: 복사 항상 실패 (실패 토스트 테스트용)
-const DEV_FORCE_COPY_FAIL = true;
+const DEV_FORCE_COPY_FAIL = false;
 
 // ──────────────────────────────────────────────
 // 교정 라벨 → CSS 클래스
@@ -211,7 +211,7 @@ const EditorDonePage = () => {
       {/* ── 메인 2단 레이아웃 ── */}
       <div className="flex-1 flex gap-1 min-h-0 pb-6 max-lg:flex-col relative max-lg:pb-28">
         {/* ── 좌측: AI 추천 제목 + 편집 가능 교정본 ── */}
-        <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex-1 flex flex-col min-h-0 min-w-0">
           {/* AI 추천 제목 바 */}
           <div className="bg-background-surface flex gap-5 items-center p-8 shrink-0 rounded-2xl">
             <div className="flex gap-1.5 items-center shrink-0">
