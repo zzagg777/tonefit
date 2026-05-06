@@ -2,17 +2,18 @@ import { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Icon, TitleText } from '@/components/ui';
 import { ROUTES } from '@/constants';
-import { useConfirmCorrection } from '@/queries';
+import { useFinalizeCorrection, useConfirmCorrection } from '@/queries';
 import type {
   ReceiverType,
   PurposeType,
   CorrectionChange,
   FeedbackActionType,
   CorrectionResponse,
+  FinalizeResponse,
 } from '@/types';
 
 // true: 디자인 확인용 — API 호출 및 페이지 이동 없이 로딩 화면 유지
-const FREEZE_FOR_DESIGN = true;
+const FREEZE_FOR_DESIGN = false;
 
 interface LocationState {
   sessionId: number;
@@ -29,6 +30,7 @@ const EditorConfirmLoadingPage = () => {
   const location = useLocation();
   const state = location.state as LocationState | null;
 
+  const { mutate: finalizeCorrection } = useFinalizeCorrection();
   const { mutate: confirmCorrection } = useConfirmCorrection();
   const cancelledRef = useRef(false);
 
@@ -41,44 +43,58 @@ const EditorConfirmLoadingPage = () => {
       navigate(ROUTES.EDITOR, { replace: true });
       return;
     }
-    if (!FREEZE_FOR_DESIGN)
-      confirmCorrection(
-        {
-          sessionId: state.sessionId,
-          data: { final_email: state.finalEmail },
+
+    if (FREEZE_FOR_DESIGN) return;
+
+    const handleError = () => {
+      if (cancelledRef.current) return;
+      navigate(ROUTES.EDITOR_RESULT, {
+        state: {
+          correctionData: state.correctionData,
+          originalEmail: state.originalEmail,
+          receiverType: state.receiverType,
+          purposeType: state.purposeType,
         },
-        {
-          onSuccess: () => {
-            if (cancelledRef.current) return;
-            setTimeout(() => {
+        replace: true,
+      });
+    };
+
+    // Step 1: finalize → EDITING 상태로 전환 (ai_final, ai_subject 반환)
+    finalizeCorrection(state.sessionId, {
+      onSuccess: (finalizeData: FinalizeResponse) => {
+        if (cancelledRef.current) return;
+
+        // Step 2: confirm → CONFIRMED 상태로 전환
+        confirmCorrection(
+          {
+            sessionId: state.sessionId,
+            data: { user_final: state.finalEmail },
+          },
+          {
+            onSuccess: () => {
               if (cancelledRef.current) return;
-              navigate(ROUTES.EDITOR_DONE, {
-                state: {
-                  sessionId: state.sessionId,
-                  finalEmail: state.finalEmail,
-                  receiverType: state.receiverType,
-                  purposeType: state.purposeType,
-                  changes: state.changes,
-                },
-                replace: true,
-              });
-            }, 400);
-          },
-          onError: () => {
-            if (cancelledRef.current) return;
-            // 확정 실패 시 교정 결과 화면으로 복귀
-            navigate(ROUTES.EDITOR_RESULT, {
-              state: {
-                correctionData: state.correctionData,
-                originalEmail: state.originalEmail,
-                receiverType: state.receiverType,
-                purposeType: state.purposeType,
-              },
-              replace: true,
-            });
-          },
-        }
-      );
+              setTimeout(() => {
+                if (cancelledRef.current) return;
+                navigate(ROUTES.EDITOR_DONE, {
+                  state: {
+                    sessionId: state.sessionId,
+                    finalEmail: state.finalEmail,
+                    aiFinal: finalizeData.ai_final,
+                    aiSubject: finalizeData.ai_subject,
+                    receiverType: state.receiverType,
+                    purposeType: state.purposeType,
+                    changes: state.changes,
+                  },
+                  replace: true,
+                });
+              }, 400);
+            },
+            onError: handleError,
+          }
+        );
+      },
+      onError: handleError,
+    });
 
     return () => {
       cancelledRef.current = true;

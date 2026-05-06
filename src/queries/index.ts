@@ -26,6 +26,9 @@ import {
   requestCorrection,
   retryCorrection,
   recorrect,
+  rejectCorrection,
+  finalizeCorrection,
+  editCorrection,
   confirmCorrection,
   // History
   getInProgressSessions,
@@ -40,6 +43,8 @@ import type {
   DraftRequest,
   CorrectionRequest,
   RecorrectRequest,
+  RejectRequest,
+  EditRequest,
   ConfirmRequest,
   PurchaseCreditsRequest,
   SubscribePlanRequest,
@@ -176,6 +181,66 @@ export const useRecorrect = () => {
         queryKey: QUERY_KEYS.CORRECTION_DETAIL(sessionId),
       });
     },
+  });
+};
+
+/**
+ * 교정 거부 (사유 포함)
+ * action = REJECTED 즉시 반영. 성공 시 세션 상세 캐시 갱신.
+ */
+export const useRejectCorrection = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      sessionId,
+      data,
+    }: {
+      sessionId: number;
+      data: RejectRequest;
+    }) => rejectCorrection(sessionId, data),
+    onSuccess: (_, { sessionId }) => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.CORRECTION_DETAIL(sessionId),
+      });
+    },
+  });
+};
+
+/**
+ * 최종 다듬기
+ * 거절/수락이 확정된 후 AI 최종본 + 추천 제목 생성.
+ * 성공 시 세션 상태 EDITING으로 전환.
+ */
+export const useFinalizeCorrection = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (sessionId: number) => finalizeCorrection(sessionId),
+    onSuccess: (_, sessionId) => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.CORRECTION_DETAIL(sessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.CORRECTIONS_IN_PROGRESS,
+      });
+    },
+  });
+};
+
+/**
+ * 사용자 편집 저장
+ * Ctrl+C 감지 또는 저장 버튼 클릭 시 호출. 변경 필드만 전송.
+ */
+export const useEditCorrection = () => {
+  return useMutation({
+    mutationFn: ({
+      sessionId,
+      data,
+    }: {
+      sessionId: number;
+      data: EditRequest;
+    }) => editCorrection(sessionId, data),
   });
 };
 
