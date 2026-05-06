@@ -46,19 +46,25 @@ const App = () => {
   const issuedRef = useRef(false);
 
   useEffect(() => {
-    // ── [DEV] 임시 토큰 하드코딩 ──────────────────────────────────────────
-    // 백엔드에서 /auth/anonymous 엔드포인트가 준비되기 전까지만 사용
-    // 준비되면 이 블록을 삭제하고 아래 issueAnonymousToken() 블록을 활성화하세요.
-    const DEV_TEST_TOKEN = {
-      access:
-        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNfZ3Vlc3QiOmZhbHNlLCJpYXQiOjE3NzgwNTE1MTMsImV4cCI6MTc3ODA1NTExM30.gNK04u89FE06MfVPiHqxIrTDcpXFECdaSTrvWtbxagSooQarIQgiTC0oaX6aHnmIsj02ND36MaRaXrQOSMYOAQ',
-      refresh:
-        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzc4MDUxNTEzLCJleHAiOjE3Nzg2NTYzMTN9.Pk48bYgTGFHHjIhOqZxBM3XE_kxY-1hlxAnHSFGNeYX4mJbducvvf5o-d02-55voJeQOEBMX6G_DActahrsR6w',
-    }; // TODO: 만료 시 재발급 필요
-    if (import.meta.env.DEV && DEV_TEST_TOKEN.access) {
-      sessionStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, DEV_TEST_TOKEN.access);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, DEV_TEST_TOKEN.refresh);
-      console.log('[App] DEV 임시 토큰 적용됨');
+    // ── 임시 테스트 토큰 (env 기반) ───────────────────────────────────────
+    // 백엔드 /auth/anonymous 준비 전까지 사용
+    // 로컬: .env의 VITE_DEV_ACCESS_TOKEN / VITE_DEV_REFRESH_TOKEN
+    // Vercel: 대시보드 Environment Variables에 동일 키로 설정
+    // 준비되면 이 블록 전체를 삭제하고 아래 issueAnonymousToken() 블록을 활성화하세요.
+    const envAccessToken = import.meta.env.VITE_DEV_ACCESS_TOKEN as
+      | string
+      | undefined;
+    const envRefreshToken = import.meta.env.VITE_DEV_REFRESH_TOKEN as
+      | string
+      | undefined;
+    if (envAccessToken) {
+      sessionStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, envAccessToken);
+      if (envRefreshToken) {
+        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, envRefreshToken);
+      }
+      console.error(
+        '[App] ENV 임시 토큰 적용됨 (백엔드 /auth/anonymous 준비 전 임시)'
+      );
       return;
     }
     // ──────────────────────────────────────────────────────────────────────
