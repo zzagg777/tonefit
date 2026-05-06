@@ -25,6 +25,10 @@ type CopyState = 'idle' | 'copying' | 'success';
 interface DoneLocationState {
   sessionId: number;
   finalEmail: string;
+  /** finalize API가 반환한 AI 최종 교정본 (추천 내용) */
+  aiFinal?: string;
+  /** finalize API가 반환한 AI 추천 제목 */
+  aiSubject?: string;
   receiverType: ReceiverType;
   purposeType: PurposeType;
   changes: (CorrectionChange & { action: FeedbackActionType | null })[];
@@ -78,7 +82,8 @@ const EditorDonePage = () => {
 
   const { receiverType, purposeType, changes } = state;
 
-  const [emailText, setEmailText] = useState(state.finalEmail);
+  // aiFinal이 있으면 AI 추천 내용을, 없으면 사용자 확정본을 초기값으로 사용
+  const [emailText, setEmailText] = useState(state.aiFinal ?? state.finalEmail);
   const [titleCopied, setTitleCopied] = useState(false);
   const [copyState, setCopyState] = useState<CopyState>('idle');
   const [toast, setToast] = useState<string | null>(null);
@@ -108,7 +113,8 @@ const EditorDonePage = () => {
   // ).length;
   // const rejectedCount = changes.filter((c) => c.action === 'REJECTED').length;
 
-  const suggestedTitle = emailText.split('\n')[0] || '';
+  // aiSubject가 있으면 AI 추천 제목을, 없으면 본문 첫 줄을 fallback으로 사용
+  const suggestedTitle = state.aiSubject ?? emailText.split('\n')[0] ?? '';
 
   // ── 토스트 헬퍼 ──
   const showToast = useCallback((message: string) => {
@@ -314,22 +320,15 @@ const EditorDonePage = () => {
                 >
                   {/* 원문 → 교정 텍스트 */}
                   <div className="flex-1 flex items-center gap-2.5 min-w-0 overflow-hidden">
-                    <span className="line-through text-sm text-text-tertiary leading-5 tracking-tight shrink-0 max-w-30 truncate">
-                      {change.original}
-                    </span>
-                    {/* 미니 화살표 */}
-                    <svg
-                      width="6"
-                      height="8"
-                      viewBox="0 0 9 11"
-                      fill="none"
-                      className="shrink-0"
-                    >
-                      <path
-                        d="M0 1.00354C0 0.212376 0.875246 -0.265467 1.54076 0.162362L8.02483 4.3307C8.63716 4.72433 8.63716 5.61942 8.02483 6.01305L1.54076 10.1814C0.875246 10.6092 0 10.1314 0 9.34021L0 1.00354Z"
-                        fill="#9CA3AF"
-                      />
-                    </svg>
+                    {getActionLabel(change.action) === '적용' && (
+                      <>
+                        <span className="line-through text-sm text-text-tertiary leading-5 tracking-tight shrink-0 max-w-30 truncate">
+                          {change.original}
+                        </span>
+                        <Icon name="play" size={16} viewBox="0 0 16 16"></Icon>
+                      </>
+                    )}
+
                     <span className="text-lg font-medium text-text-primary leading-5 tracking-tight truncate">
                       {change.corrected}
                     </span>

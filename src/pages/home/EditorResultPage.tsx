@@ -40,7 +40,7 @@ const MOCK_STATE: LocationState = {
 };
 
 // true: 피그마 디자인 기준 고정값(plain text), false: 실제 원문 + 하이라이트
-const USE_FIXED_ORIGINAL = true;
+const USE_FIXED_ORIGINAL = false;
 
 const labelCls =
   'word-label rounded-full px-1 py-0.5 border !text-text-secondary';
@@ -690,10 +690,23 @@ const EditorResultPage = () => {
   };
 
   const handleConfirm = () => {
+    // 원문을 베이스로, ACCEPTED 변경만 역순(뒤→앞)으로 적용해 최종 이메일 구성
+    // REJECTED 또는 미결정(null) 변경은 원문 그대로 유지
+    const sortedChanges = [...changes].sort((a, b) => b.start - a.start);
+    let finalEmail = originalEmail;
+    for (const change of sortedChanges) {
+      if (change.action === 'ACCEPTED') {
+        finalEmail =
+          finalEmail.slice(0, change.start) +
+          change.corrected +
+          finalEmail.slice(change.end);
+      }
+    }
+
     navigate(ROUTES.EDITOR_CONFIRM_LOADING, {
       state: {
         sessionId: correctionData.session_id,
-        finalEmail: correctedEmail,
+        finalEmail,
         receiverType,
         purposeType,
         changes,

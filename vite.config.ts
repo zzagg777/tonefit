@@ -11,6 +11,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    port: 8080, // 백엔드 CORS 허용 포트에 맞춤
+  },
   test: {
     globals: true, // describe, test, expect 등 전역 변수 사용 허용
     environment: 'jsdom', // 브라우저 환경에서 테스트 실행

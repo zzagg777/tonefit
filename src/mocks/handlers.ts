@@ -75,10 +75,83 @@ export const MOCK_CORRECTION_RESPONSE: CorrectionResponse = {
   created_at: new Date().toISOString(),
 };
 
-export const handlers = [
+// =============================================================
+// Auth 핸들러 — 백엔드 미구현 엔드포인트 임시 모킹
+// 백엔드 구현 완료 후 해당 핸들러만 삭제하세요.
+// =============================================================
+
+const authHandlers = [
+  // TODO: 백엔드에서 POST /auth/anonymous 구현 완료 후 삭제
+  http.post(`${BASE_URL}/auth/anonymous`, async () => {
+    await delay(300);
+    return HttpResponse.json(
+      {
+        user_id: 'dev-anon-user-001',
+        is_guest: true,
+        plan: 'FREE',
+        anonymous_token: 'dev-mock-anonymous-token',
+        access_token: 'dev-mock-access-token',
+        refresh_token: 'dev-mock-refresh-token',
+      },
+      { status: 200 }
+    );
+  }),
+];
+
+// =============================================================
+// Correction 핸들러 — 교정 흐름 전체 모킹
+// VITE_MOCK_CORRECTIONS=false 시 실제 서버로 요청이 전달됩니다.
+// =============================================================
+
+const correctionHandlers = [
   http.post(`${BASE_URL}/corrections`, async () => {
     await delay(2000);
     return HttpResponse.json(MOCK_CORRECTION_RESPONSE, { status: 201 });
+  }),
+
+  http.post(
+    `${BASE_URL}/corrections/:sessionId/reject`,
+    async ({ request, params }) => {
+      await delay(300);
+      const body = (await request.json()) as { index: number };
+      return HttpResponse.json(
+        {
+          session_id: Number(params.sessionId),
+          index: body.index,
+          action: 'REJECTED',
+          updated_at: new Date().toISOString(),
+        },
+        { status: 200 }
+      );
+    }
+  ),
+
+  http.post(
+    `${BASE_URL}/corrections/:sessionId/finalize`,
+    async ({ params }) => {
+      await delay(1500);
+      return HttpResponse.json(
+        {
+          session_id: Number(params.sessionId),
+          status: 'EDITING',
+          ai_final: MOCK_CORRECTED,
+          ai_subject: '웹사이트 리뉴얼 프로젝트 일정 지연 보고',
+          created_at: new Date().toISOString(),
+        },
+        { status: 200 }
+      );
+    }
+  ),
+
+  http.patch(`${BASE_URL}/corrections/:sessionId/edit`, async ({ params }) => {
+    await delay(300);
+    return HttpResponse.json(
+      {
+        session_id: Number(params.sessionId),
+        updated_at: new Date().toISOString(),
+      },
+      { status: 200 }
+    );
   }),
 
   http.post(
@@ -88,12 +161,27 @@ export const handlers = [
       return HttpResponse.json(
         {
           session_id: Number(params.sessionId),
-          copied_at: new Date().toISOString(),
+          status: 'CONFIRMED',
+          updated_at: new Date().toISOString(),
         },
         { status: 200 }
       );
     }
   ),
+];
+
+// =============================================================
+// 최종 핸들러 조합
+//
+// VITE_MOCK_CORRECTIONS=true  (기본) → 전체 Mock  (UI 개발용)
+// VITE_MOCK_CORRECTIONS=false         → 익명토큰만 Mock, corrections는 실제 서버
+// =============================================================
+
+const useMockCorrections = import.meta.env.VITE_MOCK_CORRECTIONS !== 'false';
+
+export const handlers = [
+  ...authHandlers,
+  ...(useMockCorrections ? correctionHandlers : []),
 ];
 
 export { MOCK_ORIGINAL };
