@@ -66,11 +66,28 @@ export type PlanType = 'FREE' | 'PRO';
 export type SessionStatusType =
   | 'DRAFT' // 임시저장
   | 'IN_PROGRESS' // 교정 진행 중
-  | 'FAILED' // 실패 (Gemini API 오류 등)
+  | 'EDITING' // 최종 다듬기 완료 후 사용자 편집 중
   | 'CONFIRMED'; // 확정 완료 (복사하기 클릭)
 
 /** 교정 피드백 액션 */
 export type FeedbackActionType = 'ACCEPTED' | 'REJECTED';
+
+/**
+ * 거절 1차 사유
+ * MEANING : 의미가 달라졌어요
+ * STYLE   : 내 스타일&상황과 안 맞아요
+ * OTHER   : 다른 이유가 있어요
+ * NONE    : 사유 없음
+ */
+export type RejectReasonPrimaryType = 'MEANING' | 'STYLE' | 'OTHER' | 'NONE';
+
+/**
+ * 거절 2차 사유 (STYLE 선택 시에만 유효)
+ * MY_EXPRESSION : 내 평소 표현을 유지하고 싶어요
+ * TONE          : 이 상황에 어조가 안 맞아요
+ * AWKWARD       : 그냥 어색해요
+ */
+export type RejectReasonSecondaryType = 'MY_EXPRESSION' | 'TONE' | 'AWKWARD';
 
 /** 크레딧 거래 타입 */
 export type CreditTransactionType = 'PURCHASE' | 'USAGE' | 'REFUND';
@@ -105,6 +122,69 @@ export interface ApiError {
 export interface ProtectedRange {
   start: number; // 시작 offset
   end: number; // 끝 offset
+}
+
+// =============================================================
+// 익명 세션 (Anonymous Session)
+// FUNC-NON-01
+// =============================================================
+
+/**
+ * 익명 세션 정보
+ * 앱 최초 진입 시 서버에서 발급받아 저장하는 임시 세션 데이터
+ *
+ * @example
+ * const session = await issueAnonymousToken();
+ * // accessToken  → sessionStorage
+ * // refreshToken → localStorage
+ * // anonymousToken → localStorage (익명 세션 재식별용)
+ */
+export interface AnonymousSession {
+  /** 서버가 발급한 유저 ID (익명 유저도 user_id 보유) */
+  userId: number;
+  /** 익명 유저 여부 (항상 true) */
+  isGuest: boolean;
+  /** 플랜 (익명은 항상 FREE) */
+  plan: PlanType;
+  /** 익명 세션 고유 토큰 — localStorage 저장, 세션 재식별용 */
+  anonymousToken: string;
+  /** 접근 토큰 (유효기간 1시간) — sessionStorage 저장 */
+  accessToken: string;
+  /** 갱신 토큰 (유효기간 30일) — localStorage 저장 */
+  refreshToken: string;
+}
+
+/**
+ * JWT 페이로드 구조
+ * 토큰을 decode했을 때 얻는 클레임 정보
+ *
+ * @example
+ * import { jwtDecode } from 'jwt-decode'; // 필요 시
+ * const payload: TokenPayload = jwtDecode(accessToken);
+ * if (payload.is_guest) { ... }
+ */
+export interface TokenPayload {
+  /** 유저 ID */
+  user_id: number;
+  /** 익명 여부 — true: 익명, false: 정식 회원 */
+  is_guest: boolean;
+  /** 발급 시각 (Unix timestamp) */
+  iat: number;
+  /** 만료 시각 (Unix timestamp) */
+  exp: number;
+}
+
+/**
+ * POST /auth/anonymous 응답 (서버 snake_case)
+ * `issueAnonymousToken`이 이 응답을 `AnonymousSession`으로 변환합니다.
+ */
+export interface AnonymousTokenResponse {
+  user_id: number;
+  is_guest: boolean;
+  plan: PlanType;
+  anonymous_token: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 // =============================================================
@@ -265,15 +345,78 @@ export interface RecorrectResponse {
   created_at: string;
 }
 
-/** 교정 확정(복사하기) 요청 */
+/**
+ * 교정 거부 요청 (POST /corrections/{session_id}/reject)
+ * 특정 교정 건을 거부하고 사유를 함께 기록합니다.
+ */
+export interface RejectRequest {
+  /** 거부 대상 교정 건의 index (0-based) */
+  index: number;
+  /** 1차 거절 사유 */
+  reason_primary?: RejectReasonPrimaryType;
+  /** 2차 거절 사유 (STYLE일 때만 유효) */
+  reason_secondary?: RejectReasonSecondaryType;
+  /** 자유 입력 사유 (OTHER일 때만 유효, 200자 이내) */
+  reason_text?: string | null;
+}
+
+/** 교정 거부 응답 */
+export interface RejectResponse {
+  session_id: number;
+  index: number;
+  action: 'REJECTED';
+  updated_at: string;
+}
+
+/**
+ * 최종 다듬기 응답 (POST /corrections/{session_id}/finalize)
+ * 거절된 원문 + 수락된 교정문을 고정하고 AI 추천 제목을 생성합니다.
+ * Request Body 없음.
+ */
+export interface FinalizeResponse {
+  session_id: number;
+  status: 'EDITING';
+  /** AI가 생성한 최종 교정문 */
+  ai_final: string;
+  /** AI가 추천하는 이메일 제목 */
+  ai_subject: string;
+  created_at: string;
+}
+
+/**
+ * 사용자 편집 저장 요청 (PATCH /corrections/{session_id}/edit)
+ * 사용자가 편집한 본문/제목을 저장합니다. 변경할 필드만 전송.
+ */
+export interface EditRequest {
+  /** 사용자가 편집한 최종 본문 */
+  user_final?: string;
+  /** 사용자가 편집한 제목 */
+  user_subject?: string;
+}
+
+/** 사용자 편집 저장 응답 */
+export interface EditResponse {
+  session_id: number;
+  updated_at: string;
+}
+
+/**
+ * 교정 확정 요청 (POST /corrections/{session_id}/confirm)
+ * 편집본 포함 시 덮어쓰고, 없으면 /edit에서 저장된 값 유지.
+ * 모든 필드 선택.
+ */
 export interface ConfirmRequest {
-  final_email: string; // 프론트에서 조립한 최종 이메일 전문
+  /** 확정할 최종 본문 (없으면 /edit 저장값 사용) */
+  user_final?: string;
+  /** 확정할 제목 (없으면 /edit 저장값 사용) */
+  user_subject?: string;
 }
 
 /** 교정 확정 응답 */
 export interface ConfirmResponse {
   session_id: number;
-  copied_at: string;
+  status: 'CONFIRMED';
+  updated_at: string;
 }
 
 // =============================================================
