@@ -138,8 +138,18 @@ const clearAllTokens = (): void => {
 };
 
 apiClient.interceptors.response.use(
-  // 성공 응답은 그대로 통과
+  // 성공 응답: { success, data, error } 래퍼 자동 unwrap
   (response) => {
+    // 백엔드가 { success: true, data: {...}, error: null } 형태로 감싸는 경우 내부 data만 꺼냄
+    if (
+      response.data !== null &&
+      typeof response.data === 'object' &&
+      'success' in response.data &&
+      'data' in response.data
+    ) {
+      response.data = response.data.data;
+    }
+
     // TODO: 임시 로그 — API 테스트 확인 후 제거
     console.log(
       `[RES] ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`,
@@ -264,9 +274,9 @@ apiClient.interceptors.response.use(
  * }
  */
 export const issueAnonymousToken = async (): Promise<AnonymousSession> => {
-  const response = await axios.post<AnonymousTokenResponse>(
-    `${import.meta.env.VITE_API_URL}/auth/anonymous`
-  );
+  // apiClient 사용 → 응답 인터셉터의 { success, data, error } unwrap 자동 적용
+  const response =
+    await apiClient.post<AnonymousTokenResponse>('/auth/anonymous');
 
   const {
     user_id,
@@ -395,9 +405,11 @@ export const getDraft = async (): Promise<DraftDetailResponse> => {
 export const requestCorrection = async (
   data: CorrectionRequest
 ): Promise<CorrectionResponse> => {
+  // Gemini AI 교정 처리 → 60초로 연장
   const response = await apiClient.post<CorrectionResponse>(
     '/corrections',
-    data
+    data,
+    { timeout: 60000 }
   );
   return response.data;
 };
@@ -450,8 +462,11 @@ export const rejectCorrection = async (
 export const finalizeCorrection = async (
   sessionId: number
 ): Promise<FinalizeResponse> => {
+  // AI 최종본 생성(ai_final, ai_subject)이 포함되어 시간이 오래 걸릴 수 있음 → 60초로 연장
   const response = await apiClient.post<FinalizeResponse>(
-    `/corrections/${sessionId}/finalize`
+    `/corrections/${sessionId}/finalize`,
+    undefined,
+    { timeout: 60000 }
   );
   return response.data;
 };
