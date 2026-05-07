@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Icon, TitleText } from '@/components/ui';
 import { ROUTES } from '@/constants';
 import { useFinalizeCorrection, useConfirmCorrection } from '@/queries';
+import type { AxiosError } from 'axios';
 import type {
   ReceiverType,
   PurposeType,
@@ -59,41 +60,53 @@ const EditorConfirmLoadingPage = () => {
       });
     };
 
+    // Step 2: confirm → CONFIRMED 상태로 전환
+    const runConfirm = (finalizeData?: FinalizeResponse) => {
+      if (cancelledRef.current) return;
+      confirmCorrection(
+        {
+          sessionId: state.sessionId,
+          data: { user_final: state.finalEmail },
+        },
+        {
+          onSuccess: () => {
+            if (cancelledRef.current) return;
+            setTimeout(() => {
+              if (cancelledRef.current) return;
+              navigate(ROUTES.EDITOR_DONE, {
+                state: {
+                  sessionId: state.sessionId,
+                  finalEmail: state.finalEmail,
+                  aiFinal: finalizeData?.ai_final,
+                  aiSubject: finalizeData?.ai_subject,
+                  receiverType: state.receiverType,
+                  purposeType: state.purposeType,
+                  changes: state.changes,
+                },
+                replace: true,
+              });
+            }, 400);
+          },
+          onError: handleError,
+        }
+      );
+    };
+
     // Step 1: finalize → EDITING 상태로 전환 (ai_final, ai_subject 반환)
+    // 400이면 이미 EDITING 상태(뒤로가기 후 재시도 등) → finalize 건너뛰고 confirm으로 진행
     finalizeCorrection(state.sessionId, {
       onSuccess: (finalizeData: FinalizeResponse) => {
-        if (cancelledRef.current) return;
-
-        // Step 2: confirm → CONFIRMED 상태로 전환
-        confirmCorrection(
-          {
-            sessionId: state.sessionId,
-            data: { user_final: state.finalEmail },
-          },
-          {
-            onSuccess: () => {
-              if (cancelledRef.current) return;
-              setTimeout(() => {
-                if (cancelledRef.current) return;
-                navigate(ROUTES.EDITOR_DONE, {
-                  state: {
-                    sessionId: state.sessionId,
-                    finalEmail: state.finalEmail,
-                    aiFinal: finalizeData.ai_final,
-                    aiSubject: finalizeData.ai_subject,
-                    receiverType: state.receiverType,
-                    purposeType: state.purposeType,
-                    changes: state.changes,
-                  },
-                  replace: true,
-                });
-              }, 400);
-            },
-            onError: handleError,
-          }
-        );
+        runConfirm(finalizeData);
       },
-      onError: handleError,
+      onError: (error) => {
+        const status = (error as AxiosError)?.response?.status;
+        if (status === 400) {
+          // 세션이 이미 EDITING 상태 → confirm만 재시도
+          runConfirm();
+        } else {
+          handleError();
+        }
+      },
     });
 
     return () => {
