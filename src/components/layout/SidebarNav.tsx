@@ -24,7 +24,7 @@ const SidebarNav = () => {
 
   const isEditorActive = location.pathname.startsWith('/home/editor');
   // const isLibraryActive = location.pathname === ROUTES.HISTORY;
-  const isSettingsActive = location.pathname === ROUTES.SETTINGS;
+  // const isSettingsActive = location.pathname === ROUTES.SETTINGS;
 
   const navBtnCls =
     'flex gap-5 h-17.5 items-center p-5 rounded-lg w-full cursor-pointer transition-colors text-left';
@@ -82,7 +82,7 @@ const SidebarNav = () => {
             </span>
           </button> */}
 
-          <button
+          {/* <button
             onClick={() => navigate(ROUTES.SETTINGS)}
             className={`${navBtnCls} ${isSettingsActive ? 'bg-background-subtle' : 'bg-background-page hover:bg-background-hover'}`}
           >
@@ -100,7 +100,7 @@ const SidebarNav = () => {
             >
               설정
             </span>
-          </button>
+          </button> */}
         </nav>
       </div>
 
