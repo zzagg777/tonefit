@@ -45,6 +45,28 @@ const saveDraft = (draft: EditorDraft) =>
   saveStorage(DRAFT_KEY, { ...draft, savedAt: new Date().toISOString() });
 const clearDraft = () => deleteAllStorage(DRAFT_KEY);
 
+/**
+ * 의미 없는 입력인지 확인
+ * 자음(ㄱ-ㅎ) · 모음(ㅏ-ㅣ) · 이모지 · HTML 태그 · 공백만으로 이루어진 경우 true
+ * 완성된 한글 음절(가-힣), 영문, 숫자, 특수문자가 하나라도 있으면 false
+ */
+const isOnlyJamoOrSpaces = (text: string): boolean => {
+  // HTML 태그 제거 (<div>, </br> 등)
+  const withoutHtml = text.replace(/<[^>]*>/g, '');
+  // 공백 제거
+  const stripped = withoutHtml.replace(/\s/g, '');
+  if (!stripped) return true;
+  // 이모지 제거 (Extended_Pictographic: 숫자·영문 등 ASCII는 포함하지 않음)
+  const withoutEmoji = stripped.replace(/\p{Extended_Pictographic}/gu, '');
+  if (!withoutEmoji) return true; // 이모지(+태그)만 있는 경우
+  // 나머지가 모두 한글 자모인지 확인
+  return [...withoutEmoji].every((char) => {
+    const code = char.charCodeAt(0);
+    // 한글 자모 범위: U+3131(ㄱ) ~ U+318E
+    return code >= 0x3131 && code <= 0x318e;
+  });
+};
+
 const RECEIVER_OPTIONS: ReceiverType[] = [
   'DIRECT_SUPERVISOR',
   'OTHER_DEPT_COLLEAGUE',
@@ -58,7 +80,7 @@ const PURPOSE_OPTIONS: PurposeType[] = [
   'NOTICE',
   'THANKS',
   'APOLOGY',
-  'COOPERATION',
+  'REPLY',
   'DECLINE',
 ];
 
@@ -86,6 +108,7 @@ interface RestoredState {
   receiver?: ReceiverType;
   purpose?: PurposeType;
   emailText?: string;
+  error?: string;
 }
 
 const EditorPage = () => {
@@ -108,14 +131,32 @@ const EditorPage = () => {
     email?: string;
   }>({});
   const [showDraftNoti, setShowDraftNoti] = useState(Boolean(initialDraft));
+  const [apiError, setApiError] = useState<string | null>(
+    restored?.error ?? null
+  );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const draftResolvedRef = useRef(!initialDraft);
+
+  // ProcessingPage에서 돌아올 때 에러 메시지 표시 후 state 초기화
+  useEffect(() => {
+    if (restored?.error) {
+      const timer = setTimeout(() => setApiError(null), 4000);
+      // state에서 error 제거 (새로고침 시 재표시 방지)
+      navigate(location.pathname, {
+        replace: true,
+        state: { ...restored, error: undefined },
+      });
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const charCount = emailText.length;
   const isOverLimit = charCount > INPUT_LIMITS.EMAIL_MAX_LENGTH;
   const isTooShort = charCount > 0 && charCount < INPUT_LIMITS.EMAIL_MIN_LENGTH;
+  const isIncomplete = charCount > 0 && isOnlyJamoOrSpaces(emailText);
   const canSubmit = receiver && purpose && charCount > 0;
-  const hasEmailError = !!errors.email && (isOverLimit || isTooShort);
+  const hasEmailError =
+    !!errors.email && (isOverLimit || isTooShort || isIncomplete);
 
   // 실시간 자동 저장 (알림 처리 전까지 중단)
   useEffect(() => {
@@ -150,6 +191,8 @@ const EditorPage = () => {
     if (!receiver) newErrors.receiver = VALIDATION_MESSAGES.RECEIVER_REQUIRED;
     if (!purpose) newErrors.purpose = VALIDATION_MESSAGES.PURPOSE_REQUIRED;
     if (!emailText) newErrors.email = VALIDATION_MESSAGES.EMAIL_REQUIRED;
+    else if (isIncomplete)
+      newErrors.email = VALIDATION_MESSAGES.EMAIL_INCOMPLETE_CHARS;
     else if (charCount < INPUT_LIMITS.EMAIL_MIN_LENGTH)
       newErrors.email = VALIDATION_MESSAGES.EMAIL_TOO_SHORT;
     else if (isOverLimit) newErrors.email = VALIDATION_MESSAGES.EMAIL_TOO_LONG;
@@ -354,7 +397,13 @@ const EditorPage = () => {
       </div>
 
       {/* 교정하기 버튼 */}
-      <div className="w-full flex justify-center mt-9 pb-20">
+      <div className="relative w-full flex justify-center mt-9 pb-20">
+        {/* API 오류 토스트 — 버튼 컨테이너 기준으로 센터 정렬 */}
+        {apiError && (
+          <div className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 z-50 bg-background-inverse text-text-inverse px-6 py-3 rounded-full text-base font-semibold leading-6 tracking-tight shadow-lg whitespace-nowrap pointer-events-none">
+            {apiError}
+          </div>
+        )}
         <Button
           onClick={handleSubmit}
           disabled={!canSubmit}
