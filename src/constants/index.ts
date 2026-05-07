@@ -102,7 +102,7 @@ export const PURPOSE_LABELS: Record<PurposeType, string> = {
   NOTICE: '안내',
   THANKS: '감사',
   APOLOGY: '사과',
-  COOPERATION: '협조',
+  REPLY: '회신',
   DECLINE: '거절',
 };
 
@@ -196,6 +196,8 @@ export const VALIDATION_MESSAGES = {
   EMAIL_REQUIRED: '교정할 이메일 원문을 붙여넣어 주세요.',
   EMAIL_TOO_SHORT: '교정할 메일이 너무 짧습니다.',
   EMAIL_TOO_LONG: `이메일 원문은 ${INPUT_LIMITS.EMAIL_MAX_LENGTH}자 이내로 입력해 주세요.`,
+  EMAIL_INCOMPLETE_CHARS:
+    '교정할 수 없는 내용이에요. 완성된 글자를 입력해 주세요.',
   PASSWORD_TOO_SHORT: `비밀번호는 ${INPUT_LIMITS.PASSWORD_MIN_LENGTH}자 이상이어야 합니다.`,
   EMAIL_INVALID: '올바른 이메일 주소를 입력해 주세요.',
 } as const;

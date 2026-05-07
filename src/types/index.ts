@@ -25,7 +25,7 @@ export type PurposeType =
   | 'NOTICE' // 안내
   | 'THANKS' // 감사
   | 'APOLOGY' // 사과
-  | 'COOPERATION' // 협조
+  | 'REPLY' // 회신
   | 'DECLINE'; // 거절
 
 /** 업종 */
