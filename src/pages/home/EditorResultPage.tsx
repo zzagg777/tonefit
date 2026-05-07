@@ -310,7 +310,7 @@ const CorrectionCard = ({
           {/* 원문 → 교정 */}
           <div className="flex flex-col gap-1.5">
             <div className="flex gap-2.5 items-center p-2.5">
-              <span className="line-through text-lg text-text-tertiary leading-7 tracking-tight whitespace-nowrap">
+              <span className="line-through text-lg text-text-tertiary leading-7 tracking-tight max-w-1/2">
                 {change.original}
               </span>
               <Icon
@@ -319,7 +319,7 @@ const CorrectionCard = ({
                 viewBox="0 0 16 16"
                 color="var(--color-text-secondary)"
               ></Icon>
-              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary whitespace-nowrap">
+              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary">
                 {change.corrected}
               </span>
             </div>
@@ -380,7 +380,7 @@ const CorrectionCard = ({
           </div>
           <div className="flex flex-col gap-1.5">
             <div className="flex gap-2.5 items-center p-2.5">
-              <span className="line-through text-lg text-text-success leading-7 tracking-tight whitespace-nowrap">
+              <span className="line-through text-lg text-text-success leading-7 tracking-tight max-w-1/2">
                 {change.original}
               </span>
               <Icon
@@ -389,7 +389,7 @@ const CorrectionCard = ({
                 viewBox="0 0 16 16"
                 color="var(--color-icon-success)"
               ></Icon>
-              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-success whitespace-nowrap">
+              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-success">
                 {change.corrected}
               </span>
             </div>
@@ -458,11 +458,11 @@ const CorrectionCard = ({
           </div>
           <div className="flex flex-col gap-1.5">
             <div className="flex gap-2.5 items-center p-2.5">
-              <span className="line-through text-lg text-text-tertiary leading-7 tracking-tight whitespace-nowrap">
+              <span className="line-through text-lg text-text-tertiary leading-7 tracking-tight max-w-1/2">
                 {change.original}
               </span>
               <Icon name="play" size={16} viewBox="0 0 16 16" color=""></Icon>
-              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary whitespace-nowrap">
+              <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary">
                 {change.corrected}
               </span>
             </div>
@@ -578,7 +578,7 @@ const CorrectionCard = ({
           </div>
           <div className="flex flex-col gap-1.5">
             <div className="flex gap-2.5 items-center p-2.5 flex-wrap">
-              <span className="line-through text-lg text-text-disabled leading-7 tracking-tight whitespace-nowrap">
+              <span className="line-through text-lg text-text-disabled leading-7 tracking-tight max-w-1/2">
                 {change.original}
               </span>
               <Icon
@@ -587,7 +587,7 @@ const CorrectionCard = ({
                 viewBox="0 0 16 16"
                 color="var(--color-icon-disabled)"
               ></Icon>
-              <span className="text-xl-plus font-semibold leading-7.5 tracking-tight text-text-disabled whitespace-nowrap">
+              <span className="text-xl-plus font-semibold leading-7.5 tracking-tight text-text-disabled">
                 {change.corrected}
               </span>
               {savedReason && (
