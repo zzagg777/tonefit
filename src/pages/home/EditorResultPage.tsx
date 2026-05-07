@@ -161,22 +161,6 @@ const REJECT_REASONS_2: Record<RejectReason1, readonly string[] | null> = {
 
 // ── 소형 공용 컴포넌트 ──────────────────────────────────────────────────
 
-const PlayArrow = ({ color = '#374151' }: { color?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="9"
-    height="11"
-    viewBox="0 0 9 11"
-    fill="none"
-    className="shrink-0"
-  >
-    <path
-      d="M0 1.00354C0 0.212376 0.875246 -0.265467 1.54076 0.162362L8.02483 4.3307C8.63716 4.72433 8.63716 5.61942 8.02483 6.01305L1.54076 10.1814C0.875246 10.6092 0 10.1314 0 9.34021L0 1.00354Z"
-      fill={color}
-    />
-  </svg>
-);
-
 const ReasonText = ({
   change,
   className = '',
@@ -270,7 +254,12 @@ const CorrectionCard = ({
               <span className="line-through text-lg text-text-tertiary leading-7 tracking-tight whitespace-nowrap">
                 {change.original}
               </span>
-              <PlayArrow />
+              <Icon
+                name="play"
+                size={16}
+                viewBox="0 0 16 16"
+                color="var(--color-text-secondary)"
+              ></Icon>
               <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary whitespace-nowrap">
                 {change.corrected}
               </span>
@@ -335,7 +324,12 @@ const CorrectionCard = ({
               <span className="line-through text-lg text-text-success leading-7 tracking-tight whitespace-nowrap">
                 {change.original}
               </span>
-              <PlayArrow color="var(--color-icon-success)" />
+              <Icon
+                name="play"
+                size={16}
+                viewBox="0 0 16 16"
+                color="var(--color-icon-success)"
+              ></Icon>
               <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-success whitespace-nowrap">
                 {change.corrected}
               </span>
@@ -408,7 +402,7 @@ const CorrectionCard = ({
               <span className="line-through text-lg text-text-tertiary leading-7 tracking-tight whitespace-nowrap">
                 {change.original}
               </span>
-              <PlayArrow />
+              <Icon name="play" size={16} viewBox="0 0 16 16" color=""></Icon>
               <span className="flex-1 text-xl-plus font-semibold leading-7.5 tracking-tight text-text-primary whitespace-nowrap">
                 {change.corrected}
               </span>
@@ -528,7 +522,12 @@ const CorrectionCard = ({
               <span className="line-through text-lg text-text-disabled leading-7 tracking-tight whitespace-nowrap">
                 {change.original}
               </span>
-              <PlayArrow color="var(--color-icon-disabled)" />
+              <Icon
+                name="play"
+                size={16}
+                viewBox="0 0 16 16"
+                color="var(--color-icon-disabled)"
+              ></Icon>
               <span className="text-xl-plus font-semibold leading-7.5 tracking-tight text-text-disabled whitespace-nowrap">
                 {change.corrected}
               </span>
@@ -623,7 +622,8 @@ const EditorResultPage = () => {
   const [correctedEmail] = useState(
     () => state?.correctionData.corrected_email ?? ''
   );
-  const [copied, setCopied] = useState(false);
+  // MVP 단계 임시 삭제
+  // const [copied, setCopied] = useState(false);
 
   const { mutate: recorrect, isPending: isRecorrecting } = useRecorrect();
   const isConfirming = false; // 확정은 별도 로딩 페이지에서 처리
@@ -716,12 +716,15 @@ const EditorResultPage = () => {
     });
   };
 
-  const handleCopyTitle = useCallback(() => {
-    const firstLine = correctedEmail.split('\n')[0] || '';
-    navigator.clipboard.writeText(firstLine);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [correctedEmail]);
+  {
+    /* MVP 단계 임시 삭제 */
+  }
+  // const handleCopyTitle = useCallback(() => {
+  //   const firstLine = correctedEmail.split('\n')[0] || '';
+  //   navigator.clipboard.writeText(firstLine);
+  //   setCopied(true);
+  //   setTimeout(() => setCopied(false), 2000);
+  // }, [correctedEmail]);
 
   // ── 스크롤 싱크 ──────────────────────────────────────────────
   const originalScrollRef = useRef<HTMLDivElement>(null);
@@ -818,8 +821,9 @@ const EditorResultPage = () => {
         </div>
       </div>
 
+      {/* MVP 단계 임시 삭제 */}
       {/* ── AI 추천 제목 바 ── */}
-      <div className="bg-background-surface flex gap-5 items-center px-8 shrink-0 rounded-2xl py-4">
+      {/* <div className="bg-background-surface flex gap-5 items-center px-8 shrink-0 rounded-2xl py-4">
         <div className="flex gap-1.5 items-center shrink-0">
           <Icon name="ai" size={24} color="var(--color-icon-info)" />
           <div className="flex items-center justify-center p-2.5">
@@ -844,7 +848,7 @@ const EditorResultPage = () => {
             />
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* ── 원문 / 교정본 비교 영역 ── */}
       <div className="flex-1 min-h-0 flex gap-4 py-6 border-b border-border-default max-lg:flex-col max-lg:py-0">
