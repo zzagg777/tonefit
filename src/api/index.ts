@@ -208,8 +208,9 @@ apiClient.interceptors.response.use(
 
       try {
         // refreshToken으로 새 accessToken 발급
-        const response = await axios.post<RefreshResponse>(
-          `${import.meta.env.VITE_API_URL}/auth/refresh`,
+        // apiClient 사용 → { success, data, error } 래퍼 자동 unwrap
+        const response = await apiClient.post<RefreshResponse>(
+          '/auth/refresh',
           { refresh_token: storedRefreshToken }
         );
 
@@ -237,10 +238,15 @@ apiClient.interceptors.response.use(
     }
 
     // ── 403 Forbidden ──
-    // 세션 타입 불일치(만료된 익명 세션 등) → 초기화 (FUNC-NON-06)
+    // 교정 관련 엔드포인트는 리소스 권한 문제일 수 있으므로 그냥 reject (호출부에서 처리)
+    // 그 외 403은 세션 타입 불일치(만료된 익명 세션 등) → 토큰 초기화 후 홈으로 (FUNC-NON-06)
     if (status === 403) {
-      clearAllTokens();
-      window.location.href = '/';
+      const url = originalRequest?.url ?? '';
+      const isCorrectionsEndpoint = url.includes('/corrections');
+      if (!isCorrectionsEndpoint) {
+        clearAllTokens();
+        window.location.href = '/';
+      }
       return Promise.reject(error);
     }
 
