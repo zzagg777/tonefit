@@ -100,22 +100,59 @@ const renderWithHighlights = (
     });
   }
 
-  // 교정본: corrected 문자열 검색 후 하이라이트 (텍스트 등장 순서로 정렬)
-  let remaining = text;
+  // 교정본: indexOf 기반으로 각 change의 위치를 클레임(claim)
+  // - 빈 문자열·이모지만인 삭제 교정은 skip
+  // - 겹치는 범위는 허용하지 않아 "A의 corrected ⊂ B의 corrected" 문제 방어
+  // - 동일한 corrected 텍스트가 여러 번 나올 때, 원문의 start 순서 = 교정본 등장 순서로 매칭
+  const candidateChanges = changes
+    .filter((c) => c.corrected.trim().length > 0)
+    .sort((a, b) => a.start - b.start); // 원문 등장 순서 기준
+
+  type Claimed = {
+    start: number;
+    end: number;
+    change: (typeof changes)[0];
+  };
+  const claimed: Claimed[] = [];
+
+  // 동일 corrected 텍스트끼리 원문 순서를 보존:
+  // 같은 corrected를 가진 change들은 원문 start 순으로 처리하므로
+  // 교정본에서도 등장하는 순서대로 N번째 항목이 N번째 occurrence에 매칭됨
+  // (searchFrom을 직전 동일 corrected의 클레임 end 이후로 제한)
+  for (const change of candidateChanges) {
+    // 같은 corrected를 이미 클레임한 항목 중 가장 나중 end 위치 → 그 이후부터 탐색
+    const sameTextClaimed = claimed
+      .filter((c) => c.change.corrected === change.corrected)
+      .sort((a, b) => a.start - b.start);
+    let searchFrom =
+      sameTextClaimed.length > 0
+        ? sameTextClaimed[sameTextClaimed.length - 1].end
+        : 0;
+
+    while (true) {
+      const pos = text.indexOf(change.corrected, searchFrom);
+      if (pos === -1) break;
+      const end = pos + change.corrected.length;
+      // 다른 corrected와 겹치는지 확인
+      const overlaps = claimed.some((c) => !(end <= c.start || pos >= c.end));
+      if (!overlaps) {
+        claimed.push({ start: pos, end, change });
+        break;
+      }
+      searchFrom = pos + 1;
+    }
+  }
+
+  // 등장 순서대로 정렬 후 렌더링
+  claimed.sort((a, b) => a.start - b.start);
+
   const parts: ReactElement[] = [];
   let keyIdx = 0;
+  let pos = 0;
 
-  const sortedByPos = [...changes]
-    .map((c) => ({ ...c, pos: text.indexOf(c.corrected) }))
-    .filter((c) => c.pos !== -1)
-    .sort((a, b) => a.pos - b.pos);
-
-  for (const change of sortedByPos) {
-    const target = change.corrected;
-    const idx = remaining.indexOf(target);
-    if (idx === -1) continue;
-    if (idx > 0) {
-      parts.push(<span key={keyIdx++}>{remaining.slice(0, idx)}</span>);
+  for (const { start, end, change } of claimed) {
+    if (start > pos) {
+      parts.push(<span key={keyIdx++}>{text.slice(pos, start)}</span>);
     }
     const isActive = change.index === activeIndex;
     parts.push(
@@ -124,12 +161,13 @@ const renderWithHighlights = (
         onClick={() => onSelect(change.index)}
         className={`${labelCls} ${LABEL_CLASS[change.label]} cursor-pointer ${isActive ? 'mark-focus' : ''}`}
       >
-        {target}
+        {text.slice(start, end)}
       </mark>
     );
-    remaining = remaining.slice(idx + target.length);
+    pos = end;
   }
-  if (remaining) parts.push(<span key={keyIdx++}>{remaining}</span>);
+  if (pos < text.length)
+    parts.push(<span key={keyIdx++}>{text.slice(pos)}</span>);
 
   return parts;
 };
@@ -167,23 +205,44 @@ const ReasonText = ({
 }: {
   change: CorrectionChange;
   className?: string;
-}) => (
-  <p
-    className={`text-base leading-6 tracking-tight break-keep max-lg:max-h-[3em] max-lg:overflow-auto ${className}`}
-  >
-    {change.reason.split(change.corrected).map((part, i, arr) => (
-      <Fragment key={i}>
-        {part.split(change.original).map((subPart, j, subArr) => (
-          <Fragment key={j}>
-            {subPart}
-            {j < subArr.length - 1 && <strong>'{change.original}'</strong>}
-          </Fragment>
-        ))}
-        {i < arr.length - 1 && <strong>'{change.corrected}'</strong>}
-      </Fragment>
-    ))}
-  </p>
-);
+}) => {
+  const reason = change.reason ?? '';
+
+  // 빈 문자열·공백·이모지만 있는 경우 하이라이트 대상으로 사용하면
+  // split('')으로 문자가 낱개로 분리되므로 방어 처리
+  const isValidHighlight = (str: string) =>
+    !!str &&
+    str.trim().length > 0 &&
+    !/^\p{Extended_Pictographic}+$/u.test(str.trim());
+
+  const original = isValidHighlight(change.original) ? change.original : null;
+  const corrected = isValidHighlight(change.corrected)
+    ? change.corrected
+    : null;
+
+  // reason → corrected 기준으로 분리 후, 각 조각을 original 기준으로 분리
+  const outerParts = corrected ? reason.split(corrected) : [reason];
+
+  return (
+    <p
+      className={`text-base leading-6 tracking-tight break-keep max-lg:max-h-[3em] max-lg:overflow-auto ${className}`}
+    >
+      {outerParts.map((part, i, arr) => (
+        <Fragment key={i}>
+          {original
+            ? part.split(original).map((subPart, j, subArr) => (
+                <Fragment key={j}>
+                  {subPart}
+                  {j < subArr.length - 1 && <strong>'{original}'</strong>}
+                </Fragment>
+              ))
+            : part}
+          {i < arr.length - 1 && <strong>'{corrected}'</strong>}
+        </Fragment>
+      ))}
+    </p>
+  );
+};
 
 // ── CorrectionCard 컴포넌트 ────────────────────────────────────────────
 
