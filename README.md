@@ -82,25 +82,6 @@ push to main (package.json 변경 감지)
 ### 수동 배포
 GitHub Actions 탭 → `Deploy to AWS` → `Run workflow`
 
-### 필요한 GitHub Secrets
-| Secret | 설명 |
-|--------|------|
-| `AWS_ROLE_ARN` | OIDC로 assume할 IAM Role ARN |
-| `AWS_REGION` | 배포 리전 (예: `ap-northeast-2`) |
-| `S3_BUCKET_NAME` | 정적 파일을 업로드할 S3 버킷 이름 |
-| `CLOUDFRONT_DISTRIBUTION_ID` | 캐시 무효화 대상 CloudFront 배포 ID |
-
-### IAM Role 신뢰 관계 설정
-GitHub OIDC 공급자(`token.actions.githubusercontent.com`)를 통한 인증을 사용합니다.
-IAM Role의 신뢰 정책에 아래 조건을 추가하세요.
-
-```json
-{
-  "StringLike": {
-    "token.actions.githubusercontent.com:sub": "repo:ToneFit-Project/ToneFit_FE:*"
-  }
-}
-```
 
 ### 캐싱 전략
 - `index.html` : `no-cache` (항상 최신 버전 제공)
