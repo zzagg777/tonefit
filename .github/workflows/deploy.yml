@@ -2,7 +2,7 @@ name: Deploy to AWS
 
 on:
   push:
-    branches: [main]
+    branches: [test/aws-deploy]
     paths:
       - 'package.json'
   workflow_dispatch:
@@ -42,6 +42,9 @@ jobs:
     if: needs.check-version.outputs.changed == 'true'
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      id-token: write   # OIDC 토큰 요청 권한
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -60,11 +63,10 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       # index.html은 캐시 없이, 해시 붙은 정적 파일은 1년 캐시
