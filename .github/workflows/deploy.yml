@@ -8,6 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
   check-version:
     runs-on: ubuntu-latest
     outputs:
@@ -38,12 +41,12 @@ jobs:
           fi
 
   deploy:
-    needs: check-version
+    needs: [ci, check-version]
     if: needs.check-version.outputs.changed == 'true'
     runs-on: ubuntu-latest
     environment: production
     permissions:
-      id-token: write   # OIDC 토큰 요청 권한
+      id-token: write
       contents: read
     steps:
       - name: Checkout code
