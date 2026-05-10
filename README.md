@@ -18,7 +18,7 @@ https://tonefit-six.vercel.app
 라우팅    : React Router v6
 Form : React Hook Form, Zod
 코드 품질 : ESLint + Prettier + Husky
-CI / CD : GitHub Action / Vercel 
+CI / CD : GitHub Actions / AWS S3 + CloudFront
 HTTP 클라이언트 : Axios
 
 
@@ -66,5 +66,46 @@ test: 테스트 코드
 remove: 파일 또는 코드 삭제 
 
 
-## 환경 변수 :
+## 배포 방법 (AWS S3 + CloudFront)
+
+### 배포 흐름
+`package.json`의 `version`이 변경된 커밋이 `main`에 push되면 자동 배포됩니다.
+
+```
+push to main (package.json 변경 감지)
+  └─ CI (lint → test → build 검증)
+  └─ version 변경 여부 확인
+       └─ 변경됨 → build → S3 sync → CloudFront 캐시 무효화
+       └─ 변경 없음 → 배포 생략
+```
+
+### 수동 배포
+GitHub Actions 탭 → `Deploy to AWS` → `Run workflow`
+
+### 필요한 GitHub Secrets
+| Secret | 설명 |
+|--------|------|
+| `AWS_ROLE_ARN` | OIDC로 assume할 IAM Role ARN |
+| `AWS_REGION` | 배포 리전 (예: `ap-northeast-2`) |
+| `S3_BUCKET_NAME` | 정적 파일을 업로드할 S3 버킷 이름 |
+| `CLOUDFRONT_DISTRIBUTION_ID` | 캐시 무효화 대상 CloudFront 배포 ID |
+
+### IAM Role 신뢰 관계 설정
+GitHub OIDC 공급자(`token.actions.githubusercontent.com`)를 통한 인증을 사용합니다.
+IAM Role의 신뢰 정책에 아래 조건을 추가하세요.
+
+```json
+{
+  "StringLike": {
+    "token.actions.githubusercontent.com:sub": "repo:ToneFit-Project/ToneFit_FE:*"
+  }
+}
+```
+
+### 캐싱 전략
+- `index.html` : `no-cache` (항상 최신 버전 제공)
+- 해시가 붙은 정적 파일 (`*.js`, `*.css` 등) : `max-age=31536000, immutable` (1년 캐시)
+
+
+## 환경 변수
 VITE_API_URL=http://123.123.123.123:8080
