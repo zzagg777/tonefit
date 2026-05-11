@@ -65,6 +65,10 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_AMPLITUDE_API_KEY: ${{ secrets.VITE_AMPLITUDE_API_KEY }}
+          VITE_USE_MSW: ${{ secrets.VITE_USE_MSW }}
+          VITE_MOCK_CORRECTIONS: ${{ secrets.VITE_MOCK_CORRECTIONS }}
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
