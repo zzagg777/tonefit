@@ -99,7 +99,9 @@ const MOCK_STATE: LocationState = {
 const EditorProcessingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = (location.state as LocationState | null) ?? MOCK_STATE;
+  const rawState = location.state as LocationState | null;
+  // 직접 URL 접속 등 state 없는 경우 에디터로 복귀 (MOCK_STATE 폴백 제거)
+  const state = rawState ?? (FREEZE_FOR_DESIGN ? MOCK_STATE : null);
 
   const [step1, setStep1] = useState<ProcessingStep>('pending');
   const [step2, setStep2] = useState<ProcessingStep>('pending');
@@ -111,6 +113,12 @@ const EditorProcessingPage = () => {
   useEffect(() => {
     // StrictMode 대응: effect 재실행 시 ref 리셋
     cancelledRef.current = false;
+
+    // 필수 state 없으면 에디터로 복귀
+    if (!state?.originalEmail) {
+      navigate(ROUTES.EDITOR, { replace: true });
+      return;
+    }
 
     // Step 1: 원문 확인 (즉시)
     const t1 = setTimeout(() => setStep1('done'), 600);
@@ -175,15 +183,20 @@ const EditorProcessingPage = () => {
   const handleCancel = () => {
     cancelledRef.current = true;
     navigate(ROUTES.EDITOR, {
-      state: {
-        receiver: state.receiverType,
-        purpose: state.purposeType,
-        emailText: state.originalEmail,
-      },
+      state: state
+        ? {
+            receiver: state.receiverType,
+            purpose: state.purposeType,
+            emailText: state.originalEmail,
+          }
+        : null,
       replace: true,
     });
   };
   useKeyDown('Escape', handleCancel);
+
+  // state 없으면 렌더링 자체를 차단 (useEffect에서 redirect 처리됨)
+  if (!state) return null;
 
   return (
     <main
