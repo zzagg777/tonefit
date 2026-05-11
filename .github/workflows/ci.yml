@@ -63,20 +63,3 @@ jobs:
           VITE_AMPLITUDE_API_KEY: ${{ secrets.VITE_AMPLITUDE_API_KEY }}
           VITE_USE_MSW: ${{ secrets.VITE_USE_MSW }}
           VITE_MOCK_CORRECTIONS: ${{ secrets.VITE_MOCK_CORRECTIONS }}
-
-  # main 머지될 때만 Organization 레포로 자동 sync
-  sync-to-org:
-    runs-on: ubuntu-latest
-    needs: [build]  # lint/test/build 통과 후에만 실행
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # 전체 커밋 히스토리 가져오기
-
-      - name: Push to Organization repo
-        run: |
-          git remote add org https://x-access-token:${{ secrets.GH_PAT }}@github.com/ToneFit-Project/ToneFit_FE.git
-          git push org main:main --force
