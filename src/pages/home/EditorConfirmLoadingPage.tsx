@@ -114,6 +114,9 @@ const EditorConfirmLoadingPage = () => {
     };
   }, []);
 
+  // state 없으면 렌더링 자체를 차단 (useEffect에서 redirect 처리됨)
+  if (!state?.sessionId) return null;
+
   return (
     <main
       id="confirm-loading"
