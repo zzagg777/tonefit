@@ -223,6 +223,7 @@ const EditorPage = () => {
       id="editor"
       className="flex-1 bg-background-page flex flex-col overflow-y-auto px-10 relative"
     >
+      <h1 className="sr-only">이메일 교정</h1>
       {/* draft 알림 배너 */}
       {showDraftNoti && (
         <div className="animate-slide-down overflow-hidden max-w-full bg-background-surface rounded-b-2xl shadow-[0px_4px_8px_rgba(0,0,0,0.1)] pt-6 pb-4 px-4 shrink-0 absolute left-10 right-10">
@@ -287,8 +288,9 @@ const EditorPage = () => {
                     <button
                       key={type}
                       type="button"
+                      aria-pressed={receiver === type}
                       onClick={() => {
-                        setReceiver(type);
+                        setReceiver((prev) => (prev === type ? null : type));
                         setErrors((e) => ({ ...e, receiver: undefined }));
                       }}
                       className={`${chipBase} ${receiver === type ? chipSelected : chipDefault}`}
@@ -314,8 +316,9 @@ const EditorPage = () => {
                     <button
                       key={type}
                       type="button"
+                      aria-pressed={purpose === type}
                       onClick={() => {
-                        setPurpose(type);
+                        setPurpose((prev) => (prev === type ? null : type));
                         setErrors((e) => ({ ...e, purpose: undefined }));
                       }}
                       className={`${chipBase} ${purpose === type ? chipSelected : chipDefault}`}

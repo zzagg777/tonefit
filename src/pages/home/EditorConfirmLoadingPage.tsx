@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Icon, TitleText } from '@/components/ui';
 import { ROUTES } from '@/constants';
 import { useFinalizeCorrection, useConfirmCorrection } from '@/queries';
@@ -31,12 +31,14 @@ const EditorConfirmLoadingPage = () => {
   const location = useLocation();
   const state = location.state as LocationState | null;
 
-  const { mutate: finalizeCorrection } = useFinalizeCorrection();
-  const { mutate: confirmCorrection } = useConfirmCorrection();
+  const { mutateAsync: finalizeAsync } = useFinalizeCorrection();
+  const { mutateAsync: confirmAsync } = useConfirmCorrection();
   const cancelledRef = useRef(false);
+  // StrictMode 이중 실행 방지: API 호출 자체를 한 번만 허용
+  const calledRef = useRef(false);
 
   useEffect(() => {
-    // StrictMode 대응: effect 재실행 시 ref 리셋
+    // cleanup 후 재실행 시 네비게이션 가드 리셋
     cancelledRef.current = false;
 
     // 필수 state 없으면 에디터로 복귀
@@ -47,83 +49,97 @@ const EditorConfirmLoadingPage = () => {
 
     if (FREEZE_FOR_DESIGN) return;
 
-    const handleError = () => {
+    // StrictMode에서 effect가 두 번 실행되어도 API는 한 번만 호출
+    if (calledRef.current) return;
+    calledRef.current = true;
+
+    const run = async () => {
+      // Step 1: finalize → EDITING 상태로 전환 (ai_final, ai_subject 반환)
+      // 400이면 이미 EDITING 상태(뒤로가기 후 재시도 등) → finalize 건너뛰고 confirm으로 진행
+      let finalizeData: FinalizeResponse | undefined;
+      try {
+        finalizeData = await finalizeAsync(state.sessionId);
+      } catch (error) {
+        const status = (error as AxiosError)?.response?.status;
+        if (status !== 400) {
+          // finalize 실패 (400 제외) → 결과 페이지로 복귀
+          if (cancelledRef.current) return;
+          navigate(ROUTES.EDITOR_RESULT, {
+            state: {
+              correctionData: state.correctionData,
+              originalEmail: state.originalEmail,
+              receiverType: state.receiverType,
+              purposeType: state.purposeType,
+            },
+            replace: true,
+          });
+          return;
+        }
+        // 400: 이미 EDITING 상태 → finalizeData 없이 confirm 진행
+      }
+
       if (cancelledRef.current) return;
-      navigate(ROUTES.EDITOR_RESULT, {
+
+      // Step 2: confirm → CONFIRMED 상태로 전환
+      try {
+        await confirmAsync({
+          sessionId: state.sessionId,
+          data: { user_final: state.finalEmail },
+        });
+      } catch {
+        // confirm 실패 → 결과 페이지로 복귀
+        if (cancelledRef.current) return;
+        navigate(ROUTES.EDITOR_RESULT, {
+          state: {
+            correctionData: state.correctionData,
+            originalEmail: state.originalEmail,
+            receiverType: state.receiverType,
+            purposeType: state.purposeType,
+          },
+          replace: true,
+        });
+        return;
+      }
+
+      if (cancelledRef.current) return;
+
+      await new Promise<void>((r) => setTimeout(r, 400));
+      if (cancelledRef.current) return;
+
+      navigate(ROUTES.EDITOR_DONE, {
         state: {
-          correctionData: state.correctionData,
-          originalEmail: state.originalEmail,
+          sessionId: state.sessionId,
+          finalEmail: state.finalEmail,
+          aiFinal: finalizeData?.ai_final,
+          aiSubject: finalizeData?.ai_subject,
           receiverType: state.receiverType,
           purposeType: state.purposeType,
+          changes: state.changes,
         },
         replace: true,
       });
     };
 
-    // Step 2: confirm → CONFIRMED 상태로 전환
-    const runConfirm = (finalizeData?: FinalizeResponse) => {
-      if (cancelledRef.current) return;
-      confirmCorrection(
-        {
-          sessionId: state.sessionId,
-          data: { user_final: state.finalEmail },
-        },
-        {
-          onSuccess: () => {
-            if (cancelledRef.current) return;
-            setTimeout(() => {
-              if (cancelledRef.current) return;
-              navigate(ROUTES.EDITOR_DONE, {
-                state: {
-                  sessionId: state.sessionId,
-                  finalEmail: state.finalEmail,
-                  aiFinal: finalizeData?.ai_final,
-                  aiSubject: finalizeData?.ai_subject,
-                  receiverType: state.receiverType,
-                  purposeType: state.purposeType,
-                  changes: state.changes,
-                },
-                replace: true,
-              });
-            }, 400);
-          },
-          onError: handleError,
-        }
-      );
-    };
-
-    // Step 1: finalize → EDITING 상태로 전환 (ai_final, ai_subject 반환)
-    // 400이면 이미 EDITING 상태(뒤로가기 후 재시도 등) → finalize 건너뛰고 confirm으로 진행
-    finalizeCorrection(state.sessionId, {
-      onSuccess: (finalizeData: FinalizeResponse) => {
-        runConfirm(finalizeData);
-      },
-      onError: (error) => {
-        const status = (error as AxiosError)?.response?.status;
-        if (status === 400) {
-          // 세션이 이미 EDITING 상태 → confirm만 재시도
-          runConfirm();
-        } else {
-          handleError();
-        }
-      },
-    });
+    run();
 
     return () => {
-      cancelledRef.current = true;
+      // cancelledRef는 여기서 true로 설정하지 않음
+      // — mutateAsync는 Promise 기반으로 컴포넌트 마운트 상태와 무관하게 동작하며,
+      //   cleanup과 재실행 사이에 응답이 와도 navigate가 막히지 않도록 유지
     };
   }, []);
 
-  // state 없으면 렌더링 자체를 차단 (useEffect에서 redirect 처리됨)
-  if (!state?.sessionId) return null;
+  // state 없으면 렌더링 차단 — 직접 URL 접속 방어
+  if (!state?.sessionId) return <Navigate to={ROUTES.EDITOR} replace />;
 
   return (
     <main
       id="confirm-loading"
       className="flex-1 bg-background-page flex flex-col items-center justify-center gap-18 px-10 py-10"
     >
+      <h1 className="sr-only">교정안 최종 확정 중</h1>
       {/* 로딩 원형 애니메이션 */}
-      <div className="relative size-40 flex items-center justify-center w-[160px] h-[160px]">
+      <div className="relative size-40 flex items-center justify-center w-40 h-40">
         {/* 배경 원 */}
         <svg
           className="absolute inset-0"
@@ -132,7 +148,13 @@ const EditorConfirmLoadingPage = () => {
           viewBox="0 0 160 160"
           fill="none"
         >
-          <circle cx="80" cy="80" r="72" stroke="#E5E7EB" strokeWidth="8" />
+          <circle
+            cx="80"
+            cy="80"
+            r="72"
+            stroke="var(--color-border-default)"
+            strokeWidth="8"
+          />
         </svg>
         {/* 회전하는 호 */}
         <svg

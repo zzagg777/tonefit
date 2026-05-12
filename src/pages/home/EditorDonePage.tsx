@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Icon, ButtonAction } from '@/components/ui';
 import {
   ROUTES,
@@ -78,7 +78,8 @@ const getActionLabel = (action: FeedbackActionType | null) => {
 const EditorDonePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = (location.state as DoneLocationState | null) ?? MOCK_STATE;
+  const rawState = location.state as DoneLocationState | null;
+  const state = rawState ?? MOCK_STATE;
 
   const { receiverType, purposeType, changes } = state;
 
@@ -170,6 +171,11 @@ const EditorDonePage = () => {
 
   const labelBox =
     'flex items-center justify-between py-2 gap-5 rounded text-base font-semibold leading-5 tracking-tight text-text-secondary';
+  // state 없으면 렌더링 차단 — 직접 URL 접속 방어
+  if (!rawState?.sessionId) {
+    return <Navigate to={ROUTES.EDITOR} replace />;
+  }
+
   // 라벨 스타일
   const labelBase = `py-0.5 px-5 w-24.5 text-center leading-6 rounded-sm`;
 
@@ -178,11 +184,12 @@ const EditorDonePage = () => {
       id="done"
       className="bg-background-page flex-1 flex flex-col overflow-hidden py-0"
     >
+      <h1 className="sr-only">교정 완료</h1>
       {/* ── 상단 정보 바 ── */}
       <div className="bg-background-surface flex gap-5 items-center justify-between overflow-hidden py-5 px-6 rounded-2xl shrink-0">
         {/* 목적 + 수신자 라벨 */}
         <div className="flex gap-1.5 items-center">
-          <div className="bg-[#dcebff] border border-[#b8d4ff] flex items-center justify-center px-2.5 py-0.5 rounded text-[#285ea8] text-base font-medium leading-6 tracking-tight whitespace-nowrap">
+          <div className="bg-background-info-chip border border-border-info-chip flex items-center justify-center px-2.5 py-0.5 rounded text-text-info-chip text-base font-medium leading-6 tracking-tight whitespace-nowrap">
             {PURPOSE_LABELS[purposeType]}
           </div>
           <div className="bg-background-page border border-border-subtle flex items-center justify-center px-5 py-0.5 rounded text-text-secondary text-base font-semibold leading-6 tracking-tight whitespace-nowrap">
@@ -192,7 +199,7 @@ const EditorDonePage = () => {
 
         {/* 액션 버튼 */}
         <div className="flex gap-2.5">
-          <ButtonAction
+          {/* <ButtonAction
             variant="muted"
             size="lg"
             leftIcon="redo"
@@ -201,7 +208,7 @@ const EditorDonePage = () => {
             onClick={() => navigate(ROUTES.HISTORY)}
           >
             라이브러리 이동
-          </ButtonAction>
+          </ButtonAction> */}
           <ButtonAction
             variant="muted"
             size="lg"
@@ -346,7 +353,7 @@ const EditorDonePage = () => {
           </div>
 
           {/* 확정본 복사하기 버튼 */}
-          <div className="px-6 pb-6 pt-2 shrink-0 text-2xl w-full max-lg:w-[calc(100%-90px)] bottom-0 left-[90px] right-0 max-lg:fixed max-lg:py-10 w-">
+          <div className="px-6 pb-6 pt-2 shrink-0 text-2xl w-full max-lg:w-[calc(100%-90px)] bottom-0 left-22.5 right-0 max-lg:fixed max-lg:py-10">
             <button
               onClick={handleCopy}
               disabled={copyState === 'copying' || !emailText.trim()}

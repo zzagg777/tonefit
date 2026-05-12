@@ -21,6 +21,8 @@
   --color-text-warning: var(--color-text-warning);
   --color-text-danger: var(--color-text-danger);
   --color-text-info: var(--color-text-info);
+  --color-text-info-chip: var(--color-palette-brand-blue-700);
+  --color-text-info-chip-strong: var(--color-palette-brand-blue-600);
 
   /* icon - text와 동일 */
   /* text-icon-primary */
@@ -58,6 +60,7 @@
   --color-background-warning-subtle: var(--color-background-warning-subtle);
   --color-background-danger-subtle: var(--color-background-danger-subtle);
   --color-background-info-subtle: var(--color-background-info-subtle);
+  --color-background-info-chip: var(--color-palette-brand-blue-100);
   --color-background-load: var(--color-background-load);
 
   /* border */
@@ -71,6 +74,7 @@
   --color-border-brand: var(--color-border-brand);
   --color-border-success: var(--color-border-success);
   --color-border-info: var(--color-border-info);
+  --color-border-info-chip: var(--color-palette-brand-blue-200);
   --color-border-warning: var(--color-border-warning);
   --color-border-danger: var(--color-border-danger);
 
