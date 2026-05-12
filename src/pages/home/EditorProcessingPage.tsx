@@ -39,7 +39,13 @@ const StepItem = ({ status, label }: StepItemProps) => {
           className="animate-spin"
           style={{ animationDuration: '1s' }}
         >
-          <circle cx="16" cy="16" r="13" stroke="#E5E7EB" strokeWidth="3" />
+          <circle
+            cx="16"
+            cy="16"
+            r="13"
+            stroke="var(--color-border-default)"
+            strokeWidth="3"
+          />
           <path
             d="M16 3 A13 13 0 0 1 29 16"
             stroke="var(--color-icon-load)"
@@ -109,9 +115,11 @@ const EditorProcessingPage = () => {
 
   const { mutate: requestCorrection } = useRequestCorrection();
   const cancelledRef = useRef(false);
+  // StrictMode 이중 실행 방지: API 호출 자체를 한 번만 허용
+  const calledRef = useRef(false);
 
   useEffect(() => {
-    // StrictMode 대응: effect 재실행 시 ref 리셋
+    // cleanup 후 재실행 시 네비게이션 가드 리셋 (콜백이 navigate를 막지 않도록)
     cancelledRef.current = false;
 
     // 필수 state 없으면 에디터로 복귀
@@ -130,6 +138,14 @@ const EditorProcessingPage = () => {
         clearTimeout(t1);
         clearTimeout(t2);
       };
+
+    // StrictMode에서 effect가 두 번 실행되어도 API는 한 번만 호출
+    if (calledRef.current)
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+      };
+    calledRef.current = true;
 
     // 교정 API 호출
     requestCorrection(
@@ -205,7 +221,7 @@ const EditorProcessingPage = () => {
     >
       <h1 className="sr-only">이메일 교정 처리 중</h1>
       {/* 로딩 원형 애니메이션 */}
-      <div className="relative size-40 flex items-center justify-center w-[160px] h-[160px]">
+      <div className="relative size-40 flex items-center justify-center w-40 h-40">
         {/* 배경 원 */}
         <svg
           className="absolute inset-0"
@@ -214,7 +230,13 @@ const EditorProcessingPage = () => {
           viewBox="0 0 160 160"
           fill="none"
         >
-          <circle cx="80" cy="80" r="72" stroke="#E5E7EB" strokeWidth="8" />
+          <circle
+            cx="80"
+            cy="80"
+            r="72"
+            stroke="var(--color-border-default)"
+            strokeWidth="8"
+          />
         </svg>
         {/* 회전하는 호 */}
         <svg

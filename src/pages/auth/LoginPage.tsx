@@ -62,7 +62,7 @@ const LoginPage = () => {
   const onSubmit = async (data: LoginFormValues) => {
     setApiError(null);
     try {
-      console.info('[LoginPage] submit', data); // TODO: API 연동 후 제거
+      console.info('[LoginPage] submit', data);
       // TODO: const result = await postLogin({ email: data.email, password: data.password });
       // TODO: tokenStore.setTokens(result.accessToken, result.refreshToken);
       // TODO: navigate(ROUTES.DASHBOARD);

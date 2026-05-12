@@ -189,7 +189,7 @@ const EditorDonePage = () => {
       <div className="bg-background-surface flex gap-5 items-center justify-between overflow-hidden py-5 px-6 rounded-2xl shrink-0">
         {/* 목적 + 수신자 라벨 */}
         <div className="flex gap-1.5 items-center">
-          <div className="bg-[#dcebff] border border-[#b8d4ff] flex items-center justify-center px-2.5 py-0.5 rounded text-[#285ea8] text-base font-medium leading-6 tracking-tight whitespace-nowrap">
+          <div className="bg-background-info-chip border border-border-info-chip flex items-center justify-center px-2.5 py-0.5 rounded text-text-info-chip text-base font-medium leading-6 tracking-tight whitespace-nowrap">
             {PURPOSE_LABELS[purposeType]}
           </div>
           <div className="bg-background-page border border-border-subtle flex items-center justify-center px-5 py-0.5 rounded text-text-secondary text-base font-semibold leading-6 tracking-tight whitespace-nowrap">
@@ -353,7 +353,7 @@ const EditorDonePage = () => {
           </div>
 
           {/* 확정본 복사하기 버튼 */}
-          <div className="px-6 pb-6 pt-2 shrink-0 text-2xl w-full max-lg:w-[calc(100%-90px)] bottom-0 left-[90px] right-0 max-lg:fixed max-lg:py-10 w-">
+          <div className="px-6 pb-6 pt-2 shrink-0 text-2xl w-full max-lg:w-[calc(100%-90px)] bottom-0 left-22.5 right-0 max-lg:fixed max-lg:py-10">
             <button
               onClick={handleCopy}
               disabled={copyState === 'copying' || !emailText.trim()}

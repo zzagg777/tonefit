@@ -130,7 +130,7 @@ const EditorConfirmLoadingPage = () => {
     >
       <h1 className="sr-only">교정안 최종 확정 중</h1>
       {/* 로딩 원형 애니메이션 */}
-      <div className="relative size-40 flex items-center justify-center w-[160px] h-[160px]">
+      <div className="relative size-40 flex items-center justify-center w-40 h-40">
         {/* 배경 원 */}
         <svg
           className="absolute inset-0"
@@ -139,7 +139,13 @@ const EditorConfirmLoadingPage = () => {
           viewBox="0 0 160 160"
           fill="none"
         >
-          <circle cx="80" cy="80" r="72" stroke="#E5E7EB" strokeWidth="8" />
+          <circle
+            cx="80"
+            cy="80"
+            r="72"
+            stroke="var(--color-border-default)"
+            strokeWidth="8"
+          />
         </svg>
         {/* 회전하는 호 */}
         <svg

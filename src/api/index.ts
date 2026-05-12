@@ -81,12 +81,6 @@ apiClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
-    // TODO: 임시 로그 — API 테스트 확인 후 제거
-    console.log(
-      `[REQ] ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`,
-      config.data ?? ''
-    );
-
     return config;
   },
   (error) => Promise.reject(error)
@@ -150,11 +144,6 @@ apiClient.interceptors.response.use(
       response.data = response.data.data;
     }
 
-    // TODO: 임시 로그 — API 테스트 확인 후 제거
-    console.log(
-      `[RES] ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`,
-      response.data
-    );
     return response;
   },
 

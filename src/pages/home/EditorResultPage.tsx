@@ -850,7 +850,7 @@ const EditorResultPage = () => {
 
           {/* 목적 + 수신자 라벨 */}
           <div className="flex gap-1.5 items-center">
-            <div className="bg-[#dcebff] border border-[#b8d4ff] flex items-center justify-center px-2.5 py-0.5 rounded text-[#285ea8] text-base font-medium leading-6 tracking-tight whitespace-nowrap">
+            <div className="bg-background-info-chip border border-border-info-chip flex items-center justify-center px-2.5 py-0.5 rounded text-text-info-chip text-base font-medium leading-6 tracking-tight whitespace-nowrap">
               {PURPOSE_LABELS[purposeType]}
             </div>
             <div className="bg-background-page border border-border-subtle flex items-center justify-center px-5 py-0.5 rounded text-text-secondary text-base font-semibold leading-6 tracking-tight whitespace-nowrap">
@@ -959,7 +959,7 @@ const EditorResultPage = () => {
 
         {/* 교정본 패널 */}
         <div className="flex-1 bg-background-surface flex flex-col gap-3.5 p-6 rounded-md min-w-0 overflow-hidden">
-          <div className="bg-[#dce8ff] border border-border-default flex items-center justify-center px-5 py-0.5 rounded self-start text-[#2954d6] text-base font-semibold leading-6 tracking-tight">
+          <div className="bg-background-info-chip border border-border-default flex items-center justify-center px-5 py-0.5 rounded self-start text-text-info-chip-strong text-base font-semibold leading-6 tracking-tight">
             교정본
           </div>
           <div
