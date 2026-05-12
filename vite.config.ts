@@ -13,6 +13,11 @@ export default defineConfig({
   },
   server: {
     port: 8080, // 백엔드 CORS 허용 포트에 맞춤
+    hmr: true,
+    watch: {
+      usePolling: true, // iCloud/Dropbox 등 클라우드 동기화 환경에서 FSEvents 오작동 방어
+      interval: 300,
+    },
   },
   test: {
     globals: true, // describe, test, expect 등 전역 변수 사용 허용

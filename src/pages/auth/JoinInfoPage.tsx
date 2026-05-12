@@ -521,6 +521,7 @@ const JoinInfoPage = () => {
               autoComplete="new-password"
               rightIcon={showPassword ? 'show' : 'hide'}
               onRightIconClick={() => setShowPassword((p) => !p)}
+              rightIconPressed={showPassword}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

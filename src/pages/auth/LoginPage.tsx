@@ -101,6 +101,7 @@ const LoginPage = () => {
           placeholder="비밀번호를 입력해 주세요"
           rightIcon={showPassword ? 'hide' : 'show'}
           onRightIconClick={() => setShowPassword((p) => !p)}
+          rightIconPressed={showPassword}
           autoComplete="current-password"
           error={errors.password?.message}
           {...register('password')}

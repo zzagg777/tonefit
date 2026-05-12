@@ -27,6 +27,11 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
    */
   onRightIconClick?: () => void;
   /**
+   * 우측 아이콘 버튼의 토글 상태 (스크린리더용 aria-pressed)
+   * 비밀번호 표시/숨기기처럼 on/off 상태가 있을 때 전달
+   */
+  rightIconPressed?: boolean;
+  /**
    * 우측 커스텀 슬롯 (예: 비밀번호 show/hide 토글 버튼)
    * rightIcon보다 우선 적용됩니다.
    */
@@ -95,6 +100,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       containerClassName = '',
       rightIcon,
       onRightIconClick,
+      rightIconPressed,
       rightSlot,
       error = false,
       disabled,
@@ -169,6 +175,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               type="button"
               onClick={onRightIconClick}
               tabIndex={-1}
+              aria-pressed={rightIconPressed}
               className="shrink-0 cursor-pointer"
             >
               <Icon

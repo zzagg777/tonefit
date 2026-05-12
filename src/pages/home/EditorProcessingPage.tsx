@@ -203,6 +203,7 @@ const EditorProcessingPage = () => {
       id="process"
       className="flex-1 bg-background-page flex flex-col items-center justify-center gap-18 px-10 py-10"
     >
+      <h1 className="sr-only">이메일 교정 처리 중</h1>
       {/* 로딩 원형 애니메이션 */}
       <div className="relative size-40 flex items-center justify-center w-[160px] h-[160px]">
         {/* 배경 원 */}

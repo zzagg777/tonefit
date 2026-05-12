@@ -34,9 +34,11 @@ const EditorConfirmLoadingPage = () => {
   const { mutate: finalizeCorrection } = useFinalizeCorrection();
   const { mutate: confirmCorrection } = useConfirmCorrection();
   const cancelledRef = useRef(false);
+  // StrictMode 이중 실행 방지: API 호출 자체를 한 번만 허용
+  const calledRef = useRef(false);
 
   useEffect(() => {
-    // StrictMode 대응: effect 재실행 시 ref 리셋
+    // cleanup 후 재실행 시 네비게이션 가드 리셋 (콜백이 navigate를 막지 않도록)
     cancelledRef.current = false;
 
     // 필수 state 없으면 에디터로 복귀
@@ -46,6 +48,10 @@ const EditorConfirmLoadingPage = () => {
     }
 
     if (FREEZE_FOR_DESIGN) return;
+
+    // StrictMode에서 effect가 두 번 실행되어도 API는 한 번만 호출
+    if (calledRef.current) return;
+    calledRef.current = true;
 
     const handleError = () => {
       if (cancelledRef.current) return;
@@ -122,6 +128,7 @@ const EditorConfirmLoadingPage = () => {
       id="confirm-loading"
       className="flex-1 bg-background-page flex flex-col items-center justify-center gap-18 px-10 py-10"
     >
+      <h1 className="sr-only">교정안 최종 확정 중</h1>
       {/* 로딩 원형 애니메이션 */}
       <div className="relative size-40 flex items-center justify-center w-[160px] h-[160px]">
         {/* 배경 원 */}

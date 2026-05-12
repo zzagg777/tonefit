@@ -821,6 +821,7 @@ const EditorResultPage = () => {
       id="result"
       className="bg-background-page flex-1 flex flex-col overflow-hidden px-9 gap-5 py-0"
     >
+      <h1 className="sr-only">교정 결과 비교</h1>
       {/* ── 상단 정보 바 ── */}
       <div className="bg-background-surface flex gap-5 items-center justify-between overflow-hidden pb-5 pt-10 px-6 rounded-2xl shrink-0">
         {/* 상단 좌측 */}

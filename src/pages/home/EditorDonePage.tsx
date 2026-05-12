@@ -184,6 +184,7 @@ const EditorDonePage = () => {
       id="done"
       className="bg-background-page flex-1 flex flex-col overflow-hidden py-0"
     >
+      <h1 className="sr-only">교정 완료</h1>
       {/* ── 상단 정보 바 ── */}
       <div className="bg-background-surface flex gap-5 items-center justify-between overflow-hidden py-5 px-6 rounded-2xl shrink-0">
         {/* 목적 + 수신자 라벨 */}
@@ -198,7 +199,7 @@ const EditorDonePage = () => {
 
         {/* 액션 버튼 */}
         <div className="flex gap-2.5">
-          <ButtonAction
+          {/* <ButtonAction
             variant="muted"
             size="lg"
             leftIcon="redo"
@@ -207,7 +208,7 @@ const EditorDonePage = () => {
             onClick={() => navigate(ROUTES.HISTORY)}
           >
             라이브러리 이동
-          </ButtonAction>
+          </ButtonAction> */}
           <ButtonAction
             variant="muted"
             size="lg"
