@@ -31,14 +31,14 @@ const EditorConfirmLoadingPage = () => {
   const location = useLocation();
   const state = location.state as LocationState | null;
 
-  const { mutate: finalizeCorrection } = useFinalizeCorrection();
-  const { mutate: confirmCorrection } = useConfirmCorrection();
+  const { mutateAsync: finalizeAsync } = useFinalizeCorrection();
+  const { mutateAsync: confirmAsync } = useConfirmCorrection();
   const cancelledRef = useRef(false);
   // StrictMode 이중 실행 방지: API 호출 자체를 한 번만 허용
   const calledRef = useRef(false);
 
   useEffect(() => {
-    // cleanup 후 재실행 시 네비게이션 가드 리셋 (콜백이 navigate를 막지 않도록)
+    // cleanup 후 재실행 시 네비게이션 가드 리셋
     cancelledRef.current = false;
 
     // 필수 state 없으면 에디터로 복귀
@@ -53,70 +53,79 @@ const EditorConfirmLoadingPage = () => {
     if (calledRef.current) return;
     calledRef.current = true;
 
-    const handleError = () => {
+    const run = async () => {
+      // Step 1: finalize → EDITING 상태로 전환 (ai_final, ai_subject 반환)
+      // 400이면 이미 EDITING 상태(뒤로가기 후 재시도 등) → finalize 건너뛰고 confirm으로 진행
+      let finalizeData: FinalizeResponse | undefined;
+      try {
+        finalizeData = await finalizeAsync(state.sessionId);
+      } catch (error) {
+        const status = (error as AxiosError)?.response?.status;
+        if (status !== 400) {
+          // finalize 실패 (400 제외) → 결과 페이지로 복귀
+          if (cancelledRef.current) return;
+          navigate(ROUTES.EDITOR_RESULT, {
+            state: {
+              correctionData: state.correctionData,
+              originalEmail: state.originalEmail,
+              receiverType: state.receiverType,
+              purposeType: state.purposeType,
+            },
+            replace: true,
+          });
+          return;
+        }
+        // 400: 이미 EDITING 상태 → finalizeData 없이 confirm 진행
+      }
+
       if (cancelledRef.current) return;
-      navigate(ROUTES.EDITOR_RESULT, {
+
+      // Step 2: confirm → CONFIRMED 상태로 전환
+      try {
+        await confirmAsync({
+          sessionId: state.sessionId,
+          data: { user_final: state.finalEmail },
+        });
+      } catch {
+        // confirm 실패 → 결과 페이지로 복귀
+        if (cancelledRef.current) return;
+        navigate(ROUTES.EDITOR_RESULT, {
+          state: {
+            correctionData: state.correctionData,
+            originalEmail: state.originalEmail,
+            receiverType: state.receiverType,
+            purposeType: state.purposeType,
+          },
+          replace: true,
+        });
+        return;
+      }
+
+      if (cancelledRef.current) return;
+
+      await new Promise<void>((r) => setTimeout(r, 400));
+      if (cancelledRef.current) return;
+
+      navigate(ROUTES.EDITOR_DONE, {
         state: {
-          correctionData: state.correctionData,
-          originalEmail: state.originalEmail,
+          sessionId: state.sessionId,
+          finalEmail: state.finalEmail,
+          aiFinal: finalizeData?.ai_final,
+          aiSubject: finalizeData?.ai_subject,
           receiverType: state.receiverType,
           purposeType: state.purposeType,
+          changes: state.changes,
         },
         replace: true,
       });
     };
 
-    // Step 2: confirm → CONFIRMED 상태로 전환
-    const runConfirm = (finalizeData?: FinalizeResponse) => {
-      if (cancelledRef.current) return;
-      confirmCorrection(
-        {
-          sessionId: state.sessionId,
-          data: { user_final: state.finalEmail },
-        },
-        {
-          onSuccess: () => {
-            if (cancelledRef.current) return;
-            setTimeout(() => {
-              if (cancelledRef.current) return;
-              navigate(ROUTES.EDITOR_DONE, {
-                state: {
-                  sessionId: state.sessionId,
-                  finalEmail: state.finalEmail,
-                  aiFinal: finalizeData?.ai_final,
-                  aiSubject: finalizeData?.ai_subject,
-                  receiverType: state.receiverType,
-                  purposeType: state.purposeType,
-                  changes: state.changes,
-                },
-                replace: true,
-              });
-            }, 400);
-          },
-          onError: handleError,
-        }
-      );
-    };
-
-    // Step 1: finalize → EDITING 상태로 전환 (ai_final, ai_subject 반환)
-    // 400이면 이미 EDITING 상태(뒤로가기 후 재시도 등) → finalize 건너뛰고 confirm으로 진행
-    finalizeCorrection(state.sessionId, {
-      onSuccess: (finalizeData: FinalizeResponse) => {
-        runConfirm(finalizeData);
-      },
-      onError: (error) => {
-        const status = (error as AxiosError)?.response?.status;
-        if (status === 400) {
-          // 세션이 이미 EDITING 상태 → confirm만 재시도
-          runConfirm();
-        } else {
-          handleError();
-        }
-      },
-    });
+    run();
 
     return () => {
-      cancelledRef.current = true;
+      // cancelledRef는 여기서 true로 설정하지 않음
+      // — mutateAsync는 Promise 기반으로 컴포넌트 마운트 상태와 무관하게 동작하며,
+      //   cleanup과 재실행 사이에 응답이 와도 navigate가 막히지 않도록 유지
     };
   }, []);
 

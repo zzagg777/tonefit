@@ -11,6 +11,7 @@
 import axios from 'axios';
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { STORAGE_KEYS } from '@/constants';
+import { devLog, devError } from '@/utils/devLog';
 import type {
   // Auth
   AnonymousSession,
@@ -81,6 +82,13 @@ apiClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (config as any)._startTime = Date.now();
+    devLog(
+      `[REQ] ${config.method?.toUpperCase()} ${config.url}`,
+      config.data ?? ''
+    );
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -144,6 +152,14 @@ apiClient.interceptors.response.use(
       response.data = response.data.data;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const elapsed =
+      Date.now() - ((response.config as any)._startTime ?? Date.now());
+    devLog(
+      `[RES] ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url} (${elapsed}ms)`,
+      response.data
+    );
+
     return response;
   },
 
@@ -152,9 +168,11 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
     const status: number | undefined = error.response?.status;
 
-    // TODO: 임시 로그 — API 테스트 확인 후 제거
-    console.error(
-      `[ERR] ${status ?? 'NETWORK'} ${originalRequest?.method?.toUpperCase()} ${originalRequest?.url}`,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const elapsed =
+      Date.now() - ((originalRequest as any)._startTime ?? Date.now());
+    devError(
+      `[ERR] ${status ?? 'NETWORK'} ${originalRequest?.method?.toUpperCase()} ${originalRequest?.url} (${elapsed}ms)`,
       error.response?.data ?? error.message
     );
 
