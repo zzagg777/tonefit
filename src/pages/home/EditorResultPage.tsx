@@ -6,7 +6,7 @@ import {
   Fragment,
   type ReactElement,
 } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Icon, ButtonAction, Chip } from '@/components/ui';
 import {
   ROUTES,
@@ -669,7 +669,8 @@ const CorrectionCard = ({
 const EditorResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = (location.state as LocationState | null) ?? MOCK_STATE;
+  const rawState = location.state as LocationState | null;
+  const state = rawState ?? MOCK_STATE; // MOCK_STATE는 FREEZE_FOR_DESIGN 용도로만 유지
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [changes, setChanges] = useState<
@@ -809,6 +810,11 @@ const EditorResultPage = () => {
     dst.scrollTop = src.scrollTop;
     isSyncingRef.current = false;
   }, []);
+
+  // state 없으면 렌더링 차단 — 직접 URL 접속 방어
+  if (!rawState?.correctionData) {
+    return <Navigate to={ROUTES.EDITOR} replace />;
+  }
 
   return (
     <main

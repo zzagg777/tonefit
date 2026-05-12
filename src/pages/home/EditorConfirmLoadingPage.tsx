@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Icon, TitleText } from '@/components/ui';
 import { ROUTES } from '@/constants';
 import { useFinalizeCorrection, useConfirmCorrection } from '@/queries';
@@ -114,8 +114,8 @@ const EditorConfirmLoadingPage = () => {
     };
   }, []);
 
-  // state 없으면 렌더링 자체를 차단 (useEffect에서 redirect 처리됨)
-  if (!state?.sessionId) return null;
+  // state 없으면 렌더링 차단 — 직접 URL 접속 방어
+  if (!state?.sessionId) return <Navigate to={ROUTES.EDITOR} replace />;
 
   return (
     <main

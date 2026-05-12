@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useKeyDown } from '@/hooks/useKeyDown';
 import { MOCK_ORIGINAL } from '@/mocks/handlers';
 import { Icon } from '@/components/ui';
@@ -195,8 +195,8 @@ const EditorProcessingPage = () => {
   };
   useKeyDown('Escape', handleCancel);
 
-  // state 없으면 렌더링 자체를 차단 (useEffect에서 redirect 처리됨)
-  if (!state) return null;
+  // state 없으면 렌더링 차단 — 직접 URL 접속 방어
+  if (!state) return <Navigate to={ROUTES.EDITOR} replace />;
 
   return (
     <main

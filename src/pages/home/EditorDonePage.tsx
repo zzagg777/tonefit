@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Icon, ButtonAction } from '@/components/ui';
 import {
   ROUTES,
@@ -78,7 +78,8 @@ const getActionLabel = (action: FeedbackActionType | null) => {
 const EditorDonePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = (location.state as DoneLocationState | null) ?? MOCK_STATE;
+  const rawState = location.state as DoneLocationState | null;
+  const state = rawState ?? MOCK_STATE;
 
   const { receiverType, purposeType, changes } = state;
 
@@ -170,6 +171,11 @@ const EditorDonePage = () => {
 
   const labelBox =
     'flex items-center justify-between py-2 gap-5 rounded text-base font-semibold leading-5 tracking-tight text-text-secondary';
+  // state 없으면 렌더링 차단 — 직접 URL 접속 방어
+  if (!rawState?.sessionId) {
+    return <Navigate to={ROUTES.EDITOR} replace />;
+  }
+
   // 라벨 스타일
   const labelBase = `py-0.5 px-5 w-24.5 text-center leading-6 rounded-sm`;
 
